@@ -118,34 +118,23 @@ public:
 
 
 	void initializeStaticDescriptorSetFor(
-		const SceneBuffers& scene, vk::Buffer uniformBuffer, vk::Device device, vk::DescriptorSet set
+		vk::Buffer emissiveSampleBuffer, vk::DeviceSize emissiveSampleBufferSize,
+		vk::Buffer uniformBuffer, vk::Device device, vk::DescriptorSet set
 	) {
-		std::array<vk::WriteDescriptorSet, 4> writes;
+		std::array<vk::WriteDescriptorSet, 2> writes;
 
-		vk::DescriptorBufferInfo pointLightBuffer(scene.getPtLights(), 0, scene.getPtLightsBufferSize());
-		vk::DescriptorBufferInfo triangleLightBuffer(scene.getTriLights(), 0, scene.getTriLightsBufferSize());
-		vk::DescriptorBufferInfo aliasTableBufferInfo(scene.getAliasTable(), 0, scene.getAliasTableBufferSize());
+		vk::DescriptorBufferInfo emissiveSampleInfo(emissiveSampleBuffer, 0, emissiveSampleBufferSize);
 		vk::DescriptorBufferInfo uniformBufferInfo(uniformBuffer, 0, sizeof(shader::RestirUniforms));
 
 		writes[0]
 			.setDstSet(set)
 			.setDstBinding(0)
 			.setDescriptorType(vk::DescriptorType::eStorageBuffer)
-			.setBufferInfo(pointLightBuffer);
+			.setBufferInfo(emissiveSampleInfo);
+
 		writes[1]
 			.setDstSet(set)
 			.setDstBinding(1)
-			.setDescriptorType(vk::DescriptorType::eStorageBuffer)
-			.setBufferInfo(triangleLightBuffer);
-		writes[2]
-			.setDstSet(set)
-			.setDstBinding(2)
-			.setDescriptorType(vk::DescriptorType::eStorageBuffer)
-			.setBufferInfo(aliasTableBufferInfo);
-
-		writes[3]
-			.setDstSet(set)
-			.setDstBinding(3)
 			.setDescriptorType(vk::DescriptorType::eUniformBuffer)
 			.setBufferInfo(uniformBufferInfo);
 
@@ -368,11 +357,9 @@ protected:
 		_software = Shader::load(dev, "shaders/restirOmniSoftware.comp.spv", "main", vk::ShaderStageFlagBits::eCompute);
 
 
-		std::array<vk::DescriptorSetLayoutBinding, 4> staticBindings{
+		std::array<vk::DescriptorSetLayoutBinding, 2> staticBindings{
 			vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eStorageBuffer, 1, stageFlags),
-			vk::DescriptorSetLayoutBinding(1, vk::DescriptorType::eStorageBuffer, 1, stageFlags),
-			vk::DescriptorSetLayoutBinding(2, vk::DescriptorType::eStorageBuffer, 1, stageFlags),
-			vk::DescriptorSetLayoutBinding(3, vk::DescriptorType::eUniformBuffer, 1, stageFlags)
+			vk::DescriptorSetLayoutBinding(1, vk::DescriptorType::eUniformBuffer, 1, stageFlags)
 		};
 
 		vk::DescriptorSetLayoutCreateInfo staticLayoutInfo;

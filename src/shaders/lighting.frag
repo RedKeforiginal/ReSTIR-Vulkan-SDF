@@ -19,14 +19,11 @@ layout (binding = 4) uniform Uniforms {
 layout (binding = 5) buffer Reservoirs {
 	Reservoir reservoirs[];
 };
-layout (binding = 6) buffer PointLights {
-	int count;
-	pointLight lights[];
-} pointLights;
-layout (binding = 7) buffer TriangleLights {
-	int count;
-	triLight lights[];
-} triangleLights;
+layout (binding = 6) buffer EmissiveSamples {
+	uint count;
+	uint padding[3];
+	EmissiveSample samples[];
+} emissiveSamples;
 
 layout (location = 0) in vec2 inUv;
 
@@ -51,12 +48,10 @@ void main() {
 		Reservoir reservoir = reservoirs[pixelCoord.y * uniforms.bufferSize.x + pixelCoord.x];
 		outColor = vec3(0.0f);
 		for (int i = 0; i < RESERVOIR_SIZE; ++i) {
-			vec3 emission;
+			vec3 emission = vec3(0.0f);
 			int lightIndex = reservoir.samples[i].lightIndex;
-			if (lightIndex < 0) {
-				emission = triangleLights.lights[-1 - lightIndex].emission_luminance.rgb;
-			} else {
-				emission = pointLights.lights[lightIndex].color_luminance.rgb;
+			if (lightIndex >= 0 && lightIndex < int(emissiveSamples.count)) {
+				emission = emissiveSamples.samples[lightIndex].emission.rgb;
 			}
 			vec3 pHat = evaluatePHatFull(
 				worldPos, reservoir.samples[i].position_emissionLum.xyz, uniforms.cameraPos.xyz,
@@ -92,10 +87,11 @@ void main() {
 		float metallic = materialProps.g;
 
 		outColor = vec3(0.0f);
-		for (int i = 0; i < pointLights.count; ++i) {
+		for (int i = 0; i < int(emissiveSamples.count); ++i) {
 			outColor += evaluatePHatFull(
-				worldPos, pointLights.lights[i].pos.xyz, uniforms.cameraPos.xyz, normal, vec3(0.0f), false,
-				albedo.rgb, pointLights.lights[i].color_luminance.rgb, roughness, metallic
+				worldPos, emissiveSamples.samples[i].position_luminance.xyz, uniforms.cameraPos.xyz,
+				normal, emissiveSamples.samples[i].normal_pdf.xyz, true,
+				albedo.rgb, emissiveSamples.samples[i].emission.rgb, roughness, metallic
 			);
 		}
 	}

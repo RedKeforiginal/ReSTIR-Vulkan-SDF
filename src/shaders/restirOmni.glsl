@@ -8,21 +8,13 @@
 #include "include/structs/light.glsl"
 
 
-layout (binding = 0, set = 0) buffer PointLights {
-	int count;
-	pointLight lights[];
-} pointLights;
-layout (binding = 1, set = 0) buffer TriangleLights {
-	int count;
-	triLight lights[];
-} triangleLights;
-layout (binding = 2, set = 0) buffer AliasTable{
-	int count;
-	int padding[3];
-	aliasTableColumn aliasCol[];
-} aliasTable;
+layout (binding = 0, set = 0) buffer EmissiveSamples {
+	uint count;
+	uint padding[3];
+	EmissiveSample samples[];
+} emissiveSamples;
 
-layout (binding = 3, set = 0) uniform Restiruniforms {
+layout (binding = 1, set = 0) uniform Restiruniforms {
 	RestirUniforms uniforms;
 };
 
@@ -65,24 +57,6 @@ layout (local_size_x = OMNI_GROUP_SIZE_X, local_size_y = OMNI_GROUP_SIZE_Y, loca
 #include "include/visibilityTest.glsl"
 
 
-vec3 pickPointOnTriangle(float r1, float r2, vec3 p1, vec3 p2, vec3 p3) {
-	float sqrt_r1 = sqrt(r1);
-	return (1.0 - sqrt_r1) * p1 + (sqrt_r1 * (1.0 - r2)) * p2 + (r2 * sqrt_r1) * p3;
-}
-
-void aliasTableSample(float r1, float r2, out int index, out float probability) {
-	int selected_column = min(int(aliasTable.count * r1), aliasTable.count - 1);
-	aliasTableColumn col = aliasTable.aliasCol[selected_column];
-	if (col.prob > r2) {
-		index = selected_column;
-		probability = col.oriProb;
-	} else {
-		index = col.alias;
-		probability = col.aliasOriProb;
-	}
-}
-
-
 void main() {
 	uvec2 pixelCoord =
 #ifdef HARDWARE_RAY_TRACING
@@ -104,33 +78,22 @@ void main() {
 
 	Reservoir res = newReservoir();
 	Rand rand = seedRand(uniforms.frame, pixelCoord.y * 10007 + pixelCoord.x);
-	if (dot(normal, normal) != 0.0f) {
+	if (dot(normal, normal) != 0.0f && emissiveSamples.count > 0u) {
 		for (int i = 0; i < uniforms.initialLightSampleCount; ++i) {
-			int selected_idx;
-			float lightSampleProb;
-			aliasTableSample(randFloat(rand), randFloat(rand), selected_idx, lightSampleProb);
+			int selected_idx = min(
+				int(randFloat(rand) * float(emissiveSamples.count)), int(emissiveSamples.count) - 1
+			);
+			float lightSampleProb = 1.0 / float(emissiveSamples.count);
 
-			vec3 lightSamplePos;
-			vec4 lightNormal;
-			float lightSampleLum;
-			int lightSampleIndex;
-			if (pointLights.count != 0) {
-				pointLight light = pointLights.lights[selected_idx];
-				lightSamplePos = light.pos.xyz;
-				lightSampleLum = light.color_luminance.w;
-				lightSampleIndex = selected_idx;
-				lightNormal = vec4(0.0f);
-			} else {
-				triLight light = triangleLights.lights[selected_idx];
-				lightSamplePos = pickPointOnTriangle(randFloat(rand), randFloat(rand), light.p1.xyz, light.p2.xyz, light.p3.xyz);
-				lightSampleLum = light.emission_luminance.w;
-				lightSampleIndex = -1 - selected_idx;
-
-				vec3 wi = normalize(worldPos - lightSamplePos);
-				vec3 normal = light.normalArea.xyz;
-				lightSampleProb /= abs(dot(wi, normal)) * light.normalArea.w;
-				lightNormal = vec4(normal, 1.0f);
+			EmissiveSample light = emissiveSamples.samples[selected_idx];
+			if (light.position_luminance.w <= 0.0 || light.normal_pdf.w <= 0.0) {
+				continue;
 			}
+
+			vec3 lightSamplePos = light.position_luminance.xyz;
+			float lightSampleLum = light.position_luminance.w;
+			int lightSampleIndex = selected_idx;
+			vec4 lightNormal = vec4(light.normal_pdf.xyz, 1.0f);
 
 			float pHat = evaluatePHat(
 				worldPos, lightSamplePos, uniforms.cameraPos.xyz,

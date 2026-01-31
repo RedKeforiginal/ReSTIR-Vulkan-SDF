@@ -422,6 +422,44 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 		_restirUniformBuffer.flush();
 	}
 
+	_emissiveSamplePass = Pass::create<EmissiveSamplePass>(_device.get());
+	{
+		vk::DescriptorSetLayout setLayout = _emissiveSamplePass.getDescriptorSetLayout();
+		vk::DescriptorSetAllocateInfo allocInfo;
+		allocInfo
+			.setDescriptorPool(_staticDescriptorPool.get())
+			.setSetLayouts(setLayout);
+		_emissiveSampleDescriptor = std::move(_device->allocateDescriptorSetsUnique(allocInfo)[0]);
+	}
+	{
+		_emissiveSampleBufferSize =
+			alignPreArrayBlock<shader::EmissiveSample, uint32_t[4]>() +
+			sizeof(shader::EmissiveSample) * _emissiveSampleCount;
+		_emissiveSampleBuffer = _allocator.createBuffer(
+			static_cast<uint32_t>(_emissiveSampleBufferSize),
+			vk::BufferUsageFlagBits::eStorageBuffer | vk::BufferUsageFlagBits::eTransferDst,
+			VMA_MEMORY_USAGE_GPU_ONLY
+		);
+
+		std::array<vk::DescriptorBufferInfo, 2> bufferInfo{
+			vk::DescriptorBufferInfo(_emissiveSampleBuffer.get(), 0, _emissiveSampleBufferSize),
+			vk::DescriptorBufferInfo(_restirUniformBuffer.get(), 0, sizeof(shader::RestirUniforms))
+		};
+		std::array<vk::WriteDescriptorSet, 2> writes{
+			vk::WriteDescriptorSet()
+				.setDstSet(_emissiveSampleDescriptor.get())
+				.setDstBinding(0)
+				.setDescriptorType(vk::DescriptorType::eStorageBuffer)
+				.setBufferInfo(bufferInfo[0]),
+			vk::WriteDescriptorSet()
+				.setDstSet(_emissiveSampleDescriptor.get())
+				.setDstBinding(1)
+				.setDescriptorType(vk::DescriptorType::eUniformBuffer)
+				.setBufferInfo(bufferInfo[1])
+		};
+		_device->updateDescriptorSets(writes, {});
+	}
+
 
 	_spatialReusePass = Pass::create<SpatialReusePass>(_device.get());
 	{
@@ -583,12 +621,14 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 
 	// semaphores & fences
 	_imageAvailableSemaphore.resize(maxFramesInFlight);
+	_computeFinishedSemaphore.resize(maxFramesInFlight);
 	_renderFinishedSemaphore.resize(maxFramesInFlight);
 	_inFlightFences.resize(maxFramesInFlight);
 	_inFlightImageFences.resize(_swapchainBuffers.size());
 	for (std::size_t i = 0; i < maxFramesInFlight; ++i) {
 		vk::SemaphoreCreateInfo semaphoreInfo;
 		_imageAvailableSemaphore[i] = _device->createSemaphoreUnique(semaphoreInfo);
+		_computeFinishedSemaphore[i] = _device->createSemaphoreUnique(semaphoreInfo);
 		_renderFinishedSemaphore[i] = _device->createSemaphoreUnique(semaphoreInfo);
 
 		vk::FenceCreateInfo fenceInfo;
@@ -825,9 +865,11 @@ void App::mainLoop() {
 			_restirUniformBuffer.flush();
 
 			std::array<vk::CommandBuffer, 1> gBufferCommandBuffers{ _mainCommandBuffers[currentGBufferFrame].get() };
+			std::array<vk::Semaphore, 1> computeSignalSemaphores{ _computeFinishedSemaphore[currentPresentFrame].get() };
 			vk::SubmitInfo submitInfo;
 			submitInfo
-				.setCommandBuffers(gBufferCommandBuffers);
+				.setCommandBuffers(gBufferCommandBuffers)
+				.setSignalSemaphores(computeSignalSemaphores);
 			_graphicsComputeQueue.submit(submitInfo, _mainFence.get());
 
 			prevFrameProjectionView = _camera.projectionViewMatrix;
@@ -867,8 +909,14 @@ void App::mainLoop() {
 
 		std::array<vk::Semaphore, 1> signalSemaphores{ _renderFinishedSemaphore[currentPresentFrame].get() };
 		{
-			std::array<vk::Semaphore, 1> waitSemaphores{ _imageAvailableSemaphore[currentPresentFrame].get() };
-			std::array<vk::PipelineStageFlags, 1> waitStages{ vk::PipelineStageFlagBits::eColorAttachmentOutput };
+			std::array<vk::Semaphore, 2> waitSemaphores{
+				_imageAvailableSemaphore[currentPresentFrame].get(),
+				_computeFinishedSemaphore[currentPresentFrame].get()
+			};
+			std::array<vk::PipelineStageFlags, 2> waitStages{
+				vk::PipelineStageFlagBits::eColorAttachmentOutput,
+				vk::PipelineStageFlagBits::eFragmentShader
+			};
 			std::array<vk::CommandBuffer, 1> cmdBuffers{ _swapchainBuffers[imageIndex].commandBuffer.get() };
 			vk::SubmitInfo submitInfo;
 			submitInfo
