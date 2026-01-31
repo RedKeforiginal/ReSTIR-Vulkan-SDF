@@ -1,0 +1,119 @@
+#version 450
+
+#define FOLD_STEPS 24
+#define FOLD_FLOOR 1.0
+
+#include "include/common.glsl"
+#include "include/rand.glsl"
+#include "include/structs/light.glsl"
+#include "include/structs/restirStructs.glsl"
+#include "include/SDF.glsl"
+#include "include/SDF-Material.glsl"
+
+layout (local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+
+layout (binding = 0, set = 0) buffer EmissiveSamples {
+	uint count;
+	uint padding[3];
+	EmissiveSample samples[];
+} emissiveSamples;
+
+layout (binding = 1, set = 0) uniform Restiruniforms {
+	RestirUniforms uniforms;
+};
+
+layout (push_constant) uniform SampleParams {
+	uint sampleCount;
+	uint seed;
+} params;
+
+float getSdfDistance(vec3 worldPos) {
+	float scale = uniforms.sdfScene.w;
+	vec3 sdfPos = worldPos * scale + uniforms.sdfScene.xyz;
+	return GetDist(sdfPos) / max(scale, 0.0001);
+}
+
+vec3 estimateNormal(vec3 worldPos, float epsilon) {
+	vec2 h = vec2(epsilon, 0.0);
+	float dx = getSdfDistance(worldPos + h.xyy) - getSdfDistance(worldPos - h.xyy);
+	float dy = getSdfDistance(worldPos + h.yxy) - getSdfDistance(worldPos - h.yxy);
+	float dz = getSdfDistance(worldPos + h.yyx) - getSdfDistance(worldPos - h.yyx);
+	return normalize(vec3(dx, dy, dz));
+}
+
+vec3 sampleUnitSphere(inout Rand rand) {
+	float z = 1.0 - 2.0 * randFloat(rand);
+	float a = 6.28318530718 * randFloat(rand);
+	float r = sqrt(max(0.0, 1.0 - z * z));
+	return vec3(r * cos(a), r * sin(a), z);
+}
+
+void main() {
+	uint idx = gl_GlobalInvocationID.x;
+	if (idx >= params.sampleCount) {
+		return;
+	}
+
+	Rand rand = seedRand(uint64_t(uniforms.frame) + uint64_t(params.seed), idx + 1u);
+	float maxDistance = uniforms.sdfParams.x;
+	float epsilon = uniforms.sdfParams.y;
+	int maxSteps = int(uniforms.sdfParams.z);
+
+	float sceneExtent = min(maxDistance * 0.5, 250.0);
+	vec3 bounds = vec3(sceneExtent);
+	vec3 origin = mix(-bounds, bounds, vec3(randFloat(rand), randFloat(rand), randFloat(rand)));
+	vec3 dir = sampleUnitSphere(rand);
+
+	float t = 0.0;
+	bool hit = false;
+	float matId = 0.0;
+	vec3 worldPos = origin;
+
+	for (int i = 0; i < maxSteps; ++i) {
+		worldPos = origin + dir * t;
+		float scale = uniforms.sdfScene.w;
+		vec3 sdfPos = worldPos * scale + uniforms.sdfScene.xyz;
+		vec2 distMat = GetDistMat(sdfPos);
+		float dist = distMat.x / max(scale, 0.0001);
+		if (dist < epsilon) {
+			hit = true;
+			matId = distMat.y;
+			break;
+		}
+		t += dist;
+		if (t > maxDistance) {
+			break;
+		}
+	}
+
+	vec3 emission = vec3(0.0);
+	float emissionLum = 0.0;
+	vec3 normal = vec3(0.0, 1.0, 0.0);
+
+	if (hit) {
+		vec3 albedo;
+		float roughness;
+		float metallic;
+		vec3 sdfPos = worldPos * uniforms.sdfScene.w + uniforms.sdfScene.xyz;
+		GetMaterial(sdfPos, matId, albedo, roughness, metallic, emission);
+		emissionLum = luminance(emission.r, emission.g, emission.b);
+		normal = estimateNormal(worldPos, epsilon * 2.0);
+	}
+
+	if (emissionLum <= 0.0) {
+		return;
+	}
+
+	uint writeIndex = atomicAdd(emissiveSamples.count, 1u);
+	if (writeIndex >= params.sampleCount) {
+		return;
+	}
+
+	float pdf = 1.0 / max(1.0, float(params.sampleCount));
+
+	EmissiveSample sample;
+	sample.position_luminance = vec4(worldPos, emissionLum);
+	sample.normal_pdf = vec4(normal, pdf);
+	sample.emission = vec4(emission, 0.0);
+	emissiveSamples.samples[writeIndex] = sample;
+}

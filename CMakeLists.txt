@@ -47,6 +47,7 @@ target_sources(restir
 	PRIVATE
 		"src/vertex.h"
 		"src/passes/demoPass.h"
+		"src/passes/emissiveSamplePass.h"
 		"src/passes/imguiPass.h"
 		"src/passes/gBufferPass.cpp"
 		"src/passes/gBufferPass.h"
@@ -98,6 +99,7 @@ add_shader(restir "src/shaders/gBuffer.vert")
 add_shader(restir "src/shaders/gBuffer.frag")
 
 add_shader(restir "src/shaders/spatialReuse.comp")
+add_shader(restir "src/shaders/emissiveSample.comp")
 
 add_shader(restir "src/shaders/quad.vert")
 add_shader(restir "src/shaders/lighting.frag")

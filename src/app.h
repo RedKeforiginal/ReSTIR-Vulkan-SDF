@@ -10,6 +10,7 @@
 #include "fpsCounter.h"
 
 #include "passes/gBufferPass.h"
+#include "passes/emissiveSamplePass.h"
 #include "passes/spatialReusePass.h"
 #include "passes/lightingPass.h"
 #include "passes/restirPass.h"
@@ -114,6 +115,12 @@ protected:
 	GBufferPass _gBufferPass;
 	GBufferPass::Resources _gBufferResources;
 
+	EmissiveSamplePass _emissiveSamplePass;
+	vk::UniqueDescriptorSet _emissiveSampleDescriptor;
+	vma::UniqueBuffer _emissiveSampleBuffer;
+	vk::DeviceSize _emissiveSampleBufferSize = 0;
+	uint32_t _emissiveSampleCount = 2048;
+
 	vma::UniqueBuffer _restirUniformBuffer;
 	std::array<vma::UniqueBuffer, numGBuffers> _reservoirBuffers;
 	vma::UniqueBuffer _reservoirTemporaryBuffer;
@@ -153,6 +160,7 @@ protected:
 
 	// synchronization
 	std::vector<vk::UniqueSemaphore> _imageAvailableSemaphore;
+	std::vector<vk::UniqueSemaphore> _computeFinishedSemaphore;
 	std::vector<vk::UniqueSemaphore> _renderFinishedSemaphore;
 	std::vector<vk::UniqueFence> _inFlightFences;
 	std::vector<vk::UniqueFence> _inFlightImageFences;
@@ -215,6 +223,25 @@ protected:
 			_mainCommandBuffers[i]->begin(beginInfo);
 
 			_gBufferPass.issueCommands(_mainCommandBuffers[i].get(), _gBuffers[i].getFramebuffer());
+
+			_mainCommandBuffers[i]->fillBuffer(_emissiveSampleBuffer.get(), 0, sizeof(uint32_t), 0);
+			vk::BufferMemoryBarrier emissiveSampleBarrier;
+			emissiveSampleBarrier
+				.setSrcAccessMask(vk::AccessFlagBits::eTransferWrite)
+				.setDstAccessMask(vk::AccessFlagBits::eShaderRead | vk::AccessFlagBits::eShaderWrite)
+				.setBuffer(_emissiveSampleBuffer.get())
+				.setOffset(0)
+				.setSize(VK_WHOLE_SIZE);
+			_mainCommandBuffers[i]->pipelineBarrier(
+				vk::PipelineStageFlagBits::eTransfer,
+				vk::PipelineStageFlagBits::eComputeShader,
+				{}, {}, emissiveSampleBarrier, {}
+			);
+
+			_emissiveSamplePass.descriptorSet = _emissiveSampleDescriptor.get();
+			_emissiveSamplePass.sampleCount = _emissiveSampleCount;
+			_emissiveSamplePass.seed = static_cast<uint32_t>(i);
+			_emissiveSamplePass.issueCommands(_mainCommandBuffers[i].get(), nullptr);
 
 			_restirPass.staticDescriptorSet = _restirStaticDescriptor.get();
 			_restirPass.frameDescriptorSet = _restirFrameDescriptors[i].get();
@@ -284,7 +311,8 @@ protected:
 		}
 
 		_restirPass.initializeStaticDescriptorSetFor(
-			_sceneBuffers, _restirUniformBuffer.get(), _device.get(), _restirStaticDescriptor.get()
+			_emissiveSampleBuffer.get(), _emissiveSampleBufferSize,
+			_restirUniformBuffer.get(), _device.get(), _restirStaticDescriptor.get()
 		);
 #ifndef RENDERDOC_CAPTURE
 		_restirPass.initializeHardwareRayTracingDescriptorSet(
@@ -338,7 +366,7 @@ protected:
 	void _initializeLightingPassResources() {
 		for (std::size_t i = 0; i < numGBuffers; ++i) {
 			_lightingPass.initializeDescriptorSetFor(
-				_gBuffers[i], _sceneBuffers,
+				_gBuffers[i], _emissiveSampleBuffer.get(), _emissiveSampleBufferSize,
 				_lightingPassUniformBuffer.get(), _reservoirBuffers[i].get(), _reservoirBufferSize,
 				_device.get(), _lightingPassDescriptorSets[i].get()
 			);
