@@ -130,122 +130,13 @@ void GBufferPass::issueCommands(vk::CommandBuffer commandBuffer, vk::Framebuffer
 	commandBuffer.beginRenderPass(passBeginInfo, vk::SubpassContents::eInline);
 
 	commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, getPipelines()[0].get());
-	commandBuffer.bindVertexBuffers(0, { sceneBuffers->getVertices() }, { 0 });
-	commandBuffer.bindIndexBuffer(sceneBuffers->getIndices(), 0, vk::IndexType::eUint32);
-
-	for (std::size_t i = 0; i < scene->m_nodes.size(); ++i) {
-		const nvh::GltfNode &node = scene->m_nodes[i];
-		const nvh::GltfPrimMesh &mesh = scene->m_primMeshes[node.primMesh];
-
-		commandBuffer.bindDescriptorSets(
-			vk::PipelineBindPoint::eGraphics, _pipelineLayout.get(), 0,
-			{
-				descriptorSets->uniformDescriptor.get(),
-				descriptorSets->matrixDescriptor.get(),
-				descriptorSets->materialDescriptor.get(),
-				descriptorSets->materialTexturesDescriptors[mesh.materialIndex].get()
-			},
-				{
-					static_cast<uint32_t>(i * sizeof(shader::ModelMatrices)),
-					static_cast<uint32_t>(mesh.materialIndex * sizeof(shader::MaterialUniforms))
-				}
-				);
-		commandBuffer.drawIndexed(mesh.indexCount, 1, mesh.firstIndex, mesh.vertexOffset, 0);
-	}
+	commandBuffer.bindDescriptorSets(
+		vk::PipelineBindPoint::eGraphics, _pipelineLayout.get(), 0,
+		{ descriptorSets->uniformDescriptor.get() }, {}
+	);
+	commandBuffer.draw(4, 1, 0, 0);
 
 	commandBuffer.endRenderPass();
-}
-
-void GBufferPass::initializeResourcesFor(
-	const nvh::GltfScene &targetScene, const SceneBuffers &buffers, vk::UniqueDevice& device, Resources &sets
-) {
-	std::vector<vk::WriteDescriptorSet> bufferWrite;
-	bufferWrite.reserve(2 + 4 * targetScene.m_materials.size());
-
-	std::array<vk::DescriptorBufferInfo, 1> uniformBufferInfo{
-		vk::DescriptorBufferInfo(sets.uniformBuffer.get(), 0, sizeof(Uniforms))
-	};
-	bufferWrite.emplace_back()
-		.setDstSet(sets.uniformDescriptor.get())
-		.setDstBinding(0)
-		.setDescriptorType(vk::DescriptorType::eUniformBuffer)
-		.setBufferInfo(uniformBufferInfo);
-
-	std::array<vk::DescriptorBufferInfo, 1> matricesBufferInfo{
-		vk::DescriptorBufferInfo(buffers.getMatrices(), 0, sizeof(shader::ModelMatrices))
-	};
-	bufferWrite.emplace_back()
-		.setDstSet(sets.matrixDescriptor.get())
-		.setDstBinding(0)
-		.setDescriptorType(vk::DescriptorType::eUniformBufferDynamic)
-		.setBufferInfo(matricesBufferInfo);
-
-	std::array<vk::DescriptorBufferInfo, 1> materialsBufferInfo{
-		vk::DescriptorBufferInfo(buffers.getMaterials(), 0, sizeof(shader::MaterialUniforms))
-	};
-	bufferWrite.emplace_back()
-		.setDstSet(sets.materialDescriptor.get())
-		.setDstBinding(0)
-		.setDescriptorType(vk::DescriptorType::eUniformBufferDynamic)
-		.setBufferInfo(materialsBufferInfo);
-
-	std::vector<vk::DescriptorImageInfo> materialTextureInfo(buffers.getTextures().size());
-	vk::DescriptorImageInfo defaultNormalInfo = buffers.getDefaultNormal().getDescriptorInfo();
-	vk::DescriptorImageInfo defaultWhiteInfo = buffers.getDefaultWhite().getDescriptorInfo();
-	for (std::size_t i = 0; i < buffers.getTextures().size(); ++i) {
-		materialTextureInfo[i] = buffers.getTextures()[i].getDescriptorInfo();
-	}
-	for (std::size_t i = 0; i < targetScene.m_materials.size(); ++i) {
-		vk::DescriptorSet set = sets.materialTexturesDescriptors[i].get();
-		const nvh::GltfMaterial &mat = targetScene.m_materials[i];
-
-		switch (mat.shadingModel) {
-		case SHADING_MODEL_METALLIC_ROUGHNESS:
-			bufferWrite.emplace_back()
-				.setDstSet(set)
-				.setDstBinding(0)
-				.setDescriptorType(vk::DescriptorType::eCombinedImageSampler)
-				.setImageInfo(mat.pbrBaseColorTexture >= 0 ? materialTextureInfo[mat.pbrBaseColorTexture] : defaultWhiteInfo);
-			break;
-		case SHADING_MODEL_SPECULAR_GLOSSINESS:
-			bufferWrite.emplace_back()
-				.setDstSet(set)
-				.setDstBinding(0)
-				.setDescriptorType(vk::DescriptorType::eCombinedImageSampler)
-				.setImageInfo(mat.khrDiffuseTexture >= 0 ? materialTextureInfo[mat.khrDiffuseTexture] : defaultWhiteInfo);
-			break;
-		}
-
-		bufferWrite.emplace_back()
-			.setDstSet(set)
-			.setDstBinding(1)
-			.setDescriptorType(vk::DescriptorType::eCombinedImageSampler)
-			.setImageInfo(mat.normalTexture >= 0 ? materialTextureInfo[mat.normalTexture] : defaultNormalInfo);
-		switch (mat.shadingModel) {
-		case SHADING_MODEL_METALLIC_ROUGHNESS:
-			bufferWrite.emplace_back()
-				.setDstSet(set)
-				.setDstBinding(2)
-				.setDescriptorType(vk::DescriptorType::eCombinedImageSampler)
-				.setImageInfo(mat.pbrMetallicRoughnessTexture >= 0 ? materialTextureInfo[mat.pbrMetallicRoughnessTexture] : defaultWhiteInfo);
-			break;
-		case SHADING_MODEL_SPECULAR_GLOSSINESS:
-			bufferWrite.emplace_back()
-				.setDstSet(set)
-				.setDstBinding(2)
-				.setDescriptorType(vk::DescriptorType::eCombinedImageSampler)
-				.setImageInfo(mat.khrSpecularGlossinessTexture >= 0 ? materialTextureInfo[mat.khrSpecularGlossinessTexture] : defaultWhiteInfo);
-			break;
-		}
-
-		bufferWrite.emplace_back()
-			.setDstSet(set)
-			.setDstBinding(3)
-			.setDescriptorType(vk::DescriptorType::eCombinedImageSampler)
-			.setImageInfo(mat.emissiveTexture >= 0 ? materialTextureInfo[mat.emissiveTexture] : defaultWhiteInfo);
-	}
-
-	device.get().updateDescriptorSets(bufferWrite, {});
 }
 
 vk::UniqueRenderPass GBufferPass::_createPass(vk::Device device) {
@@ -339,17 +230,13 @@ std::vector<Pass::PipelineCreationInfo> GBufferPass::_getPipelineCreationInfo() 
 
 	GraphicsPipelineCreationInfo info;
 
-	info.vertexInputBindingStorage.emplace_back(0, static_cast<uint32_t>(sizeof(Vertex)), vk::VertexInputRate::eVertex);
-	info.vertexInputAttributeStorage.emplace_back(0, 0, vk::Format::eR32G32B32Sfloat, static_cast<uint32_t>(offsetof(Vertex, position)));
-	info.vertexInputAttributeStorage.emplace_back(1, 0, vk::Format::eR32G32B32Sfloat, static_cast<uint32_t>(offsetof(Vertex, normal)));
-	info.vertexInputAttributeStorage.emplace_back(2, 0, vk::Format::eR32G32B32A32Sfloat, static_cast<uint32_t>(offsetof(Vertex, tangent)));
-	info.vertexInputAttributeStorage.emplace_back(3, 0, vk::Format::eR32G32B32A32Sfloat, static_cast<uint32_t>(offsetof(Vertex, color)));
-	info.vertexInputAttributeStorage.emplace_back(4, 0, vk::Format::eR32G32Sfloat, static_cast<uint32_t>(offsetof(Vertex, uv)));
 	info.vertexInputState
 		.setVertexBindingDescriptions(info.vertexInputBindingStorage)
 		.setVertexAttributeDescriptions(info.vertexInputAttributeStorage);
 
-	info.inputAssemblyState = GraphicsPipelineCreationInfo::getTriangleListWithoutPrimitiveRestartInputAssembly();
+	info.inputAssemblyState
+		.setTopology(vk::PrimitiveTopology::eTriangleStrip)
+		.setPrimitiveRestartEnable(false);
 
 	info.viewportStorage.emplace_back(
 		0.0f, 0.0f, static_cast<float>(_bufferExtent.width), static_cast<float>(_bufferExtent.height), 0.0f, 1.0f
@@ -360,6 +247,7 @@ std::vector<Pass::PipelineCreationInfo> GBufferPass::_getPipelineCreationInfo() 
 		.setScissors(info.scissorStorage);
 
 	info.rasterizationState = GraphicsPipelineCreationInfo::getDefaultRasterizationState();
+	info.rasterizationState.setCullMode(vk::CullModeFlagBits::eNone);
 
 	info.depthStencilState = GraphicsPipelineCreationInfo::getDefaultDepthTestState();
 
@@ -386,41 +274,14 @@ void GBufferPass::_initialize(vk::Device dev) {
 	_frag = Shader::load(dev, "shaders/gBuffer.frag.spv", "main", vk::ShaderStageFlagBits::eFragment);
 
 	std::array<vk::DescriptorSetLayoutBinding, 1> uniformsDescriptorBindings{
-		vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eUniformBuffer, 1, vk::ShaderStageFlagBits::eVertex)
+		vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eUniformBuffer, 1, vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment)
 	};
 	vk::DescriptorSetLayoutCreateInfo uniformsDescriptorSetInfo;
 	uniformsDescriptorSetInfo.setBindings(uniformsDescriptorBindings);
 	_uniformsDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(uniformsDescriptorSetInfo);
 
-	std::array<vk::DescriptorSetLayoutBinding, 1> matricesDescriptorBindings{
-		vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eUniformBufferDynamic, 1, vk::ShaderStageFlagBits::eVertex)
-	};
-	vk::DescriptorSetLayoutCreateInfo matricesDescriptorSetInfo;
-	matricesDescriptorSetInfo.setBindings(matricesDescriptorBindings);
-	_matricesDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(matricesDescriptorSetInfo);
-
-	std::array<vk::DescriptorSetLayoutBinding, 1> materialDescriptorBindings{
-		vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eUniformBufferDynamic, 1, vk::ShaderStageFlagBits::eFragment)
-	};
-	vk::DescriptorSetLayoutCreateInfo materialDescriptorSetInfo;
-	materialDescriptorSetInfo.setBindings(materialDescriptorBindings);
-	_materialDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(materialDescriptorSetInfo);
-
-	std::array<vk::DescriptorSetLayoutBinding, 4> textureDescriptorBindings{
-		vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eCombinedImageSampler, 1, vk::ShaderStageFlagBits::eFragment),
-		vk::DescriptorSetLayoutBinding(1, vk::DescriptorType::eCombinedImageSampler, 1, vk::ShaderStageFlagBits::eFragment),
-		vk::DescriptorSetLayoutBinding(2, vk::DescriptorType::eCombinedImageSampler, 1, vk::ShaderStageFlagBits::eFragment),
-		vk::DescriptorSetLayoutBinding(3, vk::DescriptorType::eCombinedImageSampler, 1, vk::ShaderStageFlagBits::eFragment)
-	};
-	vk::DescriptorSetLayoutCreateInfo textureDescriptorSetInfo;
-	textureDescriptorSetInfo.setBindings(textureDescriptorBindings);
-	_textureDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(textureDescriptorSetInfo);
-
-	std::array<vk::DescriptorSetLayout, 4> descriptorSetLayouts{
-		_uniformsDescriptorSetLayout.get(),
-		_matricesDescriptorSetLayout.get(),
-		_materialDescriptorSetLayout.get(),
-		_textureDescriptorSetLayout.get()
+	std::array<vk::DescriptorSetLayout, 1> descriptorSetLayouts{
+		_uniformsDescriptorSetLayout.get()
 	};
 
 	vk::PipelineLayoutCreateInfo pipelineInfo;

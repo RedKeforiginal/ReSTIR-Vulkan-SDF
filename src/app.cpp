@@ -375,35 +375,22 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 			.setDescriptorPool(_staticDescriptorPool.get())
 			.setSetLayouts(gBufferUniformLayout);
 		_gBufferResources.uniformDescriptor = std::move(_device->allocateDescriptorSetsUnique(gBufferUniformAlloc)[0]);
-
-		std::array<vk::DescriptorSetLayout, 1> gBufferMatricesLayout{ _gBufferPass.getMatricesDescriptorSetLayout() };
-		vk::DescriptorSetAllocateInfo gBufferMatricesAlloc;
-		gBufferMatricesAlloc
-			.setDescriptorPool(_staticDescriptorPool.get())
-			.setSetLayouts(gBufferMatricesLayout);
-		_gBufferResources.matrixDescriptor = std::move(_device->allocateDescriptorSetsUnique(gBufferMatricesAlloc)[0]);
-
-		std::array<vk::DescriptorSetLayout, 1> gBufferMaterialsLayout{ _gBufferPass.getMaterialDescriptorSetLayout() };
-		vk::DescriptorSetAllocateInfo gBufferMaterialsAlloc;
-		gBufferMaterialsAlloc
-			.setDescriptorPool(_staticDescriptorPool.get())
-			.setSetLayouts(gBufferMaterialsLayout);
-		_gBufferResources.materialDescriptor = std::move(_device->allocateDescriptorSetsUnique(gBufferMaterialsAlloc)[0]);
-
-		// Scene textures
-		std::vector<vk::DescriptorSetLayout> gBufferTexturesLayout(_gltfScene.m_materials.size());
-		std::fill(gBufferTexturesLayout.begin(), gBufferTexturesLayout.end(), _gBufferPass.getTexturesDescriptorSetLayout());
-		vk::DescriptorSetAllocateInfo gBufferSceneTexturesAlloc;
-		gBufferSceneTexturesAlloc
-			.setDescriptorPool(_textureDescriptorPool.get())
-			.setSetLayouts(gBufferTexturesLayout);
-		_gBufferResources.materialTexturesDescriptors = _device->allocateDescriptorSetsUnique(gBufferSceneTexturesAlloc);
 	}
-	_gBufferPass.initializeResourcesFor(_gltfScene, _sceneBuffers, _device, _gBufferResources);
+	{
+		std::array<vk::DescriptorBufferInfo, 1> uniformBufferInfo{
+			vk::DescriptorBufferInfo(_gBufferResources.uniformBuffer.get(), 0, sizeof(GBufferPass::Uniforms))
+		};
+		std::array<vk::WriteDescriptorSet, 1> gBufferWrite{
+			vk::WriteDescriptorSet()
+				.setDstSet(_gBufferResources.uniformDescriptor.get())
+				.setDstBinding(0)
+				.setDescriptorType(vk::DescriptorType::eUniformBuffer)
+				.setBufferInfo(uniformBufferInfo)
+		};
+		_device->updateDescriptorSets(gBufferWrite, {});
+	}
 
 	_gBufferPass.descriptorSets = &_gBufferResources;
-	_gBufferPass.scene = &_gltfScene;
-	_gBufferPass.sceneBuffers = &_sceneBuffers;
 
 	for (GBuffer& gbuf : _gBuffers) {
 		gbuf = GBuffer::create(_allocator, _device.get(), _swapchain.getImageExtent(), _gBufferPass);
@@ -788,7 +775,13 @@ void App::mainLoop() {
 				_graphicsComputeQueue.waitIdle();
 
 				auto* gBufferUniforms = _gBufferResources.uniformBuffer.mapAs<GBufferPass::Uniforms>();
-				gBufferUniforms->projectionViewMatrix = _camera.projectionViewMatrix;
+				gBufferUniforms->projectionMatrix = _camera.projectionMatrix;
+				gBufferUniforms->viewMatrix = _camera.viewMatrix;
+				gBufferUniforms->inverseProjectionMatrix = nvmath::invert(_camera.projectionMatrix);
+				gBufferUniforms->inverseViewMatrix = _camera.inverseViewMatrix;
+				gBufferUniforms->cameraPosition = nvmath::vec4f(_camera.position, 1.0f);
+				gBufferUniforms->sdfParams = nvmath::vec4f(2000.0f, 0.001f, 128.0f, 0.0f);
+				gBufferUniforms->sdfScene = nvmath::vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 				_gBufferResources.uniformBuffer.unmap();
 				_gBufferResources.uniformBuffer.flush();
 

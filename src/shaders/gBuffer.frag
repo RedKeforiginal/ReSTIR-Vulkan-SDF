@@ -1,80 +1,99 @@
 #version 450
-#extension GL_ARB_separate_shader_objects: enable
-#extension GL_EXT_scalar_block_layout : enable
 
-#include "include/structs/sceneStructs.glsl"
+#define FOLD_STEPS 24
+#define FOLD_FLOOR 1.0
 
-layout (set = 2, binding = 0) uniform Material {
-	MaterialUniforms material;
-};
+#include "include/SDF.glsl"
+#include "include/SDF-Material.glsl"
 
-layout (set = 3, binding = 0) uniform sampler2D uniAlbedo;
-layout (set = 3, binding = 1) uniform sampler2D uniNormal;
-layout (set = 3, binding = 2) uniform sampler2D uniMaterial;
-layout (set = 3, binding = 3) uniform sampler2D uniEmissiveTexture;
+layout (set = 0, binding = 0) uniform Uniforms {
+	mat4 projectionMatrix;
+	mat4 viewMatrix;
+	mat4 inverseProjectionMatrix;
+	mat4 inverseViewMatrix;
+	vec4 cameraPosition;
+	vec4 sdfParams;
+	vec4 sdfScene;
+} uniforms;
 
-layout (location = 0) in vec3 inPosition;
-layout (location = 1) in vec3 inNormal;
-layout (location = 2) in vec4 inTangent;
-layout (location = 3) in vec4 inColor;
-layout (location = 4) in vec2 inUv;
+layout (location = 0) in vec2 inUv;
 
 layout (location = 0) out vec4 outAlbedo;
 layout (location = 1) out vec3 outNormal;
 layout (location = 2) out vec2 outMaterialProperties;
 layout (location = 3) out vec3 outWorldPosition;
 
+float getSdfDistance(vec3 worldPos) {
+	float scale = uniforms.sdfScene.w;
+	vec3 sdfPos = worldPos * scale + uniforms.sdfScene.xyz;
+	return GetDist(sdfPos) / max(scale, 0.0001);
+}
+
+vec3 estimateNormal(vec3 worldPos, float epsilon) {
+	vec2 h = vec2(epsilon, 0.0);
+	float dx = getSdfDistance(worldPos + h.xyy) - getSdfDistance(worldPos - h.xyy);
+	float dy = getSdfDistance(worldPos + h.yxy) - getSdfDistance(worldPos - h.yxy);
+	float dz = getSdfDistance(worldPos + h.yyx) - getSdfDistance(worldPos - h.yyx);
+	return normalize(vec3(dx, dy, dz));
+}
+
 void main() {
-	// compute baseColor or diffuse
-	vec4 albedo = texture(uniAlbedo, inUv) * material.colorParam;
-	if (material.alphaMode == ALPHA_MODE_MASK) {
-		if (albedo.a < material.alphaCutoff) {
-			discard;
+	float maxDistance = uniforms.sdfParams.x;
+	float epsilon = uniforms.sdfParams.y;
+	int maxSteps = int(uniforms.sdfParams.z);
+
+	vec2 ndc = inUv * 2.0f - 1.0f;
+	vec4 clip = vec4(ndc, 1.0f, 1.0f);
+	vec4 view = uniforms.inverseProjectionMatrix * clip;
+	view /= view.w;
+	vec3 rayDir = normalize((uniforms.inverseViewMatrix * vec4(view.xyz, 0.0f)).xyz);
+	vec3 rayOrigin = uniforms.cameraPosition.xyz;
+
+	float t = 0.0f;
+	bool hit = false;
+	float matId = 0.0f;
+	vec3 worldPos = rayOrigin;
+
+	for (int i = 0; i < maxSteps; ++i) {
+		worldPos = rayOrigin + rayDir * t;
+		float scale = uniforms.sdfScene.w;
+		vec3 sdfPos = worldPos * scale + uniforms.sdfScene.xyz;
+		vec2 distMat = GetDistMat(sdfPos);
+		float dist = distMat.x / max(scale, 0.0001);
+		if (dist < epsilon) {
+			hit = true;
+			matId = distMat.y;
+			break;
+		}
+		t += dist;
+		if (t > maxDistance) {
+			break;
 		}
 	}
-	// the deferred pipeline doesn't support transparency; set alpha to 1
-	outAlbedo.rgb = albedo.rgb;
 
-	// compute normal
-	// this front facing flag may come in handy later when handling double-sided geometry
-	vec3 bitangent = /*(gl_FrontFacing ? 1.0f : -1.0f) **/ cross(inNormal, inTangent.xyz) * inTangent.w;
-	vec3 normalTex = texture(uniNormal, inUv * material.normalTextureScale).xyz * 2.0f - 1.0f;
-	outNormal = normalize(normalTex.x * inTangent.xyz + normalTex.y * bitangent + normalTex.z * inNormal);
-
-	// compute material properties
-	vec4 materialProp = texture(uniMaterial, inUv) * material.materialParam;
-	float roughness = 0.0f;
-	float metallic = 0.0f;
-	if (material.shadingModel == SHADING_MODEL_METALLIC_ROUGHNESS) {
-		roughness = materialProp.y;
-		metallic = materialProp.z;
-	} else if (material.shadingModel == SHADING_MODEL_SPECULAR_GLOSSINESS) {
-		roughness = 1.0f - materialProp.a;
-
-		// get metallic and adjust albedo
-		//
-		// - full metal have a diffuse of 0
-		// - full dielectric have a specular of 0.04
-		// diffuse = albedo * (1 - metalness)
-		// specular = lerp(0.04, albedo, metalness)
-		
-		vec3 average = 0.5f * (albedo.rgb + materialProp.rgb);
-		vec3 sqrtTerm = sqrt(average * average - 0.04f * albedo.rgb);
-		vec3 metallicRgb = 25.0f * average - sqrtTerm;
-
-		metallic = (metallicRgb.r + metallicRgb.g + metallicRgb.b) / 3.0f;
-		outAlbedo.rgb = average + sqrtTerm;
+	if (!hit) {
+		outAlbedo = vec4(0.0f);
+		outNormal = vec3(0.0f);
+		outMaterialProperties = vec2(0.0f);
+		outWorldPosition = vec3(0.0f);
+		gl_FragDepth = 1.0f;
+		return;
 	}
 
+	vec3 normal = estimateNormal(worldPos, epsilon * 2.0f);
+	vec3 albedo;
+	float roughness;
+	float metallic;
+	vec3 emission;
+	vec3 sdfPos = worldPos * uniforms.sdfScene.w + uniforms.sdfScene.xyz;
+	GetMaterial(sdfPos, matId, albedo, roughness, metallic, emission);
+
+	float emissiveFlag = length(emission) > 0.0f ? 1.0f : 0.0f;
+	outAlbedo = vec4(emissiveFlag > 0.5f ? emission : albedo, emissiveFlag);
+	outNormal = normal;
 	outMaterialProperties = vec2(roughness, metallic);
+	outWorldPosition = worldPos;
 
-	outWorldPosition = inPosition;
-	
-	if (length(material.emissiveFactor.xyz) > 0.0) {
-		// Emissive material
-		outAlbedo.xyz = material.colorParam.rgb * material.emissiveFactor.xyz * texture(uniEmissiveTexture, inUv).rgb;
-		outAlbedo.w = 1.0;
-	} else {
-		outAlbedo.w = 0.0;
-	}
+	vec4 clipPos = uniforms.projectionMatrix * uniforms.viewMatrix * vec4(worldPos, 1.0f);
+	gl_FragDepth = clipPos.z / clipPos.w;
 }

@@ -6,8 +6,6 @@
 #include "../vma.h"
 #include "../misc.h"
 #include "../shader.h"
-#include "../sceneBuffers.h"
-#include "../camera.h"
 
 class GBufferPass;
 
@@ -90,15 +88,18 @@ class GBufferPass : public Pass {
 	friend Pass;
 public:
 	struct Uniforms {
-		nvmath::mat4 projectionViewMatrix;
+		nvmath::mat4 projectionMatrix;
+		nvmath::mat4 viewMatrix;
+		nvmath::mat4 inverseProjectionMatrix;
+		nvmath::mat4 inverseViewMatrix;
+		nvmath::vec4 cameraPosition;
+		nvmath::vec4 sdfParams;
+		nvmath::vec4 sdfScene;
 	};
 
 	struct Resources {
 		vma::UniqueBuffer uniformBuffer;
 		vk::UniqueDescriptorSet uniformDescriptor;
-		vk::UniqueDescriptorSet matrixDescriptor;
-		vk::UniqueDescriptorSet materialDescriptor;
-		std::vector<vk::UniqueDescriptorSet> materialTexturesDescriptors;
 	};
 
 	GBufferPass() = default;
@@ -110,23 +111,10 @@ public:
 		_recreatePipelines(dev);
 	}
 
-	[[nodiscard]] vk::DescriptorSetLayout getMatricesDescriptorSetLayout() const {
-		return _matricesDescriptorSetLayout.get();
-	}
 	[[nodiscard]] vk::DescriptorSetLayout getUniformsDescriptorSetLayout() const {
 		return _uniformsDescriptorSetLayout.get();
 	}
-	[[nodiscard]] vk::DescriptorSetLayout getTexturesDescriptorSetLayout() const {
-		return _textureDescriptorSetLayout.get();
-	}
-	[[nodiscard]] vk::DescriptorSetLayout getMaterialDescriptorSetLayout() const {
-		return _materialDescriptorSetLayout.get();
-	}
 
-	void initializeResourcesFor(const nvh::GltfScene&, const SceneBuffers&, vk::UniqueDevice&, Resources&);
-
-	const nvh::GltfScene *scene = nullptr;
-	const SceneBuffers *sceneBuffers = nullptr;
 	const Resources *descriptorSets;
 protected:
 	explicit GBufferPass(vk::Extent2D extent) : _bufferExtent(extent) {
@@ -135,9 +123,6 @@ protected:
 	vk::Extent2D _bufferExtent;
 	Shader _vert, _frag;
 	vk::UniqueDescriptorSetLayout _uniformsDescriptorSetLayout;
-	vk::UniqueDescriptorSetLayout _matricesDescriptorSetLayout;
-	vk::UniqueDescriptorSetLayout _materialDescriptorSetLayout;
-	vk::UniqueDescriptorSetLayout _textureDescriptorSetLayout;
 	vk::UniquePipelineLayout _pipelineLayout;
 
 	vk::UniqueRenderPass _createPass(vk::Device) override;
