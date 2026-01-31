@@ -1,6 +1,18 @@
 //comment out do disable emissive materials, which are assigned by the iteration count
 #define EMISSIVE_MATERIALS
 
+#ifndef TAU
+#define TAU 6.28318530718
+#endif
+
+vec3 palette(float t) {
+    vec3 a = vec3(0.5);
+    vec3 b = vec3(0.5);
+    vec3 c = vec3(1.0);
+    vec3 d = vec3(0.0, 0.33, 0.67);
+    return a + b * cos(TAU * (c * t + d));
+}
+
 // EMISSIVE ITERATIONS
 bool isEmissiveIteration(int k) {
     //set this to the number of list items
