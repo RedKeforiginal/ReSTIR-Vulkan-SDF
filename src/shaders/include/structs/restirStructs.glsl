@@ -53,4 +53,6 @@ struct RestirUniforms {
 	float spatialRadius;
 
 	int flags;
+	vec4 sdfParams;
+	vec4 sdfScene;
 };

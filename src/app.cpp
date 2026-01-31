@@ -416,6 +416,8 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 		}
 		restirUniforms->spatialNeighbors = 4;
 		restirUniforms->spatialRadius = 30.0f;
+		restirUniforms->sdfParams = nvmath::vec4f(2000.0f, 0.001f, 128.0f, 0.0f);
+		restirUniforms->sdfScene = nvmath::vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 		_restirUniformBuffer.unmap();
 		_restirUniformBuffer.flush();
 	}
@@ -780,12 +782,16 @@ void App::mainLoop() {
 				gBufferUniforms->inverseProjectionMatrix = nvmath::invert(_camera.projectionMatrix);
 				gBufferUniforms->inverseViewMatrix = _camera.inverseViewMatrix;
 				gBufferUniforms->cameraPosition = nvmath::vec4f(_camera.position, 1.0f);
-				gBufferUniforms->sdfParams = nvmath::vec4f(2000.0f, 0.001f, 128.0f, 0.0f);
-				gBufferUniforms->sdfScene = nvmath::vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+				nvmath::vec4f sdfParams = nvmath::vec4f(2000.0f, 0.001f, 128.0f, 0.0f);
+				nvmath::vec4f sdfScene = nvmath::vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+				gBufferUniforms->sdfParams = sdfParams;
+				gBufferUniforms->sdfScene = sdfScene;
 				_gBufferResources.uniformBuffer.unmap();
 				_gBufferResources.uniformBuffer.flush();
 
 				restirUniforms->cameraPos = _camera.position;
+				restirUniforms->sdfParams = sdfParams;
+				restirUniforms->sdfScene = sdfScene;
 
 				auto* lightingPassUniforms = _lightingPassUniformBuffer.mapAs<shader::LightingPassUniforms>();
 				lightingPassUniforms->cameraPos = _camera.position;
