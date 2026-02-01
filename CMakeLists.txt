@@ -77,14 +77,27 @@ target_sources(restir
 
 
 find_package(Vulkan REQUIRED)
-add_subdirectory("thirdparty/glfw")
-find_package(imgui CONFIG REQUIRED)
+add_subdirectory("thirdparty/glfw-3.4")
+set(IMGUI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui-1.92.5")
+add_library(imgui
+	"${IMGUI_DIR}/imgui.cpp"
+	"${IMGUI_DIR}/imgui_draw.cpp"
+	"${IMGUI_DIR}/imgui_tables.cpp"
+	"${IMGUI_DIR}/imgui_widgets.cpp"
+	"${IMGUI_DIR}/imgui_demo.cpp"
+	"${IMGUI_DIR}/backends/imgui_impl_glfw.cpp"
+	"${IMGUI_DIR}/backends/imgui_impl_vulkan.cpp")
+target_include_directories(imgui
+	PUBLIC
+		"${IMGUI_DIR}"
+		"${IMGUI_DIR}/backends")
+target_link_libraries(imgui PUBLIC glfw Vulkan::Vulkan)
 find_package(gflags CONFIG REQUIRED)
 add_subdirectory("thirdparty/MikkTSpace/")
 add_subdirectory("thirdparty/gltf/")
 
 
-target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui::imgui MikkTSpace gltf gflags_shared)
+target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui MikkTSpace gltf gflags_shared)
 
 target_include_directories(restir
 	PRIVATE
