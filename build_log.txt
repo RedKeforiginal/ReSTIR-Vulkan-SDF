@@ -1,0 +1,1523 @@
+
+C:\Coding\Github\ReSTIR-Vulkan-SDF>build_mingw.bat
+-- The C compiler identification is GNU 14.2.0
+-- The CXX compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: C:/Coding/Github/ReSTIR-Vulkan-SDF/toolchain/MinGW/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Coding/Github/ReSTIR-Vulkan-SDF/toolchain/MinGW/bin/g++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Vulkan: C:/Coding/Github/ReSTIR-Vulkan-SDF/deps/vulkan/lib/libvulkan-1.a (found version "1.4.326") found components: glslc glslangValidator
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Including Win32 support
+-- Looking for dinput.h
+-- Looking for dinput.h - found
+-- Looking for xinput.h
+-- Looking for xinput.h - found
+-- Found Doxygen: C:/Coding/Github/ReSTIR-Vulkan-SDF/toolchain/MinGW/bin/doxygen.exe (found version "1.13.2") found components: doxygen
+-- Looking for C++ include unistd.h
+-- Looking for C++ include unistd.h - found
+-- Looking for C++ include stdint.h
+-- Looking for C++ include stdint.h - found
+-- Looking for C++ include inttypes.h
+-- Looking for C++ include inttypes.h - found
+-- Looking for C++ include sys/types.h
+-- Looking for C++ include sys/types.h - found
+-- Looking for C++ include sys/stat.h
+-- Looking for C++ include sys/stat.h - found
+-- Looking for C++ include fnmatch.h
+-- Looking for C++ include fnmatch.h - not found
+-- Looking for C++ include shlwapi.h
+-- Looking for C++ include shlwapi.h - found
+-- Looking for C++ include stddef.h
+-- Looking for C++ include stddef.h - found
+-- Check size of uint32_t
+-- Check size of uint32_t - done
+-- Looking for strtoll
+-- Looking for strtoll - found
+-- Configuring done (10.6s)
+-- Generating done (0.2s)
+-- Build files have been written to: C:/Coding/Github/ReSTIR-Vulkan-SDF/build/mingw
+[  1%] Building CXX object thirdparty/gltf/CMakeFiles/gltf.dir/gltfscene.cpp.obj
+C:\Coding\Github\ReSTIR-Vulkan-SDF\thirdparty\gltf\gltfscene.cpp: In member function 'void nvh::GltfScene::processMesh(const tinygltf::Model&, const tinygltf::Primitive&, nvh::GltfAttributes)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\thirdparty\gltf\gltfscene.cpp:283:41: warning: ignoring attributes on template argument 'nvmath::vec3' {aka 'nvmath::vector3<float>'} [-Wignored-attributes]
+  283 |                 std::vector<nvmath::vec3> geonormal(resultMesh.vertexCount);
+      |                                         ^
+[  3%] Building CXX object thirdparty/gltf/CMakeFiles/gltf.dir/mikktWrapper.cpp.obj
+[  4%] Linking CXX static library libgltf.a
+[  4%] Built target gltf
+[  6%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/context.c.obj
+[  8%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/init.c.obj
+[  9%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/input.c.obj
+[ 11%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/monitor.c.obj
+[ 13%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/platform.c.obj
+[ 14%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/vulkan.c.obj
+[ 16%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/window.c.obj
+[ 18%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/egl_context.c.obj
+[ 19%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/osmesa_context.c.obj
+[ 21%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_init.c.obj
+[ 22%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_monitor.c.obj
+[ 24%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_window.c.obj
+[ 26%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/null_joystick.c.obj
+[ 27%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/win32_module.c.obj
+[ 29%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/win32_time.c.obj
+[ 31%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/win32_thread.c.obj
+[ 32%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/win32_init.c.obj
+[ 34%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/win32_joystick.c.obj
+[ 36%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/win32_monitor.c.obj
+[ 37%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/win32_window.c.obj
+[ 39%] Building C object thirdparty/glfw-3.4/src/CMakeFiles/glfw.dir/wgl_context.c.obj
+[ 40%] Linking C static library libglfw3.a
+[ 40%] Built target glfw
+[ 42%] Building CXX object CMakeFiles/imgui.dir/thirdparty/imgui-1.92.5/imgui.cpp.obj
+[ 44%] Building CXX object CMakeFiles/imgui.dir/thirdparty/imgui-1.92.5/imgui_draw.cpp.obj
+[ 45%] Building CXX object CMakeFiles/imgui.dir/thirdparty/imgui-1.92.5/imgui_tables.cpp.obj
+[ 47%] Building CXX object CMakeFiles/imgui.dir/thirdparty/imgui-1.92.5/imgui_widgets.cpp.obj
+[ 49%] Building CXX object CMakeFiles/imgui.dir/thirdparty/imgui-1.92.5/imgui_demo.cpp.obj
+[ 50%] Building CXX object CMakeFiles/imgui.dir/thirdparty/imgui-1.92.5/backends/imgui_impl_glfw.cpp.obj
+[ 52%] Building CXX object CMakeFiles/imgui.dir/thirdparty/imgui-1.92.5/backends/imgui_impl_vulkan.cpp.obj
+[ 54%] Linking CXX static library libimgui.a
+[ 54%] Built target imgui
+[ 55%] Building CXX object thirdparty/gflags-2.3.0/CMakeFiles/gflags_nothreads_static.dir/src/gflags.cc.obj
+[ 57%] Building CXX object thirdparty/gflags-2.3.0/CMakeFiles/gflags_nothreads_static.dir/src/gflags_reporting.cc.obj
+[ 59%] Building CXX object thirdparty/gflags-2.3.0/CMakeFiles/gflags_nothreads_static.dir/src/gflags_completions.cc.obj
+[ 60%] Building CXX object thirdparty/gflags-2.3.0/CMakeFiles/gflags_nothreads_static.dir/src/windows_port.cc.obj
+[ 62%] Linking CXX static library libgflags_nothreads.a
+[ 62%] Built target gflags_nothreads_static
+[ 63%] Building C object thirdparty/MikkTSpace/CMakeFiles/MikkTSpace.dir/mikktspace.c.obj
+[ 65%] Linking C static library libMikkTSpace.a
+[ 65%] Built target MikkTSpace
+[ 67%] Generating shaders/unbiasedReuseSoftware.comp.spv
+[ 68%] Generating shaders/emissiveSample.comp.spv
+[ 70%] Generating shaders/gBuffer.frag.spv
+[ 72%] Generating shaders/gBuffer.vert.spv
+[ 73%] Generating shaders/lighting.frag.spv
+[ 75%] Generating shaders/quad.vert.spv
+[ 77%] Generating shaders/restirOmniSoftware.comp.spv
+[ 78%] Generating shaders/simple.frag.spv
+[ 80%] Generating shaders/simple.vert.spv
+[ 81%] Generating shaders/spatialReuse.comp.spv
+[ 83%] Building CXX object CMakeFiles/restir.dir/src/passes/gBufferPass.cpp.obj
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:56,
+                 from C:/Coding/Github/ReSTIR-Vulkan-SDF/src/misc.h:12,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes\pass.h:7,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes\gBufferPass.h:5,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes\gBufferPass.cpp:1:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h: In member function 'char tinygltf::Value::Type() const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:300:30: warning: type qualifiers ignored on cast result type [-Wignored-qualifiers]
+  300 |   char Type() const { return static_cast<const char>(type_); }
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:363,
+                 from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:57:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl: In function 'nvmath::quaternion<T> nvmath::slerp_quats(T, const quaternion<T>&, const quaternion<T>&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1552:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+ 1552 |   else if (cosine > 1)
+      |        ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1554:5: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+ 1554 |     T angle = (T)acosf(cosine);
+      |     ^
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes\gBufferPass.h:6:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/src/vma.h: In member function 'VmaAllocator_T* vma::UniqueHandle<T, Derived>::_getAllocator() const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/src/vma.h:90:42: warning: invalid use of incomplete type 'class vma::Allocator'
+   90 |                         return _allocator->_allocator;
+      |                                          ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/src/misc.h:19:15: note: forward declaration of 'class vma::Allocator'
+   19 |         class Allocator;
+      |               ^~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes\gBufferPass.h: At global scope:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes\gBufferPass.h:68:43: warning: 'nodiscard' attribute applied to 'static void GBuffer::Formats::initialize(vk::PhysicalDevice)' with void return type [-Wattributes]
+   68 |                 [[nodiscard]] static void initialize(vk::PhysicalDevice);
+      |                                           ^~~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:31:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h: In instantiation of 'nvmath::matrix4<T>::matrix4(int) [with T = float]':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:103:38:   required from here
+  103 |         nvmath::mat4f worldMatrix{ 1 };
+      |                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:646:15: warning: unused parameter 'one' [-Wunused-parameter]
+  646 |   matrix4(int one) { identity(); }
+      |           ~~~~^~~
+[ 85%] Building CXX object CMakeFiles/restir.dir/src/aabbTreeBuilder.cpp.obj
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:56,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.h:6,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:1:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h: In member function 'char tinygltf::Value::Type() const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:300:30: warning: type qualifiers ignored on cast result type [-Wignored-qualifiers]
+  300 |   char Type() const { return static_cast<const char>(type_); }
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:363,
+                 from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:57:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl: In function 'nvmath::quaternion<T> nvmath::slerp_quats(T, const quaternion<T>&, const quaternion<T>&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1552:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+ 1552 |   else if (cosine > 1)
+      |        ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1554:5: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+ 1554 |     T angle = (T)acosf(cosine);
+      |     ^
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.h:9:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h: In member function 'VmaAllocator_T* vma::UniqueHandle<T, Derived>::_getAllocator() const':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h:90:42: warning: invalid use of incomplete type 'class vma::Allocator'
+   90 |                         return _allocator->_allocator;
+      |                                          ^~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h:11:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:19:15: note: forward declaration of 'class vma::Allocator'
+   19 |         class Allocator;
+      |               ^~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.h: In static member function 'static AabbTreeBuffers AabbTreeBuffers::create(const AabbTree&, vma::Allocator&)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.h:41:28: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct shader::AabbTreeNode'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+   41 |                 std::memcpy(ptr, tree.nodes.data(), sizeof(shader::AabbTreeNode) * tree.nodes.size());
+      |                 ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaderIncludes.h:28,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.h:8:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaders/include/structs/aabbTree.glsl:1:8: note: 'struct shader::AabbTreeNode' declared here
+    1 | struct AabbTreeNode {
+      |        ^~~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.h:46:28: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct shader::Triangle'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+   46 |                 std::memcpy(tris, tree.triangles.data(), sizeof(shader::Triangle) * tree.triangles.size());
+      |                 ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaders/include/structs/aabbTree.glsl:9:8: note: 'struct shader::Triangle' declared here
+    9 | struct Triangle {
+      |        ^~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp: In function 'void aabbForTriangle(const shader::Triangle&, nvmath::vec3f&, nvmath::vec3f&)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:9:25: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+    9 |         min = max = tri.p1;
+      |                         ^~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:31:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:9:25: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+    9 |         min = max = tri.p1;
+      |                         ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:10:56: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   10 |         min = nvmath::nv_min(min, nvmath::vec3f(tri.p2));
+      |                                                        ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:11:56: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   11 |         max = nvmath::nv_max(max, nvmath::vec3f(tri.p2));
+      |                                                        ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:12:56: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   12 |         min = nvmath::nv_min(min, nvmath::vec3f(tri.p3));
+      |                                                        ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:13:56: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   13 |         max = nvmath::nv_max(max, nvmath::vec3f(tri.p3));
+      |                                                        ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp: In member function 'float Bucket::heuristic() const':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:40:24: warning: conversion from 'long long unsigned int' to
+float' may change value [-Wconversion]
+   40 |                 return count * surfaceAreaHeuristic(aabbMin, aabbMax);
+      |                        ^~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp: In static member function 'static Bucket Bucket::merge(Bucket, Bucket)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:46:70: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   46 |                 lhs.aabbMin = nvmath::nv_min(lhs.aabbMin, rhs.aabbMin);
+      |                                                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:47:70: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   47 |                 lhs.aabbMax = nvmath::nv_max(lhs.aabbMax, rhs.aabbMax);
+      |                                                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp: In static member function 'static AabbTree AabbTree::build(const nvh::GltfScene&)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:66:87: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+   66 |                         tri.p1 = node.worldMatrix * nvmath::vec4(pos[indices[0]], 1.0f);
+      |                                                                                       ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:67:87: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+   67 |                         tri.p2 = node.worldMatrix * nvmath::vec4(pos[indices[1]], 1.0f);
+      |                                                                                       ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:68:87: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+   68 |                         tri.p3 = node.worldMatrix * nvmath::vec4(pos[indices[2]], 1.0f);
+      |                                                                                       ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:74:73: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   74 |                         cur.centroid = 0.5f * (cur.aabbMin + cur.aabbMax);
+      |                                                                         ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:99:57: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+   99 |                                 node.leftAabbMin = left.aabbMin;
+      |                                                         ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:100:57: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  100 |                                 node.leftAabbMax = left.aabbMax;
+      |                                                         ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:101:59: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  101 |                                 node.rightAabbMin = right.aabbMin;
+      |                                                           ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:102:59: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  102 |                                 node.rightAabbMax = right.aabbMax;
+      |                                                           ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:117:103: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  117 |                                                 centroidMin = nvmath::nv_min(centroidMin, cur.centroid);
+      |                                                                                                       ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:118:103: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  118 |                                                 centroidMax = nvmath::nv_max(centroidMax, cur.centroid);
+      |                                                                                                       ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:119:94: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  119 |                                                 aabbMin = nvmath::nv_min(aabbMin, cur.aabbMin);
+      |                                                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:120:94: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  120 |                                                 aabbMax = nvmath::nv_max(aabbMax, cur.aabbMax);
+      |                                                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:139:96: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  139 |                                         buck.aabbMin = nvmath::nv_min(buck.aabbMin, cur.aabbMin);
+      |                                                                                                ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:140:96: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  140 |                                         buck.aabbMax = nvmath::nv_max(buck.aabbMax, cur.aabbMax);
+      |                                                                                                ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:165:75: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  165 |                                                         leftMin = sumLeft.aabbMin;
+      |                                                                           ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:166:75: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  166 |                                                         leftMax = sumLeft.aabbMax;
+      |                                                                           ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:167:77: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  167 |                                                         rightMin = sumRight.aabbMin;
+      |                                                                             ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:168:77: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  168 |                                                         rightMax = sumRight.aabbMax;
+      |                                                                             ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:183:73: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  183 |                                         leftMin = leaves[step.rangeBeg].aabbMin;
+      |                                                                         ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:184:73: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  184 |                                         leftMax = leaves[step.rangeBeg].aabbMax;
+      |                                                                         ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:186:100: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  186 |                                                 leftMin = nvmath::nv_min(leftMin, leaves[i].aabbMin);
+      |                                                                                                    ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:187:100: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  187 |                                                 leftMax = nvmath::nv_max(leftMax, leaves[i].aabbMax);
+      |                                                                                                    ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:190:66: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  190 |                                         rightMin = leaves[pivot].aabbMin;
+      |                                                                  ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:191:66: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  191 |                                         rightMax = leaves[pivot].aabbMax;
+      |                                                                  ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:193:102: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  193 |                                                 rightMin = nvmath::nv_min(rightMin, leaves[i].aabbMin);
+      |                                                                                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:194:102: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  194 |                                                 rightMax = nvmath::nv_max(rightMax, leaves[i].aabbMax);
+      |                                                                                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:201:49: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  201 |                                 n.leftAabbMin = leftMin;
+      |                                                 ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:202:49: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  202 |                                 n.leftAabbMax = leftMax;
+      |                                                 ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:203:50: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  203 |                                 n.rightAabbMin = rightMin;
+      |                                                  ^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\aabbTreeBuilder.cpp:204:50: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  204 |                                 n.rightAabbMax = rightMax;
+      |                                                  ^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h: In instantiation of 'nvmath::matrix4<T>::matrix4(int) [with T = float]':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:103:38:   required from here
+  103 |         nvmath::mat4f worldMatrix{ 1 };
+      |                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:646:15: warning: unused parameter 'one' [-Wunused-parameter]
+  646 |   matrix4(int one) { identity(); }
+      |           ~~~~^~~
+[ 86%] Building CXX object CMakeFiles/restir.dir/src/app.cpp.obj
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:56,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:12,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:3,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:1:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h: In member function 'char tinygltf::Value::Type() const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:300:30: warning: type qualifiers ignored on cast result type [-Wignored-qualifiers]
+  300 |   char Type() const { return static_cast<const char>(type_); }
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:363,
+                 from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:57:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl: In function 'nvmath::quaternion<T> nvmath::slerp_quats(T, const quaternion<T>&, const quaternion<T>&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1552:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+ 1552 |   else if (cosine > 1)
+      |        ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1554:5: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+ 1554 |     T angle = (T)acosf(cosine);
+      |     ^
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:4:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h: In member function 'VmaAllocator_T* vma::UniqueHandle<T, Derived>::_getAllocator() const':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h:90:42: warning: invalid use of incomplete type 'class vma::Allocator'
+   90 |                         return _allocator->_allocator;
+      |                                          ^~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:19:15: note: forward declaration of 'class vma::Allocator'
+   19 |         class Allocator;
+      |               ^~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:8:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h: At global scope:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:60:23: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
+   60 |         [[nodiscard]] const vk::DeviceSize getPtLightsBufferSize() const {
+      |                       ^~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:63:23: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
+   63 |         [[nodiscard]] const vk::DeviceSize getTriLightsBufferSize() const {
+      |                       ^~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:66:23: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
+   66 |         [[nodiscard]] const vk::DeviceSize getAliasTableBufferSize() const {
+      |                       ^~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h: In static member function 'static SceneBuffers SceneBuffers::create(const nvh::GltfScene&, vma::Allocator&, TransientCommandBufferPool&, vk::Device, vk::Queue)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:132:35: warning: comparison of integer expressions of different signedness: 'int' and 'std::vector<tinygltf::Image>::size_type' {aka 'long long unsigned int'} [-Wsign-compare]
+  132 |                 for (int i = 0; i < scene.m_textures.size(); ++i) {
+      |                                 ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:178:57: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  178 |                         v.position = scene.m_positions[i];
+      |                                                         ^
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:31:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:180:61: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  180 |                                 v.normal = scene.m_normals[i];
+      |                                                             ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:183:60: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  183 |                                 v.color = scene.m_colors0[i];
+      |                                                            ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:185:78: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  185 |                                 v.color = nvmath::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+      |                                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:188:60: warning: implicitly-declared 'constexpr nvmath::vector2<float>& nvmath::vector2<float>::operator=(const nvmath::vector2<float>&)' is deprecated [-Wdeprecated-copy]
+  188 |                                 v.uv = scene.m_texcoords0[i];
+      |                                                            ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:113:3: note: because 'nvmath::vector2<float>' has user-provided 'nvmath::vector2<T>::vector2(const nvmath::vector2<T>&) [with T = float]'
+  113 |   vector2(const vector2& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:191:63: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  191 |                                 v.tangent = scene.m_tangents[i];
+      |                                                               ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:210:53: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  210 |                         outMat.emissiveFactor = mat.emissiveFactor;
+      |                                                     ^~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:218:57: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  218 |                                 outMat.colorParam = mat.pbrBaseColorFactor;
+      |                                                         ^~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:223:57: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  223 |                                 outMat.colorParam = mat.khrDiffuseFactor;
+      |                                                         ^~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:224:60: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  224 |                                 outMat.materialParam = mat.khrSpecularFactor;
+      |                                                            ^~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:235:66: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+  235 |                         matrices[i].transform = scene.m_nodes[i].worldMatrix;
+      |                                                                  ^~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:236:121: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+  236 |                         matrices[i].transformInverseTransposed = nvmath::transpose(nvmath::invert(matrices[i].transform));
+      |                                                                                                                         ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:248:28: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct shader::pointLight'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+  248 |                 std::memcpy(ptLights, pointLights.data(), sizeof(shader::pointLight) * pointLights.size());
+      |                 ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaderIncludes.h:32,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:15:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaders/include/structs/light.glsl:2:8: note: 'struct shader::pointLight' declared here
+    2 | struct pointLight {
+      |        ^~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:258:28: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct shader::triLight'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+  258 |                 std::memcpy(triLights, triangleLights.data(), sizeof(shader::triLight) * triangleLights.size());
+      |                 ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaders/include/structs/light.glsl:7:8: note: 'struct shader::triLight' declared here
+    7 | struct triLight {
+      |        ^~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:9:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h: In member function 'void Camera::recomputeAttributes()':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:26:66: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   26 |                 unitForward = nvmath::normalize(lookAt - position);
+      |                                                                  ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:27:82: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   27 |                 unitRight = nvmath::normalize(nvmath::cross(unitForward, worldUp));
+      |                                                                                  ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:28:62: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   28 |                 unitUp = nvmath::cross(unitRight, unitForward);
+      |                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:42:44: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+   42 |                 projectionMatrix = nvmath::mat4f_zero;
+      |                                            ^~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:48:59: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+   48 |                 projectionViewMatrix = projectionMatrix * viewMatrix;
+      |                                                           ^~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:49:62: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+   49 |                 inverseViewMatrix = nvmath::invert(viewMatrix);
+      |                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:10:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\fpsCounter.h: In member function 'float FpsCounter::getFpsAverageWindow() const':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\fpsCounter.h:18:40: warning: conversion from 'std::deque<float>::size_type' {aka 'long long unsigned int'} to 'float' may change value [-Wconversion]
+   18 |                 return _frameTimes.size() - std::max(_totalFrameTime - timeWindow, 0.0f) / _frameTimes.front();
+      |                        ~~~~~~~~~~~~~~~~^~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:12:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/gBufferPass.h: At global scope:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/gBufferPass.h:68:43: warning: 'nodiscard' attribute applied to 'static void GBuffer::Formats::initialize(vk::PhysicalDevice)' with void return type [-Wattributes]
+   68 |                 [[nodiscard]] static void initialize(vk::PhysicalDevice);
+      |                                           ^~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/lightingPass.h:6,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:15:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/src/aabbTreeBuilder.h: In static member function 'static AabbTreeBuffers AabbTreeBuffers::create(const AabbTree&, vma::Allocator&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/src/aabbTreeBuilder.h:41:28: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct shader::AabbTreeNode'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+   41 |                 std::memcpy(ptr, tree.nodes.data(), sizeof(shader::AabbTreeNode) * tree.nodes.size());
+      |                 ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaderIncludes.h:28:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaders/include/structs/aabbTree.glsl:1:8: note: 'struct shader::AabbTreeNode' declared here
+    1 | struct AabbTreeNode {
+      |        ^~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/src/aabbTreeBuilder.h:46:28: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct shader::Triangle'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+   46 |                 std::memcpy(tris, tree.triangles.data(), sizeof(shader::Triangle) * tree.triangles.size());
+      |                 ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaders/include/structs/aabbTree.glsl:9:8: note: 'struct shader::Triangle' declared here
+    9 | struct Triangle {
+      |        ^~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:16:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/restirPass.h: In member function 'void RestirPass::freeDeviceMemory(vk::Device)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/restirPass.h:25:35: warning: comparison of integer expressions of different signedness: 'int' and 'std::vector<vk::DeviceMemory>::size_type' {aka 'long long unsigned int'} [-Wsign-compare]
+   25 |                 for (int i = 0; i < memories.size(); i++)
+      |                                 ~~^~~~~~~~~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:17:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/unbiasedReusePass.h: In static member function 'static UnbiasedReusePass UnbiasedReusePass::create(vk::Device)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/unbiasedReusePass.h:109:33: warning: moving a local object in a return statement prevents copy elision [-Wpessimizing-move]
+  109 |                 return std::move(pass);
+      |                        ~~~~~~~~~^~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/unbiasedReusePass.h:109:33: note: remove 'std::move' call
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/imguiPass.h:6,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:18:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/imgui-1.92.5/backends/imgui_impl_vulkan.h: In constructor 'ImGui_ImplVulkanH_Window::ImGui_ImplVulkanH_Window()':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/imgui-1.92.5/backends/imgui_impl_vulkan.h:247:41: warning: the result of the conversion is unspecified because '~0' is outside the range of type 'VkPresentModeKHR' [-Wconversion]
+  247 |         PresentMode = (VkPresentModeKHR)~0;     // Ensure we get an error if user doesn't set this.
+      |                                         ^~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp: In constructor 'App::App(std::string, bool)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:47:46: warning: conversion from 'uint32_t' {aka 'unsigned int'} to 'floa
+' may change value [-Wconversion]
+   47 |                 _camera.aspectRatio = extent.width / static_cast<float>(extent.height);
+      |                                       ~~~~~~~^~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:108:44: warning: 'vk::DebugUtilsMessengerCreateInfoEXT& vk::DebugUtilsMessengerCreateInfoEXT::setPfnUserCallback(PFN_vkDebugUtilsMessengerCallbackEXT)' is deprecated: This setter is deprecated. Use the one taking a function pointer type from the vk-namespace instead. [-Wdeprecated-declarations]
+   96 |                 messangerInfo
+      |                 ~~~~~~~~~~~~~
+   97 |                         .setMessageSeverity(
+      |                         ~~~~~~~~~~~~~~~~~~~~
+   98 |                                 vk::DebugUtilsMessageSeverityFlagBitsEXT::eVerbose |
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   99 |                                 vk::DebugUtilsMessageSeverityFlagBitsEXT::eInfo |
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  100 |                                 vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  101 |                                 vk::DebugUtilsMessageSeverityFlagBitsEXT::eError
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  102 |                         )
+      |                         ~
+  103 |                         .setMessageType(
+      |                         ~~~~~~~~~~~~~~~~
+  104 |                                 vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  105 |                                 vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance |
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  106 |                                 vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  107 |                         )
+      |                         ~
+  108 |                         .setPfnUserCallback(_debugCallback);
+      |                         ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/deps/vulkan/include/vulkan/vulkan.hpp:9413,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vulkanConfig.h:7,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:10:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/deps/vulkan/include/vulkan/vulkan_structs.hpp:29546:40: note: declared here
+29546 |     DebugUtilsMessengerCreateInfoEXT & setPfnUserCallback( PFN_vkDebugUtilsMessengerCallbackEXT pfnUserCallback_ ) VULKAN_HPP_NOEXCEPT
+      |                                        ^~~~~~~~~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:351:129: warning: implicitly-declared 'constexpr nvmath::vector2<unsigned int>& nvmath::vector2<unsigned int>::operator=(const nvmath::vector2<unsigned int>&)' is deprecated [-Wdeprecated-copy]
+  351 |                 restirUniforms->screenSize = nvmath::uvec2(_swapchain.getImageExtent().width, _swapchain.getImageExtent().height);
+      |                                                                                                                                 ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:113:3: note: because 'nvmath::vector2<unsigned int>' has user-provided 'nvmath::vector2<T>::vector2(const nvmath::vector2<T>&) [with T = unsigned int]'
+  113 |   vector2(const vector2& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:364:88: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  364 |                 restirUniforms->sdfParams = nvmath::vec4f(2000.0f, 0.001f, 128.0f, 0.0f);
+      |                                                                                        ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:365:80: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  365 |                 restirUniforms->sdfScene = nvmath::vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+      |                                                                                ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:532:44: warning: moving a temporary object prevents copy elision [-Wpessimizing-move]
+  532 |                 auto newBuffers = std::move(_device->allocateCommandBuffersUnique(bufferInfo));
+      |                                   ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:532:44: note: remove 'std::move' call
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp: In member function 'void App::mainLoop()':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:670:103: warning: implicitly-declared 'constexpr nvmath::vector2<unsigned int>& nvmath::vector2<unsigned int>::operator=(const nvmath::vector2<unsigned int>&)' is deprecated [-Wdeprecated-copy]
+  670 |                         restirUniforms->screenSize = nvmath::uvec2(windowSize.width, windowSize.height);
+      |                                                                                                       ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:113:3: note: because 'nvmath::vector2<unsigned int>' has user-provided 'nvmath::vector2<T>::vector2(const nvmath::vector2<T>&) [with T = unsigned int]'
+  113 |   vector2(const vector2& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:687:75: warning: conversion from 'uint32_t' {aka 'unsigned int'} to 'float' may change value [-Wconversion]
+  687 |                         _camera.aspectRatio = _swapchain.getImageExtent().width / static_cast<float>(_swapchain.getImageExtent().height);
+      |                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:719:73: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+  719 |                         restirUniforms->prevFrameProjectionViewMatrix = prevFrameProjectionView;
+      |                                                                         ^~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:732:77: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+  732 |                                 gBufferUniforms->projectionMatrix = _camera.projectionMatrix;
+      |                                                                             ^~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:733:71: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+  733 |                                 gBufferUniforms->viewMatrix = _camera.viewMatrix;
+      |                                                                       ^~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:734:115: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+  734 |                                 gBufferUniforms->inverseProjectionMatrix = nvmath::invert(_camera.projectionMatrix);
+      |                                                                                                                   ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:735:78: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+  735 |                                 gBufferUniforms->inverseViewMatrix = _camera.inverseViewMatrix;
+      |                                                                              ^~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:736:103: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  736 |                                 gBufferUniforms->cameraPosition = nvmath::vec4f(_camera.position, 1.0f);
+      |                                                                                                       ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:739:62: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  739 |                                 gBufferUniforms->sdfParams = sdfParams;
+      |                                                              ^~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:740:61: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  740 |                                 gBufferUniforms->sdfScene = sdfScene;
+      |                                                             ^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:744:69: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  744 |                                 restirUniforms->cameraPos = _camera.position;
+      |                                                                     ^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:745:61: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  745 |                                 restirUniforms->sdfParams = sdfParams;
+      |                                                             ^~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:746:60: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  746 |                                 restirUniforms->sdfScene = sdfScene;
+      |                                                            ^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:749:75: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  749 |                                 lightingPassUniforms->cameraPos = _camera.position;
+      |                                                                           ^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:750:151: warning: implicitly-declared 'constexpr nvmath::vector2<unsigned int>& nvmath::vector2<unsigned int>::operator=(const nvmath::vector2<unsigned int>&)' is deprecated [-Wdeprecated-copy]
+  750 |                                 lightingPassUniforms->bufferSize = nvmath::uvec2(_swapchain.getImageExtent().width, _swapchain.getImageExtent().height);
+      |                                                                                                                                                       ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:113:3: note: because 'nvmath::vector2<unsigned int>' has user-provided 'nvmath::vector2<T>::vector2(const nvmath::vector2<T>&) [with T = unsigned int]'
+  113 |   vector2(const vector2& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:787:59: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+  787 |                         prevFrameProjectionView = _camera.projectionViewMatrix;
+      |                                                           ^~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp: In member function 'void App::_onMouseMoveEvent(double, double)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:901:94: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  901 |                         angle = nvmath::vec3f(0.0f, angle.y * vert.x - angle.z * vert.y, newZ);
+      |                                                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:903:82: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  903 |                 angle = nvmath::vec3f(angle.z * hori.y, angle.y, angle.z * hori.x);
+      |                                                                                  ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:905:103: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+  905 |                 _camera.position = _camera.lookAt + xAxis * angle.x + yAxis * angle.y + zAxis * angle.z;
+      |                                                                                                       ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.cpp:927:22: warning: implicitly-declared 'constexpr nvmath::vector2<float>& nvmath::vector2<float>::operator=(const nvmath::vector2<float>&)' is deprecated [-Wdeprecated-copy]
+  927 |         _lastMouse = newPos;
+      |                      ^~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:113:3: note: because 'nvmath::vector2<float>' has user-provided 'nvmath::vector2<T>::vector2(const nvmath::vector2<T>&) [with T = float]'
+  113 |   vector2(const vector2& u)
+      |   ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h: In instantiation of 'nvmath::matrix4<T>::matrix4(int) [with T = float]':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:103:38:   required from here
+  103 |         nvmath::mat4f worldMatrix{ 1 };
+      |                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:646:15: warning: unused parameter 'one' [-Wunused-parameter]
+  646 |   matrix4(int one) { identity(); }
+      |           ~~~~^~~
+[ 88%] Building CXX object CMakeFiles/restir.dir/src/glfwWindow.cpp.obj
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:363,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\glfwWindow.h:12,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\glfwWindow.cpp:1:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl: In function 'nvmath::quaternion<T> nvmath::slerp_quats(T, const quaternion<T>&, const quaternion<T>&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1552:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+ 1552 |   else if (cosine > 1)
+      |        ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1554:5: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+ 1554 |     T angle = (T)acosf(cosine);
+      |     ^
+[ 90%] Building CXX object CMakeFiles/restir.dir/src/main.cpp.obj
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\main.cpp:2:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h: In member function 'char tinygltf::Value::Type() const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:300:30: warning: type qualifiers ignored on cast result type [-Wignored-qualifiers]
+  300 |   char Type() const { return static_cast<const char>(type_); }
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:1537:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/json.hpp: In static member function 'static CharType nlohmann::detail::binary_writer<BasicJsonType, CharType>::to_char_type(uint8_t)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/json.hpp:9748:28: warning: 'template<class _Tp> struct std::is_pod' is deprecated: use 'is_standard_layout && is_trivial' instead [-Wdeprecated-declarations]
+ 9748 |         static_assert(std::is_pod<CharType>::value, "CharType must be POD");
+      |                            ^~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/toolchain/MinGW/include/c++/14.2.0/concepts:46,
+                 from C:/Coding/Github/ReSTIR-Vulkan-SDF/toolchain/MinGW/include/c++/14.2.0/compare:40,
+                 from C:/Coding/Github/ReSTIR-Vulkan-SDF/toolchain/MinGW/include/c++/14.2.0/array:38,
+                 from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:55:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/toolchain/MinGW/include/c++/14.2.0/type_traits:890:5: note: declared here
+  890 |     is_pod
+      |     ^~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h: In function 'std::string tinygltf::base64_decode(const std::string&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:2151:34: warning: conversion from 'int' to 'unsigned char' may change value [-Wconversion]
+ 2151 |           (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+      |           ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:2153:42: warning: conversion from 'int' to 'unsigned char' may change value [-Wconversion]
+ 2153 |           ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:2154:56: warning: conversion from 'int' to 'unsigned char' may change value [-Wconversion]
+ 2154 |       char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:2168:46: warning: conversion from 'int' to 'unsigned char' may change value [-Wconversion]
+ 2168 |     char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+      |                       ~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:2170:40: warning: conversion from 'int' to 'unsigned char' may change value [-Wconversion]
+ 2170 |         ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:2171:54: warning: conversion from 'int' to 'unsigned char' may change value [-Wconversion]
+ 2171 |     char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+      |                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\main.cpp:6:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h: In function 'void stbi__jpeg_dequantize(short int*, stbi__uint16*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h:2877:15: warning: conversion from 'int' to 'short in
+' may change value [-Wconversion]
+ 2877 |       data[i] *= dequant[i];
+      |       ~~~~~~~~^~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h: In function 'void stbi__de_iphone(stbi__png*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h:4771:43: warning: conversion from 'int' to 'stbi_uc' {aka 'unsigned char'} may change value [-Wconversion]
+ 4771 |                p[0] = (p[2] * 255 + half) / a;
+      |                       ~~~~~~~~~~~~~~~~~~~~^~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h:4772:43: warning: conversion from 'int' to 'stbi_uc' {aka 'unsigned char'} may change value [-Wconversion]
+ 4772 |                p[1] = (p[1] * 255 + half) / a;
+      |                       ~~~~~~~~~~~~~~~~~~~~^~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h:4773:43: warning: conversion from 'int' to 'stbi_uc' {aka 'unsigned char'} may change value [-Wconversion]
+ 4773 |                p[2] = ( t   * 255 + half) / a;
+      |                       ~~~~~~~~~~~~~~~~~~~~^~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h: In function 'void stbi__hdr_convert(float*, stbi_uc*, int)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h:6716:43: warning: conversion from 'int' to 'float' may change value [-Wconversion]
+ 6716 |          output[0] = (input[0] + input[1] + input[2]) * f1 / 3;
+      |                      ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\main.cpp:13:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h: In function 'void stbiw__write_pixel(stbi__write_context*, int, int, int, int, unsigned char*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:420:30: warning: conversion from 'int' to 'unsigned char' may change value [-Wconversion]
+  420 |                px[k] = bg[k] + ((d[k] - bg[k]) * d[3]) / 255;
+      |                        ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h: In function 'void stbiw__write_hdr_scanline(stbi__write_context*, int, int, unsigned char*, float*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:645:38: warning: conversion from 'int' to 'unsigned char' may change value [-Wconversion]
+  645 |    scanlineheader[2] = (width&0xff00)>>8;
+      |                        ~~~~~~~~~~~~~~^~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:646:30: warning: conversion from 'int' to 'unsigned char' may change value [-Wconversion]
+  646 |    scanlineheader[3] = (width&0x00ff);
+      |                        ~~~~~~^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h: In function 'void stbiw__encode_png_line(unsigned char*, int, int, int, int, int, int, signed char*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:1061:40: warning: conversion from 'int' to 'signed char' may change value [-Wconversion]
+ 1061 |          case 2: line_buffer[i] = z[i] - z[i-signed_stride]; break;
+      |                                   ~~~~~^~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:1062:40: warning: conversion from 'int' to 'signed char' may change value [-Wconversion]
+ 1062 |          case 3: line_buffer[i] = z[i] - (z[i-signed_stride]>>1); break;
+      |                                   ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:1069:65: warning: conversion from 'int' to 'signed char' may change value [-Wconversion]
+ 1069 |       case 1: for (i=n; i < width*n; ++i) line_buffer[i] = z[i] - z[i-n]; break;
+      |                                                            ~~~~~^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:1070:65: warning: conversion from 'int' to 'signed char' may change value [-Wconversion]
+ 1070 |       case 2: for (i=n; i < width*n; ++i) line_buffer[i] = z[i] - z[i-signed_stride]; break;
+      |                                                            ~~~~~^~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:1071:65: warning: conversion from 'int' to 'signed char' may change value [-Wconversion]
+ 1071 |       case 3: for (i=n; i < width*n; ++i) line_buffer[i] = z[i] - ((z[i-n] + z[i-signed_stride])>>1); break;
+      |                                                            ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:1072:65: warning: conversion from 'int' to 'signed char' may change value [-Wconversion]
+ 1072 |       case 4: for (i=n; i < width*n; ++i) line_buffer[i] = z[i] - stbiw__paeth(z[i-n], z[i-signed_stride], z[i-signed_stride-n]); break;
+      |                                                            ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:1073:65: warning: conversion from 'int' to 'signed char' may change value [-Wconversion]
+ 1073 |       case 5: for (i=n; i < width*n; ++i) line_buffer[i] = z[i] - (z[i-n]>>1); break;
+      |                                                            ~~~~~^~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:1074:65: warning: conversion from 'int' to 'signed char' may change value [-Wconversion]
+ 1074 |       case 6: for (i=n; i < width*n; ++i) line_buffer[i] = z[i] - stbiw__paeth(z[i-n], 0,0); break;
+      |                                                            ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h: In function 'void stbiw__jpg_writeBits(stbi__write_context*, int*, int*, const short unsigned int*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:1208:40: warning: conversion from 'int' to 'unsigned char' may change value [-Wconversion]
+ 1208 |       unsigned char c = (bitBuf >> 16) & 255;
+      |                         ~~~~~~~~~~~~~~~^~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h: In function 'void stbiw__jpg_calcBits(int, short unsigned int*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image_write.h:1275:18: warning: conversion from 'int' to 'short unsigned int' may change value [-Wconversion]
+ 1275 |    bits[0] = val & ((1<<bits[1])-1);
+      |              ~~~~^~~~~~~~~~~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:363,
+                 from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:57,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:12,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:3,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\main.cpp:18:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl: In function 'nvmath::quaternion<T> nvmath::slerp_quats(T, const quaternion<T>&, const quaternion<T>&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1552:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+ 1552 |   else if (cosine > 1)
+      |        ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1554:5: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+ 1554 |     T angle = (T)acosf(cosine);
+      |     ^
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:4:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h: In member function 'VmaAllocator_T* vma::UniqueHandle<T, Derived>::_getAllocator() const':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h:90:42: warning: invalid use of incomplete type 'class vma::Allocator'
+   90 |                         return _allocator->_allocator;
+      |                                          ^~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:19:15: note: forward declaration of 'class vma::Allocator'
+   19 |         class Allocator;
+      |               ^~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:8:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h: At global scope:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:60:23: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
+   60 |         [[nodiscard]] const vk::DeviceSize getPtLightsBufferSize() const {
+      |                       ^~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:63:23: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
+   63 |         [[nodiscard]] const vk::DeviceSize getTriLightsBufferSize() const {
+      |                       ^~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:66:23: warning: type qualifiers ignored on function return type [-Wignored-qualifiers]
+   66 |         [[nodiscard]] const vk::DeviceSize getAliasTableBufferSize() const {
+      |                       ^~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h: In static member function 'static SceneBuffers SceneBuffers::create(const nvh::GltfScene&, vma::Allocator&, TransientCommandBufferPool&, vk::Device, vk::Queue)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:132:35: warning: comparison of integer expressions of different signedness: 'int' and 'std::vector<tinygltf::Image>::size_type' {aka 'long long unsigned int'} [-Wsign-compare]
+  132 |                 for (int i = 0; i < scene.m_textures.size(); ++i) {
+      |                                 ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:178:57: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  178 |                         v.position = scene.m_positions[i];
+      |                                                         ^
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:31:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:180:61: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  180 |                                 v.normal = scene.m_normals[i];
+      |                                                             ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:183:60: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  183 |                                 v.color = scene.m_colors0[i];
+      |                                                            ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:185:78: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  185 |                                 v.color = nvmath::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+      |                                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:188:60: warning: implicitly-declared 'constexpr nvmath::vector2<float>& nvmath::vector2<float>::operator=(const nvmath::vector2<float>&)' is deprecated [-Wdeprecated-copy]
+  188 |                                 v.uv = scene.m_texcoords0[i];
+      |                                                            ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:113:3: note: because 'nvmath::vector2<float>' has user-provided 'nvmath::vector2<T>::vector2(const nvmath::vector2<T>&) [with T = float]'
+  113 |   vector2(const vector2& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:191:63: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  191 |                                 v.tangent = scene.m_tangents[i];
+      |                                                               ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:210:53: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  210 |                         outMat.emissiveFactor = mat.emissiveFactor;
+      |                                                     ^~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:218:57: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  218 |                                 outMat.colorParam = mat.pbrBaseColorFactor;
+      |                                                         ^~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:223:57: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  223 |                                 outMat.colorParam = mat.khrDiffuseFactor;
+      |                                                         ^~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:224:60: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  224 |                                 outMat.materialParam = mat.khrSpecularFactor;
+      |                                                            ^~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:235:66: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+  235 |                         matrices[i].transform = scene.m_nodes[i].worldMatrix;
+      |                                                                  ^~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:236:121: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+  236 |                         matrices[i].transformInverseTransposed = nvmath::transpose(nvmath::invert(matrices[i].transform));
+      |                                                                                                                         ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:248:28: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct shader::pointLight'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+  248 |                 std::memcpy(ptLights, pointLights.data(), sizeof(shader::pointLight) * pointLights.size());
+      |                 ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaderIncludes.h:32,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:15:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaders/include/structs/light.glsl:2:8: note: 'struct shader::pointLight' declared here
+    2 | struct pointLight {
+      |        ^~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\sceneBuffers.h:258:28: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct shader::triLight'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+  258 |                 std::memcpy(triLights, triangleLights.data(), sizeof(shader::triLight) * triangleLights.size());
+      |                 ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaders/include/structs/light.glsl:7:8: note: 'struct shader::triLight' declared here
+    7 | struct triLight {
+      |        ^~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:9:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h: In member function 'void Camera::recomputeAttributes()':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:26:66: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   26 |                 unitForward = nvmath::normalize(lookAt - position);
+      |                                                                  ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:27:82: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   27 |                 unitRight = nvmath::normalize(nvmath::cross(unitForward, worldUp));
+      |                                                                                  ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:28:62: warning: implicitly-declared 'constexpr nvmath::vector3<float>& nvmath::vector3<float>::operator=(const nvmath::vector3<float>&)' is deprecated [-Wdeprecated-copy]
+   28 |                 unitUp = nvmath::cross(unitRight, unitForward);
+      |                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:213:3: note: because 'nvmath::vector3<float>' has user-provided 'nvmath::vector3<T>::vector3(const nvmath::vector3<T>&) [with T = float]'
+  213 |   vector3(const vector3<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:42:44: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+   42 |                 projectionMatrix = nvmath::mat4f_zero;
+      |                                            ^~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:48:59: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+   48 |                 projectionViewMatrix = projectionMatrix * viewMatrix;
+      |                                                           ^~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\camera.h:49:62: warning: implicitly-declared 'constexpr nvmath::matrix4<float>& nvmath::matrix4<float>::operator=(const nvmath::matrix4<float>&)' is deprecated [-Wdeprecated-copy]
+   49 |                 inverseViewMatrix = nvmath::invert(viewMatrix);
+      |                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:662:3: note: because 'nvmath::matrix4<float>' has user-provided 'nvmath::matrix4<T>::matrix4(const nvmath::matrix4<T>&) [with T = float]'
+  662 |   matrix4(const matrix4<T>& M) { memcpy(mat_array, M.mat_array, sizeof(T) * 16); }
+      |   ^~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:10:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\fpsCounter.h: In member function 'float FpsCounter::getFpsAverageWindow() const':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\fpsCounter.h:18:40: warning: conversion from 'std::deque<float>::size_type' {aka 'long long unsigned int'} to 'float' may change value [-Wconversion]
+   18 |                 return _frameTimes.size() - std::max(_totalFrameTime - timeWindow, 0.0f) / _frameTimes.front();
+      |                        ~~~~~~~~~~~~~~~~^~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:12:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/gBufferPass.h: At global scope:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/gBufferPass.h:68:43: warning: 'nodiscard' attribute applied to 'static void GBuffer::Formats::initialize(vk::PhysicalDevice)' with void return type [-Wattributes]
+   68 |                 [[nodiscard]] static void initialize(vk::PhysicalDevice);
+      |                                           ^~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/lightingPass.h:6,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:15:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/src/aabbTreeBuilder.h: In static member function 'static AabbTreeBuffers AabbTreeBuffers::create(const AabbTree&, vma::Allocator&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/src/aabbTreeBuilder.h:41:28: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct shader::AabbTreeNode'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+   41 |                 std::memcpy(ptr, tree.nodes.data(), sizeof(shader::AabbTreeNode) * tree.nodes.size());
+      |                 ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaderIncludes.h:28:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaders/include/structs/aabbTree.glsl:1:8: note: 'struct shader::AabbTreeNode' declared here
+    1 | struct AabbTreeNode {
+      |        ^~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/src/aabbTreeBuilder.h:46:28: warning: 'void* memcpy(void*, const void*, size_t)' writing to an object of non-trivially copyable type 'struct shader::Triangle'; use copy-assignment or copy-initialization instead [-Wclass-memaccess]
+   46 |                 std::memcpy(tris, tree.triangles.data(), sizeof(shader::Triangle) * tree.triangles.size());
+      |                 ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\shaders/include/structs/aabbTree.glsl:9:8: note: 'struct shader::Triangle' declared here
+    9 | struct Triangle {
+      |        ^~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:16:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/restirPass.h: In member function 'void RestirPass::freeDeviceMemory(vk::Device)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/restirPass.h:25:35: warning: comparison of integer expressions of different signedness: 'int' and 'std::vector<vk::DeviceMemory>::size_type' {aka 'long long unsigned int'} [-Wsign-compare]
+   25 |                 for (int i = 0; i < memories.size(); i++)
+      |                                 ~~^~~~~~~~~~~~~~~~~
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:17:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/unbiasedReusePass.h: In static member function 'static UnbiasedReusePass UnbiasedReusePass::create(vk::Device)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/unbiasedReusePass.h:109:33: warning: moving a local object in a return statement prevents copy elision [-Wpessimizing-move]
+  109 |                 return std::move(pass);
+      |                        ~~~~~~~~~^~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/unbiasedReusePass.h:109:33: note: remove 'std::move' call
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\passes/imguiPass.h:6,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\app.h:18:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/imgui-1.92.5/backends/imgui_impl_vulkan.h: In constructor 'ImGui_ImplVulkanH_Window::ImGui_ImplVulkanH_Window()':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/imgui-1.92.5/backends/imgui_impl_vulkan.h:247:41: warning: the result of the conversion is unspecified because '~0' is outside the range of type 'VkPresentModeKHR' [-Wconversion]
+  247 |         PresentMode = (VkPresentModeKHR)~0;     // Ensure we get an error if user doesn't set this.
+      |                                         ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h: In instantiation of 'nvmath::matrix4<T>::matrix4(int) [with T = float]':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:103:38:   required from here
+  103 |         nvmath::mat4f worldMatrix{ 1 };
+      |                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:646:15: warning: unused parameter 'one' [-Wunused-parameter]
+  646 |   matrix4(int one) { identity(); }
+      |           ~~~~^~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h: In function 'int stbi__parse_png_file(stbi__png*, int, int)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h:4878:56: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
+ 4878 |                   for (k = 0; k < s->img_n; ++k) tc[k] = (stbi_uc)(stbi__get16be(s) & 255) * stbi__depth_scale_table[z->depth]; // non 8-bit images will be larger
+      |                                                  ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/stb_image.h:4797:25: note: at offset 3 into destination object 'tc' of size 3
+ 4797 |    stbi_uc has_trans=0, tc[3]={0};
+      |                         ^~
+[ 91%] Building CXX object CMakeFiles/restir.dir/src/misc.cpp.obj
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:56,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:12,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.cpp:1:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h: In member function 'char tinygltf::Value::Type() const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:300:30: warning: type qualifiers ignored on cast result type [-Wignored-qualifiers]
+  300 |   char Type() const { return static_cast<const char>(type_); }
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:363,
+                 from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:57:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl: In function 'nvmath::quaternion<T> nvmath::slerp_quats(T, const quaternion<T>&, const quaternion<T>&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1552:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+ 1552 |   else if (cosine > 1)
+      |        ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1554:5: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+ 1554 |     T angle = (T)acosf(cosine);
+      |     ^
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.cpp:9:
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h: In member function 'VmaAllocator_T* vma::UniqueHandle<T, Derived>::_getAllocator() const':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h:90:42: warning: invalid use of incomplete type 'class vma::Allocator'
+   90 |                         return _allocator->_allocator;
+      |                                          ^~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:19:15: note: forward declaration of 'class vma::Allocator'
+   19 |         class Allocator;
+      |               ^~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.cpp: In function 'std::vector<shader::pointLight> generateRandomPointLights(std::size_t, nvmath::vec3, nvmath::vec3, std::uniform_real_distribution<float>, std::uniform_real_distribution<float>, std::uniform_real_distribution<float>)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.cpp:371:85: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  371 |                 light.pos = nvmath::vec4(distX(rand), distY(rand), distZ(rand), 1.0f);
+      |                                                                                     ^
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:31:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.cpp:372:97: warning: implicitly-declared 'constexpr nvmath::vector4<float>& nvmath::vector4<float>::operator=(const nvmath::vector4<float>&)' is deprecated [-Wdeprecated-copy]
+  372 |                 light.color_luminance = nvmath::vec4(distR(rand), distG(rand), distB(rand), 0.0f);
+      |                                                                                                 ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:406:3: note: because 'nvmath::vector4<float>' has user-provided 'nvmath::vector4<T>::vector4(const nvmath::vector4<T>&) [with T = float]'
+  406 |   vector4(const vector4<T>& u)
+      |   ^~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.cpp: In function 'std::vector<shader::triLight> collectTriangleLightsFromScene(const nvh::GltfScene&)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.cpp:404:50: warning: unused variable 'tmpTriLight' [-Wunused-variable]
+  404 |                                 shader::triLight tmpTriLight{ p1, p2, p3, vec4(material.emissiveFactor, 0.0), area };
+      |                                                  ^~~~~~~~~~~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.cpp: In function 'std::vector<shader::aliasTableColumn> createAliasTable(std::vector<shader::pointLight>&, std::vector<shader::triLight>&)':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.cpp:444:131: warning: missing initializer for member 'shader::aliasTableColumn::aliasOriProb' [-Wmissing-field-initializers]
+  444 |         std::vector<shader::aliasTableColumn> result(lightNum, shader::aliasTableColumn{ .prob = 0.f, .alias = -1, .oriProb = 0.f });
+      |                                                                                                                                   ^
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.cpp:446:27: warning: comparison of integer expressions of different signedness: 'int' and 'std::vector<float>::size_type' {aka 'long long unsigned int'} [-Wsign-compare]
+  446 |         for (int i = 0; i < lightProbVec.size(); ++i) {
+      |                         ~~^~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h: In instantiation of 'nvmath::matrix4<T>::matrix4(int) [with T = float]':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:103:38:   required from here
+  103 |         nvmath::mat4f worldMatrix{ 1 };
+      |                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:646:15: warning: unused parameter 'one' [-Wunused-parameter]
+  646 |   matrix4(int one) { identity(); }
+      |           ~~~~^~~
+[ 93%] Building CXX object CMakeFiles/restir.dir/src/swapchain.cpp.obj
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:363,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\glfwWindow.h:12,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\swapchain.h:7,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\swapchain.cpp:1:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl: In function 'nvmath::quaternion<T> nvmath::slerp_quats(T, const quaternion<T>&, const quaternion<T>&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1552:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+ 1552 |   else if (cosine > 1)
+      |        ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1554:5: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+ 1554 |     T angle = (T)acosf(cosine);
+      |     ^
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:56,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:12,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\swapchain.cpp:3:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h: In member function 'char tinygltf::Value::Type() const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:300:30: warning: type qualifiers ignored on cast result type [-Wignored-qualifiers]
+  300 |   char Type() const { return static_cast<const char>(type_); }
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:31:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h: In instantiation of 'nvmath::matrix4<T>::matrix4(int) [with T = float]':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:103:38:   required from here
+  103 |         nvmath::mat4f worldMatrix{ 1 };
+      |                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:646:15: warning: unused parameter 'one' [-Wunused-parameter]
+  646 |   matrix4(int one) { identity(); }
+      |           ~~~~^~~
+[ 95%] Building CXX object CMakeFiles/restir.dir/src/vulkanDispatch.cpp.obj
+[ 96%] Building CXX object CMakeFiles/restir.dir/src/vulkanDispatchStorage.cpp.obj
+[ 98%] Building CXX object CMakeFiles/restir.dir/src/vma.cpp.obj
+In file included from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.cpp:5:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In function 'void VmaWriteMagicValue(void*, VkDeviceSize)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:4645:38: warning: unused parameter 'pData' [-Wunused-parameter]
+ 4645 | static void VmaWriteMagicValue(void* pData, VkDeviceSize offset)
+      |                                ~~~~~~^~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:4645:58: warning: unused parameter 'offset' [-Wunused-parameter]
+ 4645 | static void VmaWriteMagicValue(void* pData, VkDeviceSize offset)
+      |                                             ~~~~~~~~~~~~~^~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In function 'bool VmaValidateMagicValue(const void*, VkDeviceSize)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:4659:47: warning: unused parameter 'pData' [-Wunused-parameter]
+ 4659 | static bool VmaValidateMagicValue(const void* pData, VkDeviceSize offset)
+      |                                   ~~~~~~~~~~~~^~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:4659:67: warning: unused parameter 'offset' [-Wunused-parameter]
+ 4659 | static bool VmaValidateMagicValue(const void* pData, VkDeviceSize offset)
+      |                                                      ~~~~~~~~~~~~~^~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'virtual VkResult VmaBlockMetadata_Buddy::CheckCorruption(const void*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:6815:50: warning: unused parameter 'pBlockData' [-Wunused-parameter]
+ 6815 |     virtual VkResult CheckCorruption(const void* pBlockData) { return VK_ERROR_FEATURE_NOT_PRESENT; }
+      |                                      ~~~~~~~~~~~~^~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'virtual void VmaDefragmentationAlgorithm_Fast::AddAllocation(VmaAllocation, VkBool32*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:7400:46: warning: unused parameter 'hAlloc' [-Wunused-parameter]
+ 7400 |     virtual void AddAllocation(VmaAllocation hAlloc, VkBool32* pChanged) { ++m_AllocationCount; }
+      |                                ~~~~~~~~~~~~~~^~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:7400:64: warning: unused parameter 'pChanged' [-Wunused-parameter]
+ 7400 |     virtual void AddAllocation(VmaAllocation hAlloc, VkBool32* pChanged) { ++m_AllocationCount; }
+      |                                                      ~~~~~~~~~~^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'void VmaStringBuilder::AddNumber(uint32_t)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:8241:20: warning: conversion from 'uint32_t' {aka 'unsigned int'} to 'char' may change value [-Wconversion]
+ 8241 |         *--p = '0' + (num % 10);
+      |                ~~~~^~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'void VmaStringBuilder::AddNumber(uint64_t)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:8255:20: warning: conversion from 'uint64_t' {aka 'long long unsigned int'} to 'char' may change value [-Wconversion]
+ 8255 |         *--p = '0' + (num % 10);
+      |                ~~~~^~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'void VmaJsonWriter::BeginValue(bool)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:8510:37: warning: unused parameter 'isString' [-Wunused-parameter]
+ 8510 | void VmaJsonWriter::BeginValue(bool isString)
+      |                                ~~~~~^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'virtual bool VmaBlockMetadata_Generic::Validate() const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:9070:40: warning: comparison of unsigned expression in '>= 0' is always true [-Wtype-limits]
+ 9070 |             VMA_VALIDATE(subAlloc.size >= VMA_DEBUG_MARGIN);
+      |                                        ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:6462:38: note: in definition of macro 'VMA_VALIDATE'
+ 6462 | #define VMA_VALIDATE(cond) do { if(!(cond)) { \
+      |                                      ^~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'virtual bool VmaBlockMetadata_Generic::CreateAllocationRequest(uint32_t, uint32_t, VkDeviceSize, VkDeviceSize, VkDeviceSize, bool, VmaSuballocationType, bool, uint32_t, VmaAllocationRequest*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:9208:10: warning: unused parameter 'upperAddress' [-Wunused-parameter]
+ 9208 |     bool upperAddress,
+      |     ~~~~~^~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'bool VmaBlockMetadata_Linear::CreateAllocationRequest_UpperAddress(uint32_t, uint32_t, VkDeviceSize, VkDeviceSize, VkDeviceSize, VmaSuballocationType, bool, uint32_t, VmaAllocationRequest*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:10955:25: warning: comparison of unsigned expression in '< 0' is always false [-Wtype-limits]
+10955 |         if(resultOffset < VMA_DEBUG_MARGIN)
+      |                         ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:10913:14: warning: unused parameter 'currentFrameIndex' [-Wunused-parameter]
+10913 |     uint32_t currentFrameIndex,
+      |     ~~~~~~~~~^~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:10914:14: warning: unused parameter 'frameInUseCount' [-Wunused-parameter]
+10914 |     uint32_t frameInUseCount,
+      |     ~~~~~~~~~^~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:10919:10: warning: unused parameter 'canMakeOtherLost' [-Wunused-parameter]
+10919 |     bool canMakeOtherLost,
+      |     ~~~~~^~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:10920:14: warning: unused parameter 'strategy' [-Wunused-parameter]
+10920 |     uint32_t strategy,
+      |     ~~~~~~~~~^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'bool VmaBlockMetadata_Linear::CreateAllocationRequest_LowerAddress(uint32_t, uint32_t, VkDeviceSize, VkDeviceSize, VkDeviceSize, VmaSuballocationType, bool, uint32_t, VmaAllocationRequest*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11040:14: warning: unused parameter 'strategy' [-Wunused-parameter]
+11040 |     uint32_t strategy,
+      |     ~~~~~~~~~^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'virtual void VmaBlockMetadata_Linear::Alloc(const VmaAllocationRequest&, VmaSuballocationType, VkDeviceSize, VmaAllocation)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11487:38: warning: unused variable 'suballocations1st' [-Wunused-variable]
+11487 |             SuballocationVectorType& suballocations1st = AccessSuballocations1st();
+      |                                      ^~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'virtual bool VmaBlockMetadata_Buddy::CreateAllocationRequest(uint32_t, uint32_t, VkDeviceSize, VkDeviceSize, VkDeviceSize, bool, VmaSuballocationType, bool, uint32_t, VmaAllocationRequest*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11898:14: warning: unused parameter 'currentFrameIndex' [-Wunused-parameter]
+11898 |     uint32_t currentFrameIndex,
+      |     ~~~~~~~~~^~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11899:14: warning: unused parameter 'frameInUseCount' [-Wunused-parameter]
+11899 |     uint32_t frameInUseCount,
+      |     ~~~~~~~~~^~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11903:10: warning: unused parameter 'upperAddress' [-Wunused-parameter]
+11903 |     bool upperAddress,
+      |     ~~~~~^~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11905:10: warning: unused parameter 'canMakeOtherLost' [-Wunused-parameter]
+11905 |     bool canMakeOtherLost,
+      |     ~~~~~^~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11906:14: warning: unused parameter 'strategy' [-Wunused-parameter]
+11906 |     uint32_t strategy,
+      |     ~~~~~~~~~^~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'virtual bool VmaBlockMetadata_Buddy::MakeRequestedAllocationsLost(uint32_t, uint32_t, VmaAllocationRequest*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11950:14: warning: unused parameter 'currentFrameIndex' [-Wunused-parameter]
+11950 |     uint32_t currentFrameIndex,
+      |     ~~~~~~~~~^~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11951:14: warning: unused parameter 'frameInUseCount' [-Wunused-parameter]
+11951 |     uint32_t frameInUseCount,
+      |     ~~~~~~~~~^~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'virtual uint32_t VmaBlockMetadata_Buddy::MakeAllocationsLost(uint32_t, uint32_t)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11961:63: warning: unused parameter 'currentFrameIndex' [-Wunused-parameter]
+11961 | uint32_t VmaBlockMetadata_Buddy::MakeAllocationsLost(uint32_t currentFrameIndex, uint32_t frameInUseCount)
+      |                                                      ~~~~~~~~~^~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11961:91: warning: unused parameter 'frameInUseCount' [-Wunused-parameter]
+11961 | uint32_t VmaBlockMetadata_Buddy::MakeAllocationsLost(uint32_t currentFrameIndex, uint32_t frameInUseCount)
+      |                                                                                  ~~~~~~~~~^~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'virtual void VmaBlockMetadata_Buddy::Alloc(const VmaAllocationRequest&, VmaSuballocationType, VkDeviceSize, VmaAllocation)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:11972:26: warning: unused parameter 'type' [-Wunused-parameter]
+11972 |     VmaSuballocationType type,
+      |     ~~~~~~~~~~~~~~~~~~~~~^~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In constructor 'VmaDeviceMemoryBlock::VmaDeviceMemoryBlock(VmaAllocator)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:12299:57: warning: unused parameter 'hAllocator' [-Wunused-parameter]
+12299 | VmaDeviceMemoryBlock::VmaDeviceMemoryBlock(VmaAllocator hAllocator) :
+      |                                            ~~~~~~~~~~~~~^~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'VkResult VmaBlockVector::AllocatePage(uint32_t, VkDeviceSize, VkDeviceSize, const VmaAllocationCreateInfo&, VmaSuballocationType, VmaAllocation_T**)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13084:34: warning: unused variable 'res' [-Wunused-variable]
+13084 |                         VkResult res = pBestRequestBlock->WriteMagicValueAroundAllocation(m_hAllocator, bestRequest.offset, size);
+      |                                  ^~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'void VmaBlockVector::Free(VmaAllocation)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13130:22: warning: unused variable 'res' [-Wunused-variable]
+13130 |             VkResult res = pBlock->ValidateMagicValueAroundAllocation(m_hAllocator, hAllocation->GetOffset(), hAllocation->GetSize());
+      |                      ^~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'VkResult VmaBlockVector::AllocateFromBlock(VmaDeviceMemoryBlock*, uint32_t, VkDeviceSize, VkDeviceSize, VmaAllocationCreateFlags, void*, VmaSuballocationType, uint32_t, VmaAllocation_T**)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13287:22: warning: unused variable 'res' [-Wunused-variable]
+13287 |             VkResult res = pBlock->WriteMagicValueAroundAllocation(m_hAllocator, currRequest.offset, size);
+      |                      ^~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'VkResult VmaBlockVector::CreateBlock(VkDeviceSize, size_t*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13297:79: warning: missing initializer for member 'VkMemoryAllocateInfo::pNext' [-Wmissing-field-initializers]
+13297 |     VkMemoryAllocateInfo allocInfo = { VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO };
+      |                                                                               ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13297:79: warning: missing initializer for member 'VkMemoryAllocateInfo::allocationSize' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13297:79: warning: missing initializer for member 'VkMemoryAllocateInfo::memoryTypeIndex' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13303:102: warning: missing initializer for member 'VkMemoryAllocateFlagsInfo::pNext' [-Wmissing-field-initializers]
+13303 |     VkMemoryAllocateFlagsInfoKHR allocFlagsInfo = { VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_FLAGS_INFO_KHR };
+      |                                                                                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13303:102: warning: missing initializer for member 'VkMemoryAllocateFlagsInfo::flags' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13303:102: warning: missing initializer for member 'VkMemoryAllocateFlagsInfo::deviceMask' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'void VmaBlockVector::ApplyDefragmentationMovesCpu(VmaBlockVectorDefragmentationContext*, const VmaVector<VmaDefragmentationMove, VmaStlAllocator<VmaDefragmentationMove> >&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13397:80: warning: missing initializer for member 'VkMappedMemoryRange::pNext' [-Wmissing-field-initializers]
+13397 |         VkMappedMemoryRange memRange = { VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE };
+      |                                                                                ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13397:80: warning: missing initializer for member 'VkMappedMemoryRange::memory' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13397:80: warning: missing initializer for member 'VkMappedMemoryRange::offset' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13397:80: warning: missing initializer for member 'VkMappedMemoryRange::size' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In constructor 'VmaDefragmentationAlgorithm_Generic::VmaDefragmentationAlgorithm_Generic(VmaAllocator, VmaBlockVector*, uint32_t, bool)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13939:10: warning: unused parameter 'overlappingMoveSupported' [-Wunused-parameter]
+13939 |     bool overlappingMoveSupported) :
+      |     ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'virtual VkResult VmaDefragmentationAlgorithm_Fast::Defragment(VmaVector<VmaDefragmentationMove, VmaStlAllocator<VmaDefragmentationMove> >&, VkDeviceSize, uint32_t, VmaDefragmentationFlags)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:14261:29: warning: unused parameter 'flags' [-Wunused-parameter]
+14261 |     VmaDefragmentationFlags flags)
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'VkResult VmaAllocator_T::AllocateDedicatedMemory(VkDeviceSize, VmaSuballocationType, uint32_t, bool, bool, bool, void*, VkBuffer, VkBufferUsageFlags, VkImage, size_t, VmaAllocation_T**)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16241:79: warning: missing initializer for member 'VkMemoryAllocateInfo::pNext' [-Wmissing-field-initializers]
+16241 |     VkMemoryAllocateInfo allocInfo = { VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO };
+      |                                                                               ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16241:79: warning: missing initializer for member 'VkMemoryAllocateInfo::allocationSize' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16241:79: warning: missing initializer for member 'VkMemoryAllocateInfo::memoryTypeIndex' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16246:114: warning: missing initializer for member 'VkMemoryDedicatedAllocateInfo::pNext' [-Wmissing-field-initializers]
+16246 |     VkMemoryDedicatedAllocateInfoKHR dedicatedAllocInfo = { VK_STRUCTURE_TYPE_MEMORY_DEDICATED_ALLOCATE_INFO_KHR };
+      |                                                                                                                  ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16246:114: warning: missing initializer for member 'VkMemoryDedicatedAllocateInfo::image' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16246:114: warning: missing initializer for member 'VkMemoryDedicatedAllocateInfo::buffer' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16264:102: warning: missing initializer for member 'VkMemoryAllocateFlagsInfo::pNext' [-Wmissing-field-initializers]
+16264 |     VkMemoryAllocateFlagsInfoKHR allocFlagsInfo = { VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_FLAGS_INFO_KHR };
+      |                                                                                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16264:102: warning: missing initializer for member 'VkMemoryAllocateFlagsInfo::flags' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16264:102: warning: missing initializer for member 'VkMemoryAllocateFlagsInfo::deviceMask' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'void VmaAllocator_T::GetBufferMemoryRequirements(VkBuffer, VkMemoryRequirements&, bool&, bool&) const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16406:115: warning: missing initializer for member 'VkBufferMemoryRequirementsInfo2::pNext' [-Wmissing-field-initializers]
+16406 |         VkBufferMemoryRequirementsInfo2KHR memReqInfo = { VK_STRUCTURE_TYPE_BUFFER_MEMORY_REQUIREMENTS_INFO_2_KHR };
+      |                                                                                                                   ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16406:115: warning: missing initializer for member 'VkBufferMemoryRequirementsInfo2::buffer' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16409:114: warning: missing initializer for member 'VkMemoryDedicatedRequirements::pNext' [-Wmissing-field-initializers]
+16409 |         VkMemoryDedicatedRequirementsKHR memDedicatedReq = { VK_STRUCTURE_TYPE_MEMORY_DEDICATED_REQUIREMENTS_KHR };
+      |                                                                                                                  ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16409:114: warning: missing initializer for member 'VkMemoryDedicatedRequirements::prefersDedicatedAllocation' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16409:114: warning: missing initializer for member 'VkMemoryDedicatedRequirements::requiresDedicatedAllocation' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16411:90: warning: missing initializer for member 'VkMemoryRequirements2::pNext' [-Wmissing-field-initializers]
+16411 |         VkMemoryRequirements2KHR memReq2 = { VK_STRUCTURE_TYPE_MEMORY_REQUIREMENTS_2_KHR };
+      |                                                                                          ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16411:90: warning: missing initializer for member 'VkMemoryRequirements2::memoryRequirements' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'void VmaAllocator_T::GetImageMemoryRequirements(VkImage, VkMemoryRequirements&, bool&, bool&) const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16438:113: warning: missing initializer for member 'VkImageMemoryRequirementsInfo2::pNext' [-Wmissing-field-initializers]
+16438 |         VkImageMemoryRequirementsInfo2KHR memReqInfo = { VK_STRUCTURE_TYPE_IMAGE_MEMORY_REQUIREMENTS_INFO_2_KHR
+};
+      |
+^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16438:113: warning: missing initializer for member 'VkImageMemoryRequirementsInfo2::image' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16441:114: warning: missing initializer for member 'VkMemoryDedicatedRequirements::pNext' [-Wmissing-field-initializers]
+16441 |         VkMemoryDedicatedRequirementsKHR memDedicatedReq = { VK_STRUCTURE_TYPE_MEMORY_DEDICATED_REQUIREMENTS_KHR };
+      |                                                                                                                  ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16441:114: warning: missing initializer for member 'VkMemoryDedicatedRequirements::prefersDedicatedAllocation' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16441:114: warning: missing initializer for member 'VkMemoryDedicatedRequirements::requiresDedicatedAllocation' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16443:90: warning: missing initializer for member 'VkMemoryRequirements2::pNext' [-Wmissing-field-initializers]
+16443 |         VkMemoryRequirements2KHR memReq2 = { VK_STRUCTURE_TYPE_MEMORY_REQUIREMENTS_2_KHR };
+      |                                                                                          ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:16443:90: warning: missing initializer for member 'VkMemoryRequirements2::memoryRequirements' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'void VmaAllocator_T::DestroyPool(VmaPool)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17011:14: warning: unused variable 'success' [-Wunused-variable]
+17011 |         bool success = VmaVectorRemoveSorted<VmaPointerLess>(m_Pools, pool);
+      |              ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'VkResult VmaAllocator_T::BindVulkanBuffer(VkDeviceMemory, VkDeviceSize, VkBuffer, const void*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17181:110: warning: missing initializer for member 'VkBindBufferMemoryInfo::pNext' [-Wmissing-field-initializers]
+17181 |             VkBindBufferMemoryInfoKHR bindBufferMemoryInfo = { VK_STRUCTURE_TYPE_BIND_BUFFER_MEMORY_INFO_KHR };
+      |                                                                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17181:110: warning: missing initializer for member 'VkBindBufferMemoryInfo::buffer' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17181:110: warning: missing initializer for member 'VkBindBufferMemoryInfo::memory' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17181:110: warning: missing initializer for member 'VkBindBufferMemoryInfo::memoryOffset' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'VkResult VmaAllocator_T::BindVulkanImage(VkDeviceMemory, VkDeviceSize, VkImage, const void*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17212:108: warning: missing initializer for member 'VkBindImageMemoryInfo::pNext' [-Wmissing-field-initializers]
+17212 |             VkBindImageMemoryInfoKHR bindBufferMemoryInfo = { VK_STRUCTURE_TYPE_BIND_IMAGE_MEMORY_INFO_KHR };
+      |                                                                                                            ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17212:108: warning: missing initializer for member 'VkBindImageMemoryInfo::image' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17212:108: warning: missing initializer for member 'VkBindImageMemoryInfo::memory' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17212:108: warning: missing initializer for member 'VkBindImageMemoryInfo::memoryOffset' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'void VmaAllocator_T::FreeDedicatedMemory(VmaAllocation)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17405:14: warning: unused variable 'success' [-Wunused-variable]
+17405 |         bool success = VmaVectorRemoveSorted<VmaPointerLess>(*pDedicatedAllocations, allocation);
+      |              ^~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In member function 'void VmaAllocator_T::UpdateVulkanBudget()':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17542:113: warning: missing initializer for member 'VkPhysicalDeviceMemoryProperties2::pNext' [-Wmissing-field-initializers]
+17542 |     VkPhysicalDeviceMemoryProperties2KHR memProps = { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2_KHR
+};
+      |
+^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17542:113: warning: missing initializer for member 'VkPhysicalDeviceMemoryProperties2::memoryProperties' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17544:126: warning: missing initializer for member 'VkPhysicalDeviceMemoryBudgetPropertiesEXT::pNext' [-Wmissing-field-initializers]
+17544 |     VkPhysicalDeviceMemoryBudgetPropertiesEXT budgetProps = { VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_BUDGET_PROPERTIES_EXT };
+      |                                                                                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17544:126: warning: missing initializer for member 'VkPhysicalDeviceMemoryBudgetPropertiesEXT::heapBudget' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:17544:126: warning: missing initializer for member 'VkPhysicalDeviceMemoryBudgetPropertiesEXT::heapUsage' [-Wmissing-field-initializers]
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In function 'void vmaGetPoolNam
+(VmaAllocator, VmaPool, const char**)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:18200:18: warning: unused parameter 'allocator' [-Wunused-parameter]
+18200 |     VmaAllocator allocator,
+      |     ~~~~~~~~~~~~~^~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In function 'void vmaSetPoolNam
+(VmaAllocator, VmaPool, const char*)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:18214:18: warning: unused parameter 'allocator' [-Wunused-parameter]
+18214 |     VmaAllocator allocator,
+      |     ~~~~~~~~~~~~~^~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:56,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:12,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h:11,
+                 from C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.cpp:7:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h: In member function 'char tinygltf::Value::Type() const':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/tinygltf/tiny_gltf.h:300:30: warning: type qualifiers ignored on cast result type [-Wignored-qualifiers]
+  300 |   char Type() const { return static_cast<const char>(type_); }
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:363,
+                 from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:57:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl: In function 'nvmath::quaternion<T> nvmath::slerp_quats(T, const quaternion<T>&, const quaternion<T>&)':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1552:8: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+ 1552 |   else if (cosine > 1)
+      |        ^~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.inl:1554:5: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+ 1554 |     T angle = (T)acosf(cosine);
+      |     ^
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h: In member function 'VmaAllocator_T* vma::UniqueHandle<T, Derived>::_getAllocator() const':
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\vma.h:90:42: warning: invalid use of incomplete type 'class vma::Allocator'
+   90 |                         return _allocator->_allocator;
+      |                                          ^~
+C:\Coding\Github\ReSTIR-Vulkan-SDF\src\misc.h:19:15: note: forward declaration of 'class vma::Allocator'
+   19 |         class Allocator;
+      |               ^~~~~~~~~
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h: In instantiation of 'VmaVector<T, AllocatorT>::VmaVector(size_t, const T&, const AllocatorT&) [with T = VmaBlockVector::ApplyDefragmentationMovesCpu(VmaBlockVectorDefragmentationContext*, const VmaVector<VmaDefragmentationMove, VmaStlAllocator<VmaDefragmentationMove> >&)::BlockInfo; AllocatorT = VmaStlAllocator<VmaBlockVector::ApplyDefragmentationMovesCpu(VmaBlockVectorDefragmentationContext*, const VmaVector<VmaDefragmentationMove, VmaStlAllocator<VmaDefragmentationMove> >&)::BlockInfo>; size_t = long long unsigned int]':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:13359:110:   required from here
+13359 |         blockInfo(blockCount, BlockInfo(), VmaStlAllocator<BlockInfo>(m_hAllocator->GetAllocationCallbacks()));
+      |                                                                                                              ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/VulkanMemoryAllocator/src/vk_mem_alloc.h:4980:38: warning: unused parameter 'value' [-Wunused-parameter]
+ 4980 |     VmaVector(size_t count, const T& value, const AllocatorT& allocator)
+      |                             ~~~~~~~~~^~~~~
+In file included from C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath.h:31:
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h: In instantiation of 'nvmath::matrix4<T>::matrix4(int) [with T = float]':
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/gltf/gltfscene.h:103:38:   required from here
+  103 |         nvmath::mat4f worldMatrix{ 1 };
+      |                                      ^
+C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:646:15: warning: unused parameter 'one' [-Wunused-parameter]
+  646 |   matrix4(int one) { identity(); }
+      |           ~~~~^~~
+[100%] Linking CXX executable restir.exe
+[100%] Built target restir
+[100%] Built target docs

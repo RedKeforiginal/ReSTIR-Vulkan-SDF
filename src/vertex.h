@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include <vulkan/vulkan.hpp>
+#include "vulkanConfig.h"
 
 #include <nvmath_glsltypes.h>
 

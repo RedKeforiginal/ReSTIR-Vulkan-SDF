@@ -40,6 +40,7 @@ endif()
 
 target_compile_definitions(restir
 	PRIVATE
+		VULKAN_HPP_DISPATCH_LOADER_DYNAMIC
 #		RENDERDOC_CAPTURE
 		)
 
@@ -71,6 +72,8 @@ target_sources(restir
 		"src/swapchain.cpp"
 		"src/swapchain.h"
 		"src/transientCommandBuffer.h"
+		"src/vulkanDispatch.cpp"
+		"src/vulkanDispatchStorage.cpp"
 		"src/shader.h"
 		"src/vma.cpp"
 		"src/vma.h")
@@ -103,10 +106,11 @@ add_subdirectory("thirdparty/MikkTSpace/")
 add_subdirectory("thirdparty/gltf/")
 
 
-target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui MikkTSpace gltf gflags::gflags)
+target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui gltf MikkTSpace gflags::gflags)
 
 target_include_directories(restir
 	PRIVATE
+		"${CMAKE_CURRENT_SOURCE_DIR}/src"
 		"thirdparty/nvmath/"
 		"thirdparty/VulkanMemoryAllocator/src/"
 		"thirdparty/tinygltf/")
@@ -123,12 +127,6 @@ add_shader(restir "src/shaders/emissiveSample.comp")
 add_shader(restir "src/shaders/quad.vert")
 add_shader(restir "src/shaders/lighting.frag")
 
-add_shader(restir "src/shaders/hwVisibilityTest.rchit")
-add_shader(restir "src/shaders/hwVisibilityTest.rmiss")
-add_shader(restir "src/shaders/hwVisibilityTestShadow.rmiss")
-
-add_shader(restir "src/shaders/restirOmniHardware.rgen")
 add_shader(restir "src/shaders/restirOmniSoftware.comp")
 
-add_shader(restir "src/shaders/unbiasedReuseHardware.rgen")
 add_shader(restir "src/shaders/unbiasedReuseSoftware.comp")
