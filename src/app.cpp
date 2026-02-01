@@ -619,7 +619,7 @@ void App::updateGui() {
 
 	const char* visibilityTestMethods[]{
 		"Disabled",
-		"SDF"
+		"SDF Shadow March"
 	};
 	_renderPathChanged = ImGui::Combo(
 		"Visibility Test", reinterpret_cast<int*>(&_visibilityTestMethod),

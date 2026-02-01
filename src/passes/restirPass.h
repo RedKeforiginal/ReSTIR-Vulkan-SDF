@@ -34,7 +34,7 @@ public:
 
 		commandBuffer.bindPipeline(vk::PipelineBindPoint::eCompute, getPipelines()[0].get());
 		commandBuffer.bindDescriptorSets(
-			vk::PipelineBindPoint::eCompute, _swPipelineLayout.get(), 0,
+			vk::PipelineBindPoint::eCompute, _sdfPipelineLayout.get(), 0,
 			{ staticDescriptorSet, frameDescriptorSet }, {}
 		);
 		commandBuffer.dispatch(
@@ -119,10 +119,10 @@ public:
 
 	vk::Extent2D bufferExtent;
 protected:
-	Shader _software;
+	Shader _sdfShader;
 
 	vk::UniqueSampler _sampler;
-	vk::UniquePipelineLayout _swPipelineLayout;
+	vk::UniquePipelineLayout _sdfPipelineLayout;
 	vk::UniqueDescriptorSetLayout _staticDescriptorSetLayout;
 	vk::UniqueDescriptorSetLayout _frameDescriptorSetLayout;
 
@@ -140,8 +140,8 @@ protected:
 		{ // compute pipeline
 			vk::ComputePipelineCreateInfo pipelineInfo;
 			pipelineInfo
-				.setStage(_software.getStageInfo())
-				.setLayout(_swPipelineLayout.get());
+				.setStage(_sdfShader.getStageInfo())
+				.setLayout(_sdfPipelineLayout.get());
 			auto [res, pipeline] = dev.createComputePipelineUnique(nullptr, pipelineInfo);
 			vkCheck(res);
 			pipelines.emplace_back(std::move(pipeline));
@@ -155,7 +155,7 @@ protected:
 
 		_sampler = createSampler(dev, vk::Filter::eNearest, vk::Filter::eNearest, vk::SamplerMipmapMode::eNearest);
 
-		_software = Shader::load(dev, "shaders/restirOmniSoftware.comp.spv", "main", vk::ShaderStageFlagBits::eCompute);
+		_sdfShader = Shader::load(dev, "shaders/restirOmniSoftware.comp.spv", "main", vk::ShaderStageFlagBits::eCompute);
 
 
 		std::array<vk::DescriptorSetLayoutBinding, 2> staticBindings{
@@ -186,13 +186,13 @@ protected:
 		_frameDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(frameDescriptorInfo);
 
 
-		std::array<vk::DescriptorSetLayout, 2> swDescriptorLayouts{
+		std::array<vk::DescriptorSetLayout, 2> sdfDescriptorLayouts{
 			_staticDescriptorSetLayout.get(), _frameDescriptorSetLayout.get()
 		};
 
-		vk::PipelineLayoutCreateInfo swPipelineLayoutInfo;
-		swPipelineLayoutInfo.setSetLayouts(swDescriptorLayouts);
-		_swPipelineLayout = dev.createPipelineLayoutUnique(swPipelineLayoutInfo);
+		vk::PipelineLayoutCreateInfo sdfPipelineLayoutInfo;
+		sdfPipelineLayoutInfo.setSetLayouts(sdfDescriptorLayouts);
+		_sdfPipelineLayout = dev.createPipelineLayoutUnique(sdfPipelineLayoutInfo);
 
 
 		Pass::_initialize(dev);

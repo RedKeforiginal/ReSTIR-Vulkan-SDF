@@ -19,9 +19,9 @@ public:
 			{}, {}, {}, {}
 		);
 
-		commandBuffer.bindPipeline(vk::PipelineBindPoint::eCompute, _softwarePipeline.get());
+		commandBuffer.bindPipeline(vk::PipelineBindPoint::eCompute, _sdfPipeline.get());
 		commandBuffer.bindDescriptorSets(
-			vk::PipelineBindPoint::eCompute, _swPipelineLayout.get(), 0,
+			vk::PipelineBindPoint::eCompute, _sdfPipelineLayout.get(), 0,
 			{ frameDescriptorSet }, {}
 		);
 		commandBuffer.dispatch(
@@ -91,16 +91,16 @@ public:
 	vk::DescriptorSet frameDescriptorSet;
 	vk::Extent2D bufferExtent;
 protected:
-	Shader _software;
+	Shader _sdfShader;
 	vk::Format _swapchainFormat;
 	vk::UniqueSampler _sampler;
-	vk::UniquePipelineLayout _swPipelineLayout;
+	vk::UniquePipelineLayout _sdfPipelineLayout;
 	vk::UniqueDescriptorSetLayout _frameDescriptorSetLayout;
 
 	void _initialize(vk::Device dev) {
 		_sampler = createSampler(dev, vk::Filter::eNearest, vk::Filter::eNearest, vk::SamplerMipmapMode::eNearest);
 
-		_software = Shader::load(dev, "shaders/unbiasedReuseSoftware.comp.spv", "main", vk::ShaderStageFlagBits::eCompute);
+		_sdfShader = Shader::load(dev, "shaders/unbiasedReuseSoftware.comp.spv", "main", vk::ShaderStageFlagBits::eCompute);
 
 		vk::ShaderStageFlags stageFlags = vk::ShaderStageFlagBits::eCompute;
 
@@ -120,21 +120,21 @@ protected:
 		_frameDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(layoutInfo);
 
 
-		std::array<vk::DescriptorSetLayout, 1> swDescriptorLayouts{ _frameDescriptorSetLayout.get() };
+		std::array<vk::DescriptorSetLayout, 1> sdfDescriptorLayouts{ _frameDescriptorSetLayout.get() };
 
-		vk::PipelineLayoutCreateInfo swPipelineLayoutInfo;
-		swPipelineLayoutInfo.setSetLayouts(swDescriptorLayouts);
-		_swPipelineLayout = dev.createPipelineLayoutUnique(swPipelineLayoutInfo);
+		vk::PipelineLayoutCreateInfo sdfPipelineLayoutInfo;
+		sdfPipelineLayoutInfo.setSetLayouts(sdfDescriptorLayouts);
+		_sdfPipelineLayout = dev.createPipelineLayoutUnique(sdfPipelineLayoutInfo);
 
-		vk::ComputePipelineCreateInfo swPipelineInfo;
-		swPipelineInfo
-			.setLayout(_swPipelineLayout.get())
-			.setStage(_software.getStageInfo());
-		auto [res, pipeline] = dev.createComputePipelineUnique(nullptr, swPipelineInfo);
+		vk::ComputePipelineCreateInfo sdfPipelineInfo;
+		sdfPipelineInfo
+			.setLayout(_sdfPipelineLayout.get())
+			.setStage(_sdfShader.getStageInfo());
+		auto [res, pipeline] = dev.createComputePipelineUnique(nullptr, sdfPipelineInfo);
 		vkCheck(res);
-		_softwarePipeline = std::move(pipeline);
+		_sdfPipeline = std::move(pipeline);
 	}
 private:
 	vk::UniqueRenderPass _pass;
-	vk::UniquePipeline _softwarePipeline;
+	vk::UniquePipeline _sdfPipeline;
 };
