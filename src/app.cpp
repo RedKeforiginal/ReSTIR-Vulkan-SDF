@@ -82,8 +82,6 @@ App::App(bool enableValidation, bool validateAssetsFlag)
 
 	if (validateAssetsFlag) {
 		const std::vector<std::string> shaderPaths{
-			"shaders/simple.vert.spv",
-			"shaders/simple.frag.spv",
 			"shaders/restirOmniSoftware.comp.spv",
 			"shaders/unbiasedReuseSoftware.comp.spv",
 			"shaders/emissiveSample.comp.spv",

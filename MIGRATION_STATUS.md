@@ -10,14 +10,12 @@
 - Ensured all G-Buffer attachments (including material properties) are transitioned for shader reads so SDF compute passes have consistent inputs on startup.
 - Replaced the raster G-Buffer pass with a compute-driven SDF G-Buffer (`gBuffer.comp`) and storage-image descriptors, so the SDF path no longer depends on GLTF-era graphics pipelines.
 - Switched G-Buffer formats to storage-compatible floating-point formats and added storage image usage/layout transitions to support compute writes.
+- Removed demo/simple pipeline assets and their build hooks (`demoPass.h`, `vertex.h`, `simple.vert/frag`, shader asset validation), keeping only the SDF runtime passes.
+- Deleted legacy RT-era shader stages (`hwVisibilityTest.*`, `restirOmniHardware.rgen`, `unbiasedReuseHardware.rgen`) and raster G-Buffer stages (`gBuffer.vert/.frag`) that are no longer part of the SDF pipeline.
 
 ## Remaining
-- Remove or quarantine unused GLTF/RT-era shader assets that are still checked in but no longer built or referenced (e.g., `hwVisibilityTest.*`, `restirOmniHardware.rgen`, `unbiasedReuseHardware.rgen`).
-- Remove or refactor demo/simple pipeline assets that are no longer part of the SDF runtime (e.g., `demoPass.h`, `simple.vert/frag`, `vertex.h`) once confirmed unused.
 - Update `README.md` to describe the SDF scene pipeline instead of GLTF loading, including the removal of `-scene`/`-ignore_point_lights` references and tinygltf mentions.
 - Rename/clean up remaining GLTF-era terminology in code (e.g., `VisibilityTestMethod::software` naming) to reflect SDF shadow marching.
-- The CMake target still compiles demo/simple shaders that are unused by the SDF rendering path.
-- Remove or quarantine legacy raster G-Buffer shader stages (`gBuffer.vert`, `gBuffer.frag`) now that the compute SDF G-Buffer is active.
 - Remove or quarantine unused GLTF/tinygltf third-party sources if they are no longer part of the build graph.
-- Drop `simple.vert/.frag` from asset validation lists once demo shaders are removed.
+- `thirdparty/gltf/` (plus `thirdparty/tinygltf/` headers) are still present on disk, but no sources reference them or add them to the build graph.
 - More work to be determined.
