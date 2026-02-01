@@ -73,6 +73,7 @@ target_sources(restir
 		"src/swapchain.h"
 		"src/transientCommandBuffer.h"
 		"src/vulkanDispatch.cpp"
+		"src/vulkanDispatchStorage.cpp"
 		"src/shader.h"
 		"src/vma.cpp"
 		"src/vma.h")
