@@ -12,10 +12,10 @@
 - Switched G-Buffer formats to storage-compatible floating-point formats and added storage image usage/layout transitions to support compute writes.
 - Removed demo/simple pipeline assets and their build hooks (`demoPass.h`, `vertex.h`, `simple.vert/frag`, shader asset validation), keeping only the SDF runtime passes.
 - Deleted legacy RT-era shader stages (`hwVisibilityTest.*`, `restirOmniHardware.rgen`, `unbiasedReuseHardware.rgen`) and raster G-Buffer stages (`gBuffer.vert/.frag`) that are no longer part of the SDF pipeline.
+- Updated the README to document the SDF scene pipeline and note the removal of legacy GLTF flags.
+- Renamed visibility test terminology in code/UI to reference SDF shadow marching instead of legacy software RT naming.
 
 ## Remaining
-- Update `README.md` to describe the SDF scene pipeline instead of GLTF loading, including the removal of `-scene`/`-ignore_point_lights` references and tinygltf mentions.
-- Rename/clean up remaining GLTF-era terminology in code (e.g., `VisibilityTestMethod::software` naming) to reflect SDF shadow marching.
 - Remove or quarantine unused GLTF/tinygltf third-party sources if they are no longer part of the build graph.
 - `thirdparty/gltf/` (plus `thirdparty/tinygltf/` headers) are still present on disk, but no sources reference them or add them to the build graph.
 - More work to be determined.
