@@ -35,6 +35,8 @@ if not exist "%BUILD_DIR%" mkdir "%BUILD_DIR%"
 cmake -S "%ROOT%" -B "%BUILD_DIR%" -G "MinGW Makefiles" ^
   -DCMAKE_BUILD_TYPE=Release ^
   -DCMAKE_PREFIX_PATH="%DEPS_DIR%" ^
+  -DCMAKE_CXX_FLAGS="-static -static-libgcc -static-libstdc++" ^
+  -DCMAKE_EXE_LINKER_FLAGS="-static -static-libgcc -static-libstdc++" ^
   -DVulkan_ROOT="%VULKAN_SDK%" ^
   -DVulkan_GLSLC_EXECUTABLE="%GLSLC%"
 if errorlevel 1 exit /b 1
