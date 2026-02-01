@@ -3,7 +3,6 @@
 #include "pass.h"
 #include "gBufferPass.h"
 #include "shaderIncludes.h"
-#include "../aabbTreeBuilder.h"
 #include "../shaders/include/gBufferDebugConstants.glsl"
 
 class LightingPass : public Pass {

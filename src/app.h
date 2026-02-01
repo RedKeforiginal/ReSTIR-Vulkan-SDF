@@ -5,7 +5,7 @@
 #include "glfwWindow.h"
 #include "swapchain.h"
 #include "transientCommandBuffer.h"
-#include "sceneBuffers.h"
+#include "sdfSceneBuffers.h"
 #include "camera.h"
 #include "fpsCounter.h"
 
@@ -28,7 +28,7 @@ public:
 	constexpr static std::size_t maxFramesInFlight = 2;
 	constexpr static std::size_t numGBuffers = 2;
 
-	App(std::string scene, bool ignorePointLights, bool enableValidation, bool validateAssets);
+	App(bool enableValidation, bool validateAssets);
 	~App();
 
 	void mainLoop();
@@ -97,7 +97,6 @@ protected:
 	vma::Allocator _allocator;
 	vk::UniqueCommandPool _commandPool;
 	vk::UniqueDescriptorPool _staticDescriptorPool;
-	vk::UniqueDescriptorPool _textureDescriptorPool;
 	vk::UniqueDescriptorPool _imguiDescriptorPool;
 	TransientCommandBufferPool _transientCommandBufferPool;
 
@@ -135,19 +134,13 @@ protected:
 	RestirPass _restirPass;
 	std::array<vk::UniqueDescriptorSet, numGBuffers> _restirFrameDescriptors;
 	vk::UniqueDescriptorSet _restirStaticDescriptor;
-	vk::UniqueDescriptorSet _restirSoftwareRayTraceDescriptor;
 
 	UnbiasedReusePass _unbiasedReusePass;
 	std::array<vk::UniqueDescriptorSet, numGBuffers> _unbiasedReusePassFrameDescriptors;
-	vk::UniqueDescriptorSet _unbiasedReusePassSwRaytraceDescriptors;
 
 	ImGuiPass _imguiPass;
 
-	nvh::GltfScene _gltfScene;
-	SceneBuffers _sceneBuffers;
-
-	AabbTree _aabbTree;
-	AabbTreeBuffers _aabbTreeBuffers;
+	SdfSceneBuffers _sdfSceneBuffers;
 
 	float posThreshold = 0.1f;
 	float norThreshold = 25.0f;
@@ -240,14 +233,12 @@ protected:
 
 			_restirPass.staticDescriptorSet = _restirStaticDescriptor.get();
 			_restirPass.frameDescriptorSet = _restirFrameDescriptors[i].get();
-			_restirPass.raytraceDescriptorSet = _restirSoftwareRayTraceDescriptor.get();
 
 			_restirPass.bufferExtent = _swapchain.getImageExtent();
 			_restirPass.issueCommands(_mainCommandBuffers[i].get(), nullptr);
 
 			if (_unbiasedSpatialReuse) {
 				_unbiasedReusePass.frameDescriptorSet = _unbiasedReusePassFrameDescriptors[i].get();
-				_unbiasedReusePass.raytraceDescriptorSet = _unbiasedReusePassSwRaytraceDescriptors.get();
 				_unbiasedReusePass.bufferExtent = _swapchain.getImageExtent();
 				_unbiasedReusePass.issueCommands(_mainCommandBuffers[i].get());
 			} else {
@@ -293,9 +284,6 @@ protected:
 			_emissiveSampleBuffer.get(), _emissiveSampleBufferSize,
 			_restirUniformBuffer.get(), _device.get(), _restirStaticDescriptor.get()
 		);
-		_restirPass.initializeSoftwareRayTracingDescriptorSet(
-			_aabbTreeBuffers, _device.get(), _restirSoftwareRayTraceDescriptor.get()
-		);
 		for (std::size_t i = 0; i < numGBuffers; ++i) {
 			_restirPass.initializeFrameDescriptorSetFor(
 				_gBuffers[i], _gBuffers[(i + numGBuffers - 1) % numGBuffers],
@@ -313,9 +301,6 @@ protected:
 					_gBuffers[i], _restirUniformBuffer.get(),
 					_reservoirTemporaryBuffer.get(), _reservoirBuffers[i].get(), _reservoirBufferSize,
 					_unbiasedReusePassFrameDescriptors[i].get()
-				);
-				_unbiasedReusePass.initializeSoftwareRaytraceDescriptorSet(
-					_device.get(), _aabbTreeBuffers, _unbiasedReusePassSwRaytraceDescriptors.get()
 				);
 			} else {
 				_spatialReusePass.initializeDescriptorSetFor(

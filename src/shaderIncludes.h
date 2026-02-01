@@ -25,10 +25,8 @@ namespace shader {
 #define CPP_FUNCTION inline
 
 #include "shaders/include/common.glsl"
-#include "shaders/include/structs/aabbTree.glsl"
 #include "shaders/include/structs/lightingPassStructs.glsl"
 #include "shaders/include/structs/restirStructs.glsl"
-#include "shaders/include/structs/sceneStructs.glsl"
 #include "shaders/include/structs/light.glsl"
 
 #ifdef SHADER_DEFINE_INT_UB

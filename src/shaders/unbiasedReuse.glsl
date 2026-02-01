@@ -1,7 +1,3 @@
-#ifdef HARDWARE_RAY_TRACING
-#   extension GL_EXT_ray_tracing : enable
-#endif
-
 #include "include/structs/lightingPassStructs.glsl"
 #include "include/reservoir.glsl"
 #include "include/restirUtils.glsl"
@@ -23,24 +19,7 @@ layout (set = 0, binding = 7) uniform Restiruniforms {
 	RestirUniforms uniforms;
 };
 
-#ifdef HARDWARE_RAY_TRACING
-layout (location = 0) rayPayloadEXT bool isShadowed;
-layout (set = 1, binding = 0) uniform accelerationStructureEXT acc;
-#else
-#	include "include/structs/aabbTree.glsl"
-layout (set = 1, binding = 0) buffer AabbTree {
-	AabbTreeNode nodes[];
-} aabbTree;
-layout (set = 1, binding = 1) buffer Triangles {
-	Triangle triangles[];
-};
-
 layout (local_size_x = UNBIASED_REUSE_GROUP_SIZE_X, local_size_y = UNBIASED_REUSE_GROUP_SIZE_Y, local_size_z = 1) in;
-
-#	define NODE_BUFFER aabbTree
-#	define TRIANGLE_BUFFER triangles
-#	include "include/softwareRaytracing.glsl"
-#endif
 
 #include "include/visibilityTest.glsl"
 
@@ -48,12 +27,7 @@ layout (local_size_x = UNBIASED_REUSE_GROUP_SIZE_X, local_size_y = UNBIASED_REUS
 #define NUM_NEIGHBORS 3
 
 void main() {
-	uvec2 pixelCoord =
-#ifdef HARDWARE_RAY_TRACING
-		gl_LaunchIDEXT.xy;
-#else
-		gl_GlobalInvocationID.xy;
-#endif
+	uvec2 pixelCoord = gl_GlobalInvocationID.xy;
 	if (any(greaterThanEqual(pixelCoord, uniforms.screenSize))) {
 		return;
 	}

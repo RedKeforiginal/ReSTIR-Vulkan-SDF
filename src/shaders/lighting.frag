@@ -1,6 +1,5 @@
 #version 450
 
-#include "include/structs/aabbTree.glsl"
 #include "include/structs/lightingPassStructs.glsl"
 #include "include/gBufferDebugConstants.glsl"
 #include "include/rand.glsl"

@@ -27,16 +27,8 @@ VKAPI_ATTR VkBool32 VKAPI_CALL _debugCallback(
 }
 
 namespace {
-	bool validateAssets(const std::string& scene, const std::vector<std::string>& shaderPaths) {
+	bool validateAssets(const std::vector<std::string>& shaderPaths) {
 		bool ok = true;
-		if (scene.empty()) {
-			std::cerr << "Scene path is empty. Provide --scene <path>.\n";
-			ok = false;
-		} else if (!std::filesystem::exists(scene)) {
-			std::cerr << "Scene file does not exist: " << scene << "\n";
-			ok = false;
-		}
-
 		for (const auto& shaderPath : shaderPaths) {
 			if (!std::filesystem::exists(shaderPath)) {
 				std::cerr << "Shader file does not exist: " << shaderPath << "\n";
@@ -48,7 +40,7 @@ namespace {
 	}
 } // namespace
 
-App::App(std::string scene, bool ignorePointLights, bool enableValidation, bool validateAssetsFlag)
+App::App(bool enableValidation, bool validateAssetsFlag)
 	: _window({ { GLFW_CLIENT_API, GLFW_NO_API } }) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -101,7 +93,7 @@ App::App(std::string scene, bool ignorePointLights, bool enableValidation, bool 
 			"shaders/quad.vert.spv",
 			"shaders/lighting.frag.spv"
 		};
-		if (!validateAssets(scene, shaderPaths)) {
+		if (!validateAssets(shaderPaths)) {
 			std::abort();
 		}
 	};
@@ -293,11 +285,6 @@ App::App(std::string scene, bool ignorePointLights, bool enableValidation, bool 
 		_swapchain = Swapchain::create(_device.get(), _swapchainInfo);
 	}
 
-	loadScene(scene, _gltfScene);
-	if (ignorePointLights) {
-		_gltfScene.m_lights.clear();
-	}
-
 	{ // create descriptor pools
 		std::array<vk::DescriptorPoolSize, 5> staticPoolSizes{
 			vk::DescriptorPoolSize(vk::DescriptorType::eCombinedImageSampler, 100),
@@ -312,16 +299,6 @@ App::App(std::string scene, bool ignorePointLights, bool enableValidation, bool 
 			.setPoolSizes(staticPoolSizes)
 			.setMaxSets(100);
 		_staticDescriptorPool = _device->createDescriptorPoolUnique(staticPoolInfo);
-
-		std::array<vk::DescriptorPoolSize, 1> texturePoolSizes{
-			vk::DescriptorPoolSize(vk::DescriptorType::eCombinedImageSampler, static_cast<uint32_t>(3 * _gltfScene.m_materials.size()))
-		};
-		vk::DescriptorPoolCreateInfo texturePoolInfo;
-		texturePoolInfo
-			.setFlags(vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet)
-			.setPoolSizes(texturePoolSizes)
-			.setMaxSets(static_cast<uint32_t>(_gltfScene.m_materials.size()));
-		_textureDescriptorPool = _device->createDescriptorPoolUnique(texturePoolInfo);
 
 		// initialize imgui descriptor pool
 		// this is taken from official imgui example at https://github.com/ocornut/imgui/blob/master/examples/example_glfw_vulkan/main.cpp
@@ -352,16 +329,7 @@ App::App(std::string scene, bool ignorePointLights, bool enableValidation, bool 
 	_graphicsComputeQueue = _device->getQueue(_graphicsComputeQueueIndex, 0);
 	_presentQueue = _device->getQueue(_presentQueueIndex, 0);
 
-
-	_sceneBuffers = SceneBuffers::create(
-		_gltfScene,
-		_allocator, _transientCommandBufferPool,
-		_device.get(), _graphicsComputeQueue
-	);
-	std::cout << "Building AABB tree...";
-	_aabbTree = AabbTree::build(_gltfScene);
-	std::cout << " done\n";
-	_aabbTreeBuffers = AabbTreeBuffers::create(_aabbTree, _allocator);
+	_sdfSceneBuffers = SdfSceneBuffers::create(_allocator);
 
 
 	// create g buffer pass
@@ -508,14 +476,6 @@ App::App(std::string scene, bool ignorePointLights, bool enableValidation, bool 
 			.setSetLayouts(setLayout);
 		_restirStaticDescriptor = std::move(_device->allocateDescriptorSetsUnique(allocInfo)[0]);
 	}
-	{
-		vk::DescriptorSetLayout setLayout = _restirPass.getSoftwareRayTraceDescriptorSetLayout();
-		vk::DescriptorSetAllocateInfo allocInfo;
-		allocInfo
-			.setDescriptorPool(_staticDescriptorPool.get())
-			.setSetLayouts(setLayout);
-		_restirSoftwareRayTraceDescriptor = std::move(_device->allocateDescriptorSetsUnique(allocInfo)[0]);
-	}
 
 
 	_unbiasedReusePass = UnbiasedReusePass::create(_device.get());
@@ -530,12 +490,7 @@ App::App(std::string scene, bool ignorePointLights, bool enableValidation, bool 
 		std::move(newSets.begin(), newSets.end(), _unbiasedReusePassFrameDescriptors.begin());
 	}
 	{
-		vk::DescriptorSetLayout setLayout = _unbiasedReusePass.getSoftwareRaytraceDescriptorSetLayout();
-		vk::DescriptorSetAllocateInfo allocInfo;
-		allocInfo
-			.setDescriptorPool(_staticDescriptorPool.get())
-			.setSetLayouts(setLayout);
-		_unbiasedReusePassSwRaytraceDescriptors = std::move(_device->allocateDescriptorSetsUnique(allocInfo)[0]);
+		// SDF-only path: no software raytrace descriptor sets required.
 	}
 
 	_updateRestirBuffers();
