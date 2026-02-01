@@ -26,7 +26,7 @@ public:
 			.setDstAccessMask(vk::AccessFlagBits::eShaderRead);
 		buffer.pipelineBarrier(
 			vk::PipelineStageFlagBits::eComputeShader,
-			vk::PipelineStageFlagBits::eComputeShader | vk::PipelineStageFlagBits::eRayTracingShaderKHR,
+			vk::PipelineStageFlagBits::eComputeShader,
 			{}, barrier, {}, {}
 		);
 	}
