@@ -40,6 +40,7 @@ endif()
 
 target_compile_definitions(restir
 	PRIVATE
+		VULKAN_HPP_DISPATCH_LOADER_DYNAMIC
 #		RENDERDOC_CAPTURE
 		)
 

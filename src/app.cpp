@@ -1,3 +1,4 @@
+#define VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 #include "app.h"
 
 #include <cinttypes>
@@ -101,6 +102,7 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 			.setPEnabledExtensionNames(requiredExtensions)
 			.setPEnabledLayerNames(requiredLayers);
 		_instance = vk::createInstanceUnique(instanceInfo);
+		VULKAN_HPP_DEFAULT_DISPATCHER.init(_instance.get());
 	}
 
 	_dynamicDispatcher = vk::DispatchLoaderDynamic(_instance.get(), vkGetInstanceProcAddr);
@@ -236,6 +238,7 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 			.setPEnabledExtensionNames(requiredDeviceExtensions)
 			.setPNext(&features10);
 		_device = _physicalDevice.createDeviceUnique(deviceInfo);
+		VULKAN_HPP_DEFAULT_DISPATCHER.init(_device.get());
 		_dynamicDispatcher.init(_device.get());
 	}
 
