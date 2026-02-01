@@ -18,4 +18,7 @@
 - Rename/clean up remaining GLTF-era terminology in code (e.g., `VisibilityTestMethod::software` naming) to reflect SDF shadow marching.
 - Validate/tune SDF parameters and expose runtime controls (max steps, epsilon, max distance, scene transform) via UI and/or config.
 - The CMake target still compiles demo/simple shaders that are unused by the SDF rendering path.
+- Remove or quarantine legacy raster G-Buffer shader stages (`gBuffer.vert`, `gBuffer.frag`) now that the compute SDF G-Buffer is active.
+- Remove or quarantine unused GLTF/tinygltf third-party sources if they are no longer part of the build graph.
+- Drop `simple.vert/.frag` from asset validation lists once demo shaders are removed.
 - More work to be determined.
