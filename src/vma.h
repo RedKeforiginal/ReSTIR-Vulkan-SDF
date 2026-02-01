@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include <vulkan/vulkan.hpp>
+#include "vulkanConfig.h"
 
 #include <vk_mem_alloc.h>
 

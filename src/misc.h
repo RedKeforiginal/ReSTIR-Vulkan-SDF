@@ -7,7 +7,7 @@
 #include <optional>
 #include <random>
 
-#include <vulkan/vulkan.hpp>
+#include "vulkanConfig.h"
 
 #include <gltfscene.h>
 

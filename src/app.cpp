@@ -53,26 +53,11 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 	requiredExtensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 	requiredExtensions.emplace_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
 	std::vector<const char*> requiredDeviceExtensions{
-		VK_KHR_SWAPCHAIN_EXTENSION_NAME,
-#ifndef RENDERDOC_CAPTURE
-		VK_KHR_PIPELINE_LIBRARY_EXTENSION_NAME,
-		VK_KHR_DEFERRED_HOST_OPERATIONS_EXTENSION_NAME
-#endif
+		VK_KHR_SWAPCHAIN_EXTENSION_NAME
 	};
 	std::vector<const char*> requiredLayers{
 #ifndef NDEBUG
 		"VK_LAYER_KHRONOS_validation"
-#endif
-	};
-
-	vk::PhysicalDeviceRayTracingPipelineFeaturesKHR raytracingFeature;
-	raytracingFeature.setRayTracingPipeline(true);
-	vk::PhysicalDeviceAccelerationStructureFeaturesKHR accelerationStructureFeature;
-	accelerationStructureFeature.setAccelerationStructure(true);
-	std::vector<const char*> requiredDeviceRayTracingExtensions{
-#ifndef RENDERDOC_CAPTURE
-		VK_KHR_RAY_TRACING_PIPELINE_EXTENSION_NAME,
-		VK_KHR_ACCELERATION_STRUCTURE_EXTENSION_NAME,
 #endif
 	};
 
@@ -126,7 +111,6 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 	}
 
 	_dynamicDispatcher.init(_instance.get());
-	std::vector<void*> featureStructs; // VKRay
 	{ // pick physical device
 		auto physicalDevices = _instance->enumeratePhysicalDevices();
 		for (const vk::PhysicalDevice& dev : physicalDevices) {
@@ -145,20 +129,6 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 				);
 			if (!supportsExtensions) {
 				continue;
-			}
-
-			// #VKRay Extension Checking
-			bool supportsRTExtensions = checkSupport<&vk::ExtensionProperties::extensionName>(
-				requiredDeviceRayTracingExtensions, dev.enumerateDeviceExtensionProperties(),
-				"device extensions", "    "
-				);
-			if (supportsRTExtensions) {
-				featureStructs.emplace_back(&raytracingFeature);
-				featureStructs.emplace_back(&accelerationStructureFeature);
-				requiredDeviceExtensions.insert(
-					requiredDeviceExtensions.end(),
-					requiredDeviceRayTracingExtensions.begin(), requiredDeviceRayTracingExtensions.end()
-				);
 			}
 
 			_physicalDevice = dev;
@@ -205,26 +175,6 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 			.setBufferDeviceAddress(true);
 		features10.pNext = &features11;
 		features11.pNext = &features12;
-
-		struct ExtensionHeader { // Helper struct to link extensions together
-			vk::StructureType sType;
-			void* pNext;
-		};
-
-		// Use the feature2 chain to append extensions
-		if (!featureStructs.empty()) {
-			for (size_t i = 0; i < featureStructs.size(); i++) {
-				auto* header = reinterpret_cast<ExtensionHeader*>(featureStructs[i]);
-				header->pNext = i < featureStructs.size() - 1 ? featureStructs[i + 1] : nullptr;
-			}
-
-			ExtensionHeader* lastCoreFeature = (ExtensionHeader*)&features12;
-			while (lastCoreFeature->pNext != nullptr) {
-				lastCoreFeature = (ExtensionHeader*)lastCoreFeature->pNext;
-			}
-			lastCoreFeature->pNext = featureStructs[0];
-		}
-
 
 		std::array<float, 1> queuePriorities{ 1.0f };
 		std::vector<vk::DeviceQueueCreateInfo> queueInfos{
@@ -291,12 +241,11 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 	}
 
 	{ // create descriptor pools
-		std::array<vk::DescriptorPoolSize, 6> staticPoolSizes{
+		std::array<vk::DescriptorPoolSize, 5> staticPoolSizes{
 			vk::DescriptorPoolSize(vk::DescriptorType::eCombinedImageSampler, 100),
 			vk::DescriptorPoolSize(vk::DescriptorType::eStorageBuffer, 100),
 			vk::DescriptorPoolSize(vk::DescriptorType::eUniformBuffer, 100),
 			vk::DescriptorPoolSize(vk::DescriptorType::eUniformBufferDynamic, 100),
-			vk::DescriptorPoolSize(vk::DescriptorType::eAccelerationStructureKHR, 100),
 			vk::DescriptorPoolSize(vk::DescriptorType::eStorageImage, 100)
 		};
 		vk::DescriptorPoolCreateInfo staticPoolInfo;
@@ -351,12 +300,6 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 		_allocator, _transientCommandBufferPool,
 		_device.get(), _graphicsComputeQueue
 	);
-#ifndef RENDERDOC_CAPTURE
-	_sceneRtBuffers = SceneRaytraceBuffers::create(
-		_device.get(), _allocator, _transientCommandBufferPool, _graphicsComputeQueue,
-		_sceneBuffers, _gltfScene, _dynamicDispatcher
-	);
-#endif
 	std::cout << "Building AABB tree...";
 	_aabbTree = AabbTree::build(_gltfScene);
 	std::cout << " done\n";
@@ -488,11 +431,7 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 	_spatialReusePass.screenSize = _swapchain.getImageExtent();
 
 
-	// Hardware RT pass for visibility test
-	_restirPass = Pass::create<RestirPass>(_device.get(), _dynamicDispatcher);
-#ifndef RENDERDOC_CAPTURE
-	_restirPass.createShaderBindingTable(_device.get(), _allocator, _physicalDevice);
-#endif
+	_restirPass = Pass::create<RestirPass>(_device.get());
 	{
 		std::array<vk::DescriptorSetLayout, numGBuffers> setLayouts;
 		std::fill(setLayouts.begin(), setLayouts.end(), _restirPass.getFrameDescriptorSetLayout());
@@ -511,16 +450,6 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 			.setSetLayouts(setLayout);
 		_restirStaticDescriptor = std::move(_device->allocateDescriptorSetsUnique(allocInfo)[0]);
 	}
-#ifndef RENDERDOC_CAPTURE
-	{
-		vk::DescriptorSetLayout setLayout = _restirPass.getHardwareRayTraceDescriptorSetLayout();
-		vk::DescriptorSetAllocateInfo allocInfo;
-		allocInfo
-			.setDescriptorPool(_staticDescriptorPool.get())
-			.setSetLayouts(setLayout);
-		_restirHardwareRayTraceDescriptor = std::move(_device->allocateDescriptorSetsUnique(allocInfo)[0]);
-	}
-#endif
 	{
 		vk::DescriptorSetLayout setLayout = _restirPass.getSoftwareRayTraceDescriptorSetLayout();
 		vk::DescriptorSetAllocateInfo allocInfo;
@@ -531,11 +460,7 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 	}
 
 
-	_unbiasedReusePass = UnbiasedReusePass::create(_device.get(), _dynamicDispatcher);
-	_unbiasedReusePass.setDispatchLoaderDynamic(_dynamicDispatcher);
-#ifndef RENDERDOC_CAPTURE
-	_unbiasedReusePass.createShaderBindingTable(_device.get(), _allocator, _physicalDevice, _dynamicDispatcher);
-#endif
+	_unbiasedReusePass = UnbiasedReusePass::create(_device.get());
 	{
 		std::array<vk::DescriptorSetLayout, numGBuffers> setLayouts;
 		std::fill(setLayouts.begin(), setLayouts.end(), _unbiasedReusePass.getFrameDescriptorSetLayout());
@@ -546,16 +471,6 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 		auto newSets = _device->allocateDescriptorSetsUnique(allocInfo);
 		std::move(newSets.begin(), newSets.end(), _unbiasedReusePassFrameDescriptors.begin());
 	}
-#ifndef RENDERDOC_CAPTURE
-	{
-		vk::DescriptorSetLayout setLayout = _unbiasedReusePass.getHardwareRaytraceDescriptorSetLayout();
-		vk::DescriptorSetAllocateInfo allocInfo;
-		allocInfo
-			.setDescriptorPool(_staticDescriptorPool.get())
-			.setSetLayouts(setLayout);
-		_unbiasedReusePassHwRaytraceDescriptors = std::move(_device->allocateDescriptorSetsUnique(allocInfo)[0]);
-	}
-#endif
 	{
 		vk::DescriptorSetLayout setLayout = _unbiasedReusePass.getSoftwareRaytraceDescriptorSetLayout();
 		vk::DescriptorSetAllocateInfo allocInfo;
@@ -602,11 +517,8 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 		imguiInit.DescriptorPool = _imguiDescriptorPool.get();
 		imguiInit.MinImageCount = _swapchainInfo.minImageCount;
 		imguiInit.ImageCount = static_cast<uint32_t>(_swapchain.getImages().size());
-		ImGui_ImplVulkan_Init(&imguiInit, _imguiPass.getPass());
-	}
-	{
-		TransientCommandBuffer cmdBuffer = _transientCommandBufferPool.begin(_graphicsComputeQueue);
-		ImGui_ImplVulkan_CreateFontsTexture(cmdBuffer.get());
+		imguiInit.RenderPass = _imguiPass.getPass();
+		ImGui_ImplVulkan_Init(&imguiInit);
 	}
 
 	{ // create main command buffers
@@ -661,7 +573,7 @@ void App::updateGui() {
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::PushItemWidth(ImGui::GetContentRegionAvailWidth() / 2.0f);
+	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x / 2.0f);
 
 	const char* debugModes[]{
 		"None",
@@ -683,12 +595,7 @@ void App::updateGui() {
 
 	const char* visibilityTestMethods[]{
 		"Disabled",
-		"Software",
-#ifdef RENDERDOC_CAPTURE
-		"Hardware (Unavailable)"
-#else
-		"Hardware"
-#endif
+		"SDF"
 	};
 	_renderPathChanged = ImGui::Combo(
 		"Visibility Test", reinterpret_cast<int*>(&_visibilityTestMethod),

@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <vulkan/vulkan.hpp>
+#include "vulkanConfig.h"
 
 #include "glfwWindow.h"
 
