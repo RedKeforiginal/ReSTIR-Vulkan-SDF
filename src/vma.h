@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <cstdio>
+#include <stdio.h>
 
 #include "vulkanConfig.h"
 
