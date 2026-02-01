@@ -92,12 +92,18 @@ target_include_directories(imgui
 		"${IMGUI_DIR}"
 		"${IMGUI_DIR}/backends")
 target_link_libraries(imgui PUBLIC glfw Vulkan::Vulkan)
-find_package(gflags CONFIG REQUIRED)
+option(RESTIR_USE_BUNDLED_GFLAGS "Use bundled gflags from thirdparty/gflags-2.3.0" ON)
+if(RESTIR_USE_BUNDLED_GFLAGS)
+	set(GFLAGS_IS_SUBPROJECT TRUE)
+	add_subdirectory("thirdparty/gflags-2.3.0")
+else()
+	find_package(gflags CONFIG REQUIRED)
+endif()
 add_subdirectory("thirdparty/MikkTSpace/")
 add_subdirectory("thirdparty/gltf/")
 
 
-target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui MikkTSpace gltf gflags_shared)
+target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui MikkTSpace gltf gflags::gflags)
 
 target_include_directories(restir
 	PRIVATE
