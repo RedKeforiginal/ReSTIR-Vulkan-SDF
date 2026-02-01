@@ -16,9 +16,6 @@ public:
 	[[nodiscard]] vk::DescriptorSetLayout getFrameDescriptorSetLayout() const {
 		return _frameDescriptorSetLayout.get();
 	}
-	[[nodiscard]] vk::DescriptorSetLayout getSoftwareRayTraceDescriptorSetLayout() const {
-		return _swRayTraceDescriptorSetLayout.get();
-	}
 
 	void freeDeviceMemory(vk::Device dev)
 	{
@@ -38,7 +35,7 @@ public:
 		commandBuffer.bindPipeline(vk::PipelineBindPoint::eCompute, getPipelines()[0].get());
 		commandBuffer.bindDescriptorSets(
 			vk::PipelineBindPoint::eCompute, _swPipelineLayout.get(), 0,
-			{ staticDescriptorSet, frameDescriptorSet, raytraceDescriptorSet }, {}
+			{ staticDescriptorSet, frameDescriptorSet }, {}
 		);
 		commandBuffer.dispatch(
 			ceilDiv<uint32_t>(bufferExtent.width, OMNI_GROUP_SIZE_X),
@@ -117,29 +114,8 @@ public:
 		device.updateDescriptorSets(writes, {});
 	}
 
-	void initializeSoftwareRayTracingDescriptorSet(const AabbTreeBuffers &treeBuffers, vk::Device dev, vk::DescriptorSet set) {
-		std::array<vk::WriteDescriptorSet, 2> writes;
-		vk::DescriptorBufferInfo nodeInfo(treeBuffers.nodeBuffer.get(), 0, treeBuffers.nodeBufferSize);
-		vk::DescriptorBufferInfo triangleInfo(treeBuffers.triangleBuffer.get(), 0, treeBuffers.triangleBufferSize);
-
-		writes[0]
-			.setDstSet(set)
-			.setDstBinding(0)
-			.setDescriptorType(vk::DescriptorType::eStorageBuffer)
-			.setBufferInfo(nodeInfo);
-		writes[1]
-			.setDstSet(set)
-			.setDstBinding(1)
-			.setDescriptorType(vk::DescriptorType::eStorageBuffer)
-			.setBufferInfo(triangleInfo);
-
-		dev.updateDescriptorSets(writes, {});
-	}
-
-
 	vk::DescriptorSet staticDescriptorSet;
 	vk::DescriptorSet frameDescriptorSet;
-	vk::DescriptorSet raytraceDescriptorSet;
 
 	vk::Extent2D bufferExtent;
 protected:
@@ -149,7 +125,6 @@ protected:
 	vk::UniquePipelineLayout _swPipelineLayout;
 	vk::UniqueDescriptorSetLayout _staticDescriptorSetLayout;
 	vk::UniqueDescriptorSetLayout _frameDescriptorSetLayout;
-	vk::UniqueDescriptorSetLayout _swRayTraceDescriptorSetLayout;
 
 	[[nodiscard]] vk::UniqueRenderPass _createPass(vk::Device) override {
 		return {};
@@ -211,16 +186,8 @@ protected:
 		_frameDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(frameDescriptorInfo);
 
 
-		std::array<vk::DescriptorSetLayoutBinding, 2> swRayTraceBindings{
-			vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eStorageBuffer, 1, vk::ShaderStageFlagBits::eCompute),
-			vk::DescriptorSetLayoutBinding(1, vk::DescriptorType::eStorageBuffer, 1, vk::ShaderStageFlagBits::eCompute)
-		};
-		vk::DescriptorSetLayoutCreateInfo swRayTraceLayoutInfo;
-		swRayTraceLayoutInfo.setBindings(swRayTraceBindings);
-		_swRayTraceDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(swRayTraceLayoutInfo);
-
-		std::array<vk::DescriptorSetLayout, 3> swDescriptorLayouts{
-			_staticDescriptorSetLayout.get(), _frameDescriptorSetLayout.get(), _swRayTraceDescriptorSetLayout.get()
+		std::array<vk::DescriptorSetLayout, 2> swDescriptorLayouts{
+			_staticDescriptorSetLayout.get(), _frameDescriptorSetLayout.get()
 		};
 
 		vk::PipelineLayoutCreateInfo swPipelineLayoutInfo;

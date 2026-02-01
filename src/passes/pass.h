@@ -6,8 +6,6 @@
 
 #include "../misc.h"
 
-class SceneBuffers;
-
 class Pass {
 public:
 	Pass(Pass&&) = default;

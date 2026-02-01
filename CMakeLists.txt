@@ -56,8 +56,6 @@ target_sources(restir
 		"src/passes/pass.h"
 		"src/passes/restirPass.h"
 		"src/passes/spatialReusePass.h"
-		"src/aabbTreeBuilder.cpp"
-		"src/aabbTreeBuilder.h"
 		"src/app.cpp"
 		"src/app.h"
 		"src/camera.h"
@@ -67,8 +65,8 @@ target_sources(restir
 		"src/main.cpp"
 		"src/misc.cpp"
 		"src/misc.h"
-		"src/sceneBuffers.h"
 		"src/shaderIncludes.h"
+		"src/sdfSceneBuffers.h"
 		"src/swapchain.cpp"
 		"src/swapchain.h"
 		"src/transientCommandBuffer.h"
@@ -103,17 +101,15 @@ else()
 	find_package(gflags CONFIG REQUIRED)
 endif()
 add_subdirectory("thirdparty/MikkTSpace/")
-add_subdirectory("thirdparty/gltf/")
 
 
-target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui gltf MikkTSpace gflags::gflags)
+target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui MikkTSpace gflags::gflags)
 
 target_include_directories(restir
 	PRIVATE
 		"${CMAKE_CURRENT_SOURCE_DIR}/src"
 		"thirdparty/nvmath/"
-		"thirdparty/VulkanMemoryAllocator/src/"
-		"thirdparty/tinygltf/")
+		"thirdparty/VulkanMemoryAllocator/src/")
 
 add_shader(restir "src/shaders/simple.vert")
 add_shader(restir "src/shaders/simple.frag")

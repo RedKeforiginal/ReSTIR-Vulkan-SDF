@@ -5,11 +5,8 @@
 #include <filesystem>
 #include <iostream>
 #include <optional>
-#include <random>
 
 #include "vulkanConfig.h"
-
-#include <gltfscene.h>
 
 #include "transientCommandBuffer.h"
 #include "shaderIncludes.h"
@@ -119,24 +116,3 @@ vma::UniqueImage loadTexture(
 	const unsigned char *data, uint32_t width, uint32_t height, vk::Format, uint32_t mipLevels,
 	vma::Allocator&, TransientCommandBufferPool&, vk::Queue
 );
-
-vma::UniqueImage loadTexture(
-	const tinygltf::Image&, vk::Format, uint32_t mipLevels,
-	vma::Allocator&, TransientCommandBufferPool&, vk::Queue
-);
-
-
-// gltf utilities
-void loadScene(const std::string& filename, nvh::GltfScene& m_gltfScene);
-
-[[nodiscard]] std::vector<shader::pointLight> collectPointLightsFromScene(const nvh::GltfScene&);
-[[nodiscard]] std::vector<shader::pointLight> generateRandomPointLights(
-	std::size_t count, nvmath::vec3 min, nvmath::vec3 max,
-	std::uniform_real_distribution<float> distR = std::uniform_real_distribution<float>(0.0f, 1.0f),
-	std::uniform_real_distribution<float> distG = std::uniform_real_distribution<float>(0.0f, 1.0f),
-	std::uniform_real_distribution<float> distB = std::uniform_real_distribution<float>(0.0f, 1.0f)
-);
-
-[[nodiscard]] std::vector<shader::triLight> collectTriangleLightsFromScene(const nvh::GltfScene&);
-
-[[nodiscard]] std::vector<shader::aliasTableColumn> createAliasTable(std::vector<shader::pointLight>& ptLights, std::vector<shader::triLight>& triLights);
