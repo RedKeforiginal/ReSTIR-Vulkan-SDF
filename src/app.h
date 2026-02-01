@@ -19,8 +19,7 @@
 
 enum class VisibilityTestMethod {
 	disabled,
-	software,
-	hardware
+	software
 };
 
 class App {
@@ -100,7 +99,6 @@ protected:
 	vk::UniqueDescriptorPool _staticDescriptorPool;
 	vk::UniqueDescriptorPool _textureDescriptorPool;
 	vk::UniqueDescriptorPool _imguiDescriptorPool;
-	vk::UniqueDescriptorPool _rtDescriptorPool;
 	TransientCommandBufferPool _transientCommandBufferPool;
 
 	std::vector<uint32_t> _swapchainSharedQueues;
@@ -137,19 +135,16 @@ protected:
 	RestirPass _restirPass;
 	std::array<vk::UniqueDescriptorSet, numGBuffers> _restirFrameDescriptors;
 	vk::UniqueDescriptorSet _restirStaticDescriptor;
-	vk::UniqueDescriptorSet _restirHardwareRayTraceDescriptor;
 	vk::UniqueDescriptorSet _restirSoftwareRayTraceDescriptor;
 
 	UnbiasedReusePass _unbiasedReusePass;
 	std::array<vk::UniqueDescriptorSet, numGBuffers> _unbiasedReusePassFrameDescriptors;
 	vk::UniqueDescriptorSet _unbiasedReusePassSwRaytraceDescriptors;
-	vk::UniqueDescriptorSet _unbiasedReusePassHwRaytraceDescriptors;
 
 	ImGuiPass _imguiPass;
 
 	nvh::GltfScene _gltfScene;
 	SceneBuffers _sceneBuffers;
-	SceneRaytraceBuffers _sceneRtBuffers;
 
 	AabbTree _aabbTree;
 	AabbTreeBuffers _aabbTreeBuffers;
@@ -171,7 +166,7 @@ protected:
 	int _debugMode = GBUFFER_DEBUG_NONE;
 	float _gamma = 1.0f;
 	int _log2InitialLightSamples = 5;
-	VisibilityTestMethod _visibilityTestMethod = VisibilityTestMethod::hardware;
+	VisibilityTestMethod _visibilityTestMethod = VisibilityTestMethod::software;
 	bool _enableTemporalReuse = true;
 	int _temporalReuseSampleMultiplier = 20;
 	int _spatialReuseIterations = 1;
@@ -245,32 +240,16 @@ protected:
 
 			_restirPass.staticDescriptorSet = _restirStaticDescriptor.get();
 			_restirPass.frameDescriptorSet = _restirFrameDescriptors[i].get();
-#ifdef RENDERDOC_CAPTURE
-			_restirPass.useSoftwareRayTracing = true;
-#else
-			_restirPass.useSoftwareRayTracing = _visibilityTestMethod != VisibilityTestMethod::hardware;
-#endif
-			_restirPass.raytraceDescriptorSet =
-				_restirPass.useSoftwareRayTracing ?
-				_restirSoftwareRayTraceDescriptor.get() :
-				_restirHardwareRayTraceDescriptor.get();
+			_restirPass.raytraceDescriptorSet = _restirSoftwareRayTraceDescriptor.get();
 
 			_restirPass.bufferExtent = _swapchain.getImageExtent();
 			_restirPass.issueCommands(_mainCommandBuffers[i].get(), nullptr);
 
 			if (_unbiasedSpatialReuse) {
 				_unbiasedReusePass.frameDescriptorSet = _unbiasedReusePassFrameDescriptors[i].get();
-#ifdef RENDERDOC_CAPTURE
-				_unbiasedReusePass.useSoftwareRayTracing = true;
-#else
-				_unbiasedReusePass.useSoftwareRayTracing = _visibilityTestMethod != VisibilityTestMethod::hardware;
-#endif
-				_unbiasedReusePass.raytraceDescriptorSet =
-					_unbiasedReusePass.useSoftwareRayTracing ?
-					_unbiasedReusePassSwRaytraceDescriptors.get() :
-					_unbiasedReusePassHwRaytraceDescriptors.get();
+				_unbiasedReusePass.raytraceDescriptorSet = _unbiasedReusePassSwRaytraceDescriptors.get();
 				_unbiasedReusePass.bufferExtent = _swapchain.getImageExtent();
-				_unbiasedReusePass.issueCommands(_mainCommandBuffers[i].get(), _dynamicDispatcher);
+				_unbiasedReusePass.issueCommands(_mainCommandBuffers[i].get());
 			} else {
 				for (int j = 0; j < _spatialReuseIterations; ++j) {
 					_spatialReusePass.descriptorSet = _spatialReuseDescriptors[i].get();
@@ -314,11 +293,6 @@ protected:
 			_emissiveSampleBuffer.get(), _emissiveSampleBufferSize,
 			_restirUniformBuffer.get(), _device.get(), _restirStaticDescriptor.get()
 		);
-#ifndef RENDERDOC_CAPTURE
-		_restirPass.initializeHardwareRayTracingDescriptorSet(
-			_sceneRtBuffers, _device.get(), _restirHardwareRayTraceDescriptor.get()
-		);
-#endif
 		_restirPass.initializeSoftwareRayTracingDescriptorSet(
 			_aabbTreeBuffers, _device.get(), _restirSoftwareRayTraceDescriptor.get()
 		);
@@ -343,11 +317,6 @@ protected:
 				_unbiasedReusePass.initializeSoftwareRaytraceDescriptorSet(
 					_device.get(), _aabbTreeBuffers, _unbiasedReusePassSwRaytraceDescriptors.get()
 				);
-#ifndef RENDERDOC_CAPTURE
-				_unbiasedReusePass.initializeHardwareRaytraceDescriptorSet(
-					_device.get(), _sceneRtBuffers, _unbiasedReusePassHwRaytraceDescriptors.get()
-				);
-#endif
 			} else {
 				_spatialReusePass.initializeDescriptorSetFor(
 					_gBuffers[i], _restirUniformBuffer.get(), _reservoirBuffers[i].get(), _reservoirBufferSize,

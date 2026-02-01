@@ -125,12 +125,6 @@ add_shader(restir "src/shaders/emissiveSample.comp")
 add_shader(restir "src/shaders/quad.vert")
 add_shader(restir "src/shaders/lighting.frag")
 
-add_shader(restir "src/shaders/hwVisibilityTest.rchit")
-add_shader(restir "src/shaders/hwVisibilityTest.rmiss")
-add_shader(restir "src/shaders/hwVisibilityTestShadow.rmiss")
-
-add_shader(restir "src/shaders/restirOmniHardware.rgen")
 add_shader(restir "src/shaders/restirOmniSoftware.comp")
 
-add_shader(restir "src/shaders/unbiasedReuseHardware.rgen")
 add_shader(restir "src/shaders/unbiasedReuseSoftware.comp")
