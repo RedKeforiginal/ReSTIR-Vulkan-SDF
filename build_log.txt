@@ -1,5 +1,3 @@
-Microsoft Windows [Version 10.0.19045.6466]
-(c) Microsoft Corporation. All rights reserved.
 
 C:\Coding\Github\ReSTIR-Vulkan-SDF>build_mingw.bat
 -- The C compiler identification is GNU 14.2.0
@@ -44,7 +42,7 @@ C:\Coding\Github\ReSTIR-Vulkan-SDF>build_mingw.bat
 -- Check size of uint32_t - done
 -- Looking for strtoll
 -- Looking for strtoll - found
--- Configuring done (10.9s)
+-- Configuring done (10.6s)
 -- Generating done (0.2s)
 -- Build files have been written to: C:/Coding/Github/ReSTIR-Vulkan-SDF/build/mingw
 [  1%] Building CXX object thirdparty/gltf/CMakeFiles/gltf.dir/gltfscene.cpp.obj
@@ -1521,10 +1519,5 @@ C:/Coding/Github/ReSTIR-Vulkan-SDF/thirdparty/nvmath/nvmath_types.h:646:15: warn
   646 |   matrix4(int one) { identity(); }
       |           ~~~~^~~
 [100%] Linking CXX executable restir.exe
-C:/Coding/Github/ReSTIR-Vulkan-SDF/toolchain/MinGW/bin/../lib/gcc/x86_64-w64-mingw32/14.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: CMakeFiles\restir.dir/objects.a(gBufferPass.cpp.obj):gBufferPass.cp:(.rdata$.refptr._ZN2vk6detail28defaultDispatchLoaderDynamicE[.refptr._ZN2vk6detail28defaultDispatchLoaderDynamicE]+0x0): undefined reference to `vk::detail::defaultDispatchLoaderDynamic'
-collect2.exe: error: ld returned 1 exit status
-mingw32-make[2]: *** [CMakeFiles\restir.dir\build.make:643: restir.exe] Error 1
-mingw32-make[1]: *** [CMakeFiles\Makefile2:228: CMakeFiles/restir.dir/all] Error 2
-mingw32-make: *** [Makefile:135: all] Error 2
-
-C:\Coding\Github\ReSTIR-Vulkan-SDF>
+[100%] Built target restir
+[100%] Built target docs
