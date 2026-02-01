@@ -111,6 +111,7 @@ protected:
 	GBuffer _gBuffers[2];
 	GBufferPass _gBufferPass;
 	GBufferPass::Resources _gBufferResources;
+	std::array<vk::UniqueDescriptorSet, numGBuffers> _gBufferImageDescriptors;
 
 	EmissiveSamplePass _emissiveSamplePass;
 	vk::UniqueDescriptorSet _emissiveSampleDescriptor;
@@ -185,7 +186,7 @@ protected:
 
 	void _transitionGBufferLayouts() {
 		TransientCommandBuffer cmdBuf = _transientCommandBufferPool.begin(_graphicsComputeQueue);
-		for (std::size_t i = 1; i < numGBuffers; ++i) {
+		for (std::size_t i = 0; i < numGBuffers; ++i) {
 			transitionImageLayout(
 				cmdBuf.get(), _gBuffers[i].getAlbedoBuffer(), GBuffer::Formats::get().albedo,
 				vk::ImageLayout::eUndefined, vk::ImageLayout::eShaderReadOnlyOptimal
@@ -209,11 +210,36 @@ protected:
 		}
 	}
 
+	void _initializeGBufferImageDescriptors() {
+		for (std::size_t i = 0; i < numGBuffers; ++i) {
+			std::array<vk::DescriptorImageInfo, 5> imageInfo{
+				vk::DescriptorImageInfo({}, _gBuffers[i].getAlbedoView(), vk::ImageLayout::eGeneral),
+				vk::DescriptorImageInfo({}, _gBuffers[i].getNormalView(), vk::ImageLayout::eGeneral),
+				vk::DescriptorImageInfo({}, _gBuffers[i].getMaterialPropertiesView(), vk::ImageLayout::eGeneral),
+				vk::DescriptorImageInfo({}, _gBuffers[i].getWorldPositionView(), vk::ImageLayout::eGeneral),
+				vk::DescriptorImageInfo({}, _gBuffers[i].getDepthView(), vk::ImageLayout::eGeneral)
+			};
+
+			std::array<vk::WriteDescriptorSet, 5> writes{};
+			for (std::size_t j = 0; j < writes.size(); ++j) {
+				writes[j]
+					.setDstSet(_gBufferImageDescriptors[i].get())
+					.setDstBinding(static_cast<uint32_t>(j))
+					.setDescriptorType(vk::DescriptorType::eStorageImage)
+					.setImageInfo(imageInfo[j]);
+			}
+
+			_device->updateDescriptorSets(writes, {});
+		}
+	}
+
 	void _recordMainCommandBuffers() {
 		for (std::size_t i = 0; i < numGBuffers; ++i) {
 			vk::CommandBufferBeginInfo beginInfo;
 			_mainCommandBuffers[i]->begin(beginInfo);
 
+			_gBufferPass.imageDescriptorSet = _gBufferImageDescriptors[i].get();
+			_gBufferPass.targetGBuffer = &_gBuffers[i];
 			_gBufferPass.issueCommands(_mainCommandBuffers[i].get(), _gBuffers[i].getFramebuffer());
 
 			_mainCommandBuffers[i]->fillBuffer(_emissiveSampleBuffer.get(), 0, sizeof(uint32_t), 0);
