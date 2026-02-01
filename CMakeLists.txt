@@ -73,13 +73,10 @@ target_sources(restir
 		"src/swapchain.h"
 		"src/transientCommandBuffer.h"
 		"src/vulkanDispatch.cpp"
+		"src/vulkanDispatchStorage.cpp"
 		"src/shader.h"
 		"src/vma.cpp"
 		"src/vma.h")
-
-set_source_files_properties("src/vulkanDispatch.cpp"
-	PROPERTIES
-		COMPILE_DEFINITIONS VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE)
 
 
 find_package(Vulkan REQUIRED)
