@@ -72,6 +72,7 @@ target_sources(restir
 		"src/swapchain.cpp"
 		"src/swapchain.h"
 		"src/transientCommandBuffer.h"
+		"src/vulkanDispatch.cpp"
 		"src/shader.h"
 		"src/vma.cpp"
 		"src/vma.h")
@@ -104,7 +105,7 @@ add_subdirectory("thirdparty/MikkTSpace/")
 add_subdirectory("thirdparty/gltf/")
 
 
-target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui MikkTSpace gltf gflags::gflags)
+target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui gltf MikkTSpace gflags::gflags)
 
 target_include_directories(restir
 	PRIVATE

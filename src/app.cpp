@@ -1,4 +1,3 @@
-#define VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 #include "app.h"
 
 #include <cinttypes>

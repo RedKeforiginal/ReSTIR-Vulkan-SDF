@@ -1,4 +1,6 @@
 // this file also hosts vma definitions
+#include <cstdio>
+
 #define VMA_IMPLEMENTATION
 #include <vk_mem_alloc.h>
 
