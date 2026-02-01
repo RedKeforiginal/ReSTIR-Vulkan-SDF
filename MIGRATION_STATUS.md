@@ -16,6 +16,5 @@
 - Remove or refactor demo/simple pipeline assets that are no longer part of the SDF runtime (e.g., `demoPass.h`, `simple.vert/frag`, `vertex.h`) once confirmed unused.
 - Update `README.md` to describe the SDF scene pipeline instead of GLTF loading, including the removal of `-scene`/`-ignore_point_lights` references and tinygltf mentions.
 - Rename/clean up remaining GLTF-era terminology in code (e.g., `VisibilityTestMethod::software` naming) to reflect SDF shadow marching.
-- Validate/tune SDF parameters and expose runtime controls (max steps, epsilon, max distance, scene transform) via UI and/or config.
 - The CMake target still compiles demo/simple shaders that are unused by the SDF rendering path.
 - More work to be determined.
