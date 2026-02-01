@@ -48,8 +48,8 @@ namespace vma {
 			vkCheck(vmaMapMemory(_getAllocator(), _allocation, &mapped));
 			return mapped;
 		}
-		template <typename T> T *mapAs() {
-			return static_cast<T*>(map());
+		template <typename U> U *mapAs() {
+			return static_cast<U*>(map());
 		}
 		void unmap() {
 			vmaUnmapMemory(_getAllocator(), _allocation);
