@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdlib>
+
 #include "vulkanConfig.h"
 
 #include "misc.h"
@@ -24,6 +26,14 @@ public:
 		vk::Device dev, const std::filesystem::path &path
 	) {
 		std::vector<char> binary = readFile(path);
+		if (binary.empty()) {
+			std::cerr << "Shader binary is empty: " << path << "\n";
+			std::abort();
+		}
+		if (binary.size() % sizeof(uint32_t) != 0) {
+			std::cerr << "Shader binary size is not 4-byte aligned: " << path << "\n";
+			std::abort();
+		}
 
 		vk::ShaderModuleCreateInfo shaderInfo;
 		shaderInfo

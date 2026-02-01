@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include <iostream>
 #include <random>
 #include <queue>
 
@@ -11,10 +12,21 @@
 
 std::vector<char> readFile(const std::filesystem::path &path) {
 	std::ifstream fin(path, std::ios::ate | std::ios::binary);
+	if (!fin.is_open()) {
+		std::cerr << "Failed to open file: " << path << "\n";
+		return {};
+	}
 	std::streampos size = fin.tellg();
+	if (size <= 0) {
+		std::cerr << "File is empty or unreadable: " << path << "\n";
+		return {};
+	}
 	std::vector<char> result(static_cast<std::size_t>(size));
 	fin.seekg(0);
-	fin.read(result.data(), size);
+	if (!fin.read(result.data(), size)) {
+		std::cerr << "Failed to read file: " << path << "\n";
+		return {};
+	}
 	return result;
 }
 
@@ -311,7 +323,14 @@ void loadScene(const std::string& filename, nvh::GltfScene& m_gltfScene) {
 	tinygltf::TinyGLTF tcontext;
 	std::string        warn, error;
 	if (!tcontext.LoadASCIIFromFile(&tmodel, &error, &warn, filename)) {
-		assert(!"Error while loading scene");
+		std::cerr << "Failed to load scene: " << filename << "\n";
+		if (!warn.empty()) {
+			std::cerr << "Scene load warning: " << warn << "\n";
+		}
+		if (!error.empty()) {
+			std::cerr << "Scene load error: " << error << "\n";
+		}
+		std::abort();
 	}
 	m_gltfScene.importDrawableNodes(tmodel, nvh::GltfAttributes::Normal | nvh::GltfAttributes::Texcoord_0 | nvh::GltfAttributes::Color_0 | nvh::GltfAttributes::Tangent);
 	m_gltfScene.importMaterials(tmodel);

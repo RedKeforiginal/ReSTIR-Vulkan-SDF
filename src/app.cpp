@@ -1,6 +1,8 @@
 #include "app.h"
 
+#include <algorithm>
 #include <cinttypes>
+#include <filesystem>
 #include <sstream>
 
 #include <imgui.h>
@@ -24,7 +26,30 @@ VKAPI_ATTR VkBool32 VKAPI_CALL _debugCallback(
 	return VK_FALSE;
 }
 
-App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_API, GLFW_NO_API } }) {
+namespace {
+	bool validateAssets(const std::string& scene, const std::vector<std::string>& shaderPaths) {
+		bool ok = true;
+		if (scene.empty()) {
+			std::cerr << "Scene path is empty. Provide --scene <path>.\n";
+			ok = false;
+		} else if (!std::filesystem::exists(scene)) {
+			std::cerr << "Scene file does not exist: " << scene << "\n";
+			ok = false;
+		}
+
+		for (const auto& shaderPath : shaderPaths) {
+			if (!std::filesystem::exists(shaderPath)) {
+				std::cerr << "Shader file does not exist: " << shaderPath << "\n";
+				ok = false;
+			}
+		}
+
+		return ok;
+	}
+} // namespace
+
+App::App(std::string scene, bool ignorePointLights, bool enableValidation, bool validateAssetsFlag)
+	: _window({ { GLFW_CLIENT_API, GLFW_NO_API } }) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	// the callbacks are installed here but they're overriden below, so we still need to manually call those
@@ -48,30 +73,64 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 		_camera.recomputeAttributes();
 	}
 
+	bool enableValidationActive = enableValidation;
 	std::vector<const char*> requiredExtensions = glfw::getRequiredInstanceExtensions();
-	requiredExtensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+	if (enableValidationActive) {
+		requiredExtensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+	}
 	requiredExtensions.emplace_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
 	std::vector<const char*> requiredDeviceExtensions{
 		VK_KHR_SWAPCHAIN_EXTENSION_NAME
 	};
 	std::vector<const char*> requiredLayers{
-#ifndef NDEBUG
-		"VK_LAYER_KHRONOS_validation"
-#endif
+	};
+	if (enableValidationActive) {
+		requiredLayers.emplace_back("VK_LAYER_KHRONOS_validation");
+	}
+
+	if (validateAssetsFlag) {
+		const std::vector<std::string> shaderPaths{
+			"shaders/simple.vert.spv",
+			"shaders/simple.frag.spv",
+			"shaders/restirOmniSoftware.comp.spv",
+			"shaders/unbiasedReuseSoftware.comp.spv",
+			"shaders/emissiveSample.comp.spv",
+			"shaders/gBuffer.vert.spv",
+			"shaders/gBuffer.frag.spv",
+			"shaders/spatialReuse.comp.spv",
+			"shaders/quad.vert.spv",
+			"shaders/lighting.frag.spv"
+		};
+		if (!validateAssets(scene, shaderPaths)) {
+			std::abort();
+		}
 	};
 
 	{ // check extension & layer support
 		bool supportsExtensions = checkSupport<&vk::ExtensionProperties::extensionName>(
 			requiredExtensions, vk::enumerateInstanceExtensionProperties(), "extensions"
+		);
+		if (!supportsExtensions && enableValidationActive) {
+			std::cerr << "Validation extensions are not supported, disabling validation.\n";
+			enableValidationActive = false;
+			requiredExtensions.erase(
+				std::remove(requiredExtensions.begin(), requiredExtensions.end(), VK_EXT_DEBUG_UTILS_EXTENSION_NAME),
+				requiredExtensions.end()
 			);
+			supportsExtensions = checkSupport<&vk::ExtensionProperties::extensionName>(
+				requiredExtensions, vk::enumerateInstanceExtensionProperties(), "extensions"
+			);
+		}
 		if (!supportsExtensions) {
 			std::abort();
 		}
 		bool supportsLayers = checkSupport<&vk::LayerProperties::layerName>(
 			requiredLayers, vk::enumerateInstanceLayerProperties(), "layers"
-			);
-		if (!supportsLayers) {
-			std::abort();
+		);
+		if (!supportsLayers && enableValidationActive) {
+			std::cerr << "Validation layers are not supported, disabling validation.\n";
+			enableValidationActive = false;
+			requiredLayers.clear();
 		}
 	}
 
@@ -91,7 +150,7 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 
 	_dynamicDispatcher = vk::detail::DispatchLoaderDynamic(_instance.get(), vkGetInstanceProcAddr);
 
-	{ // create debug messanger
+	if (enableValidationActive) {
 		vk::DebugUtilsMessengerCreateInfoEXT messangerInfo;
 		messangerInfo
 			.setMessageSeverity(
