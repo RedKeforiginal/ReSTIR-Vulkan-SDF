@@ -114,8 +114,7 @@ target_include_directories(restir
 add_shader(restir "src/shaders/simple.vert")
 add_shader(restir "src/shaders/simple.frag")
 
-add_shader(restir "src/shaders/gBuffer.vert")
-add_shader(restir "src/shaders/gBuffer.frag")
+add_shader(restir "src/shaders/gBuffer.comp")
 
 add_shader(restir "src/shaders/spatialReuse.comp")
 add_shader(restir "src/shaders/emissiveSample.comp")

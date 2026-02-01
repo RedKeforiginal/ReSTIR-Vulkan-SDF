@@ -22,25 +22,22 @@ void GBuffer::resize(vma::Allocator &allocator, vk::Device device, vk::Extent2D 
 
 	const Formats &formats = Formats::get();
 
+	vk::ImageUsageFlags storageUsage = vk::ImageUsageFlagBits::eStorage | vk::ImageUsageFlagBits::eSampled;
+
 	_albedoBuffer = allocator.createImage2D(
-		extent, formats.albedo,
-		vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled
+		extent, formats.albedo, storageUsage
 	);
 	_normalBuffer = allocator.createImage2D(
-		extent, formats.normal,
-		vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled
+		extent, formats.normal, storageUsage
 	);
 	_materialPropertiesBuffer = allocator.createImage2D(
-		extent, formats.materialProperties,
-		vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled
+		extent, formats.materialProperties, storageUsage
 	);
 	_worldPosBuffer = allocator.createImage2D(
-		extent, formats.worldPosition,
-		vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled
+		extent, formats.worldPosition, storageUsage
 	);
 	_depthBuffer = allocator.createImage2D(
-		extent, formats.depth,
-		vk::ImageUsageFlagBits::eDepthStencilAttachment | vk::ImageUsageFlagBits::eSampled
+		extent, formats.depth, storageUsage
 	);
 
 	_albedoView = createImageView2D(
@@ -59,51 +56,49 @@ void GBuffer::resize(vma::Allocator &allocator, vk::Device device, vk::Extent2D 
 		device, _depthBuffer.get(), formats.depth, formats.depthAspect
 	);
 
-	std::array<vk::ImageView, 5> attachments{
-		_albedoView.get(), _normalView.get(), _materialPropertiesView.get(), _worldPosView.get(), _depthView.get()
-	};
-	vk::FramebufferCreateInfo framebufferInfo;
-	framebufferInfo
-		.setRenderPass(pass.getPass())
-		.setAttachments(attachments)
-		.setWidth(extent.width)
-		.setHeight(extent.height)
-		.setLayers(1);
-	_framebuffer = device.createFramebufferUnique(framebufferInfo);
+	if (pass.getPass()) {
+		std::array<vk::ImageView, 5> attachments{
+			_albedoView.get(), _normalView.get(), _materialPropertiesView.get(), _worldPosView.get(), _depthView.get()
+		};
+		vk::FramebufferCreateInfo framebufferInfo;
+		framebufferInfo
+			.setRenderPass(pass.getPass())
+			.setAttachments(attachments)
+			.setWidth(extent.width)
+			.setHeight(extent.height)
+			.setLayers(1);
+		_framebuffer = device.createFramebufferUnique(framebufferInfo);
+	}
 }
 
 void GBuffer::Formats::initialize(vk::PhysicalDevice physicalDevice) {
 	assert(!_formatsInitialized);
+	vk::FormatFeatureFlags storageFeatures =
+		vk::FormatFeatureFlagBits::eStorageImage | vk::FormatFeatureFlagBits::eSampledImage;
 	_gBufferFormats.albedo = findSupportedFormat(
-		{ vk::Format::eR8G8B8A8Srgb },
-		physicalDevice, vk::ImageTiling::eOptimal, vk::FormatFeatureFlagBits::eColorAttachment
+		{ vk::Format::eR16G16B16A16Sfloat, vk::Format::eR32G32B32A32Sfloat },
+		physicalDevice, vk::ImageTiling::eOptimal, storageFeatures
 	);
 	_gBufferFormats.normal = findSupportedFormat(
 		{
-			vk::Format::eR16G16B16Snorm,
-			vk::Format::eR16G16B16Sfloat,
-			vk::Format::eR16G16B16A16Snorm,
 			vk::Format::eR16G16B16A16Sfloat,
-			vk::Format::eR32G32B32Sfloat
+			vk::Format::eR32G32B32A32Sfloat
 		},
-		physicalDevice, vk::ImageTiling::eOptimal, vk::FormatFeatureFlagBits::eColorAttachment
+		physicalDevice, vk::ImageTiling::eOptimal, storageFeatures
 	);
 	_gBufferFormats.depth = findSupportedFormat(
-		{ vk::Format::eD32Sfloat, vk::Format::eD32SfloatS8Uint, vk::Format::eD24UnormS8Uint },
-		physicalDevice, vk::ImageTiling::eOptimal, vk::FormatFeatureFlagBits::eDepthStencilAttachment
+		{ vk::Format::eR32Sfloat },
+		physicalDevice, vk::ImageTiling::eOptimal, storageFeatures
 	);
 	_gBufferFormats.materialProperties = findSupportedFormat(
-		{ vk::Format::eR16G16Unorm },
-		physicalDevice, vk::ImageTiling::eOptimal, vk::FormatFeatureFlagBits::eColorAttachment
+		{ vk::Format::eR16G16Sfloat, vk::Format::eR32G32Sfloat },
+		physicalDevice, vk::ImageTiling::eOptimal, storageFeatures
 	);
 	_gBufferFormats.worldPosition = findSupportedFormat(
-		{ vk::Format::eR32G32B32Sfloat, vk::Format::eR32G32B32A32Sfloat },
-		physicalDevice, vk::ImageTiling::eOptimal, vk::FormatFeatureFlagBits::eColorAttachment
+		{ vk::Format::eR32G32B32A32Sfloat },
+		physicalDevice, vk::ImageTiling::eOptimal, storageFeatures
 	);
-	_gBufferFormats.depthAspect = vk::ImageAspectFlagBits::eDepth;
-	if (_gBufferFormats.depth != vk::Format::eD32Sfloat) {
-		_gBufferFormats.depthAspect |= vk::ImageAspectFlagBits::eStencil;
-	}
+	_gBufferFormats.depthAspect = vk::ImageAspectFlagBits::eColor;
 	_formatsInitialized = true;
 }
 
@@ -114,174 +109,116 @@ const GBuffer::Formats &GBuffer::Formats::get() {
 
 
 void GBufferPass::issueCommands(vk::CommandBuffer commandBuffer, vk::Framebuffer framebuffer) const {
-	std::array<vk::ClearValue, 5> clearValues{
-		vk::ClearColorValue(std::array<float, 4>{ 0.0f, 0.0f, 0.0f, 1.0f }),
-		vk::ClearColorValue(std::array<float, 4>{ 0.0f, 0.0f, 0.0f, 1.0f }),
-		vk::ClearColorValue(std::array<float, 4>{ 0.0f, 0.0f, 0.0f, 1.0f }),
-		vk::ClearColorValue(std::array<float, 4>{ 0.0f, 0.0f, 0.0f, 1.0f }),
-		vk::ClearDepthStencilValue(1.0f)
+	(void)framebuffer;
+	assert(descriptorSets);
+	assert(imageDescriptorSet);
+	assert(targetGBuffer);
+
+	auto makeBarrier = [](vk::Image image, vk::AccessFlags srcAccess, vk::AccessFlags dstAccess,
+	                      vk::ImageLayout oldLayout, vk::ImageLayout newLayout) {
+		vk::ImageMemoryBarrier barrier;
+		barrier
+			.setSrcAccessMask(srcAccess)
+			.setDstAccessMask(dstAccess)
+			.setOldLayout(oldLayout)
+			.setNewLayout(newLayout)
+			.setSrcQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED)
+			.setDstQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED)
+			.setImage(image)
+			.setSubresourceRange(vk::ImageSubresourceRange(
+				vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1
+			));
+		return barrier;
 	};
-	vk::RenderPassBeginInfo passBeginInfo;
-	passBeginInfo
-		.setRenderPass(getPass())
-		.setFramebuffer(framebuffer)
-		.setRenderArea(vk::Rect2D(vk::Offset2D(0, 0), _bufferExtent))
-		.setClearValues(clearValues);
-	commandBuffer.beginRenderPass(passBeginInfo, vk::SubpassContents::eInline);
 
-	commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, getPipelines()[0].get());
-	commandBuffer.bindDescriptorSets(
-		vk::PipelineBindPoint::eGraphics, _pipelineLayout.get(), 0,
-		{ descriptorSets->uniformDescriptor.get() }, {}
+	std::array<vk::ImageMemoryBarrier, 5> toStorage{
+		makeBarrier(targetGBuffer->getAlbedoBuffer(), vk::AccessFlagBits::eShaderRead, vk::AccessFlagBits::eShaderWrite,
+		            vk::ImageLayout::eShaderReadOnlyOptimal, vk::ImageLayout::eGeneral),
+		makeBarrier(targetGBuffer->getNormalBuffer(), vk::AccessFlagBits::eShaderRead, vk::AccessFlagBits::eShaderWrite,
+		            vk::ImageLayout::eShaderReadOnlyOptimal, vk::ImageLayout::eGeneral),
+		makeBarrier(targetGBuffer->getMaterialPropertiesBuffer(), vk::AccessFlagBits::eShaderRead, vk::AccessFlagBits::eShaderWrite,
+		            vk::ImageLayout::eShaderReadOnlyOptimal, vk::ImageLayout::eGeneral),
+		makeBarrier(targetGBuffer->getWorldPositionBuffer(), vk::AccessFlagBits::eShaderRead, vk::AccessFlagBits::eShaderWrite,
+		            vk::ImageLayout::eShaderReadOnlyOptimal, vk::ImageLayout::eGeneral),
+		makeBarrier(targetGBuffer->getDepthBuffer(), vk::AccessFlagBits::eShaderRead, vk::AccessFlagBits::eShaderWrite,
+		            vk::ImageLayout::eShaderReadOnlyOptimal, vk::ImageLayout::eGeneral)
+	};
+
+	commandBuffer.pipelineBarrier(
+		vk::PipelineStageFlagBits::eAllCommands,
+		vk::PipelineStageFlagBits::eComputeShader,
+		{}, {}, {}, toStorage
 	);
-	commandBuffer.draw(4, 1, 0, 0);
 
-	commandBuffer.endRenderPass();
+	commandBuffer.bindPipeline(vk::PipelineBindPoint::eCompute, getPipelines()[0].get());
+	commandBuffer.bindDescriptorSets(
+		vk::PipelineBindPoint::eCompute, _pipelineLayout.get(), 0,
+		{ descriptorSets->uniformDescriptor.get(), imageDescriptorSet }, {}
+	);
+	commandBuffer.dispatch(
+		ceilDiv<uint32_t>(_bufferExtent.width, 8u),
+		ceilDiv<uint32_t>(_bufferExtent.height, 8u),
+		1
+	);
+
+	std::array<vk::ImageMemoryBarrier, 5> toSample{
+		makeBarrier(targetGBuffer->getAlbedoBuffer(), vk::AccessFlagBits::eShaderWrite, vk::AccessFlagBits::eShaderRead,
+		            vk::ImageLayout::eGeneral, vk::ImageLayout::eShaderReadOnlyOptimal),
+		makeBarrier(targetGBuffer->getNormalBuffer(), vk::AccessFlagBits::eShaderWrite, vk::AccessFlagBits::eShaderRead,
+		            vk::ImageLayout::eGeneral, vk::ImageLayout::eShaderReadOnlyOptimal),
+		makeBarrier(targetGBuffer->getMaterialPropertiesBuffer(), vk::AccessFlagBits::eShaderWrite, vk::AccessFlagBits::eShaderRead,
+		            vk::ImageLayout::eGeneral, vk::ImageLayout::eShaderReadOnlyOptimal),
+		makeBarrier(targetGBuffer->getWorldPositionBuffer(), vk::AccessFlagBits::eShaderWrite, vk::AccessFlagBits::eShaderRead,
+		            vk::ImageLayout::eGeneral, vk::ImageLayout::eShaderReadOnlyOptimal),
+		makeBarrier(targetGBuffer->getDepthBuffer(), vk::AccessFlagBits::eShaderWrite, vk::AccessFlagBits::eShaderRead,
+		            vk::ImageLayout::eGeneral, vk::ImageLayout::eShaderReadOnlyOptimal)
+	};
+
+	commandBuffer.pipelineBarrier(
+		vk::PipelineStageFlagBits::eComputeShader,
+		vk::PipelineStageFlagBits::eAllCommands,
+		{}, {}, {}, toSample
+	);
 }
 
 vk::UniqueRenderPass GBufferPass::_createPass(vk::Device device) {
-	const GBuffer::Formats &formats = GBuffer::Formats::get();
-
-	std::vector<vk::AttachmentDescription> attachments;
-	attachments.emplace_back()
-		.setFormat(formats.albedo)
-		.setSamples(vk::SampleCountFlagBits::e1)
-		.setLoadOp(vk::AttachmentLoadOp::eClear)
-		.setStoreOp(vk::AttachmentStoreOp::eStore)
-		.setStencilLoadOp(vk::AttachmentLoadOp::eDontCare)
-		.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare)
-		.setInitialLayout(vk::ImageLayout::eUndefined)
-		.setFinalLayout(vk::ImageLayout::eShaderReadOnlyOptimal);
-	attachments.emplace_back()
-		.setFormat(formats.normal)
-		.setSamples(vk::SampleCountFlagBits::e1)
-		.setLoadOp(vk::AttachmentLoadOp::eClear)
-		.setStoreOp(vk::AttachmentStoreOp::eStore)
-		.setStencilLoadOp(vk::AttachmentLoadOp::eDontCare)
-		.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare)
-		.setInitialLayout(vk::ImageLayout::eUndefined)
-		.setFinalLayout(vk::ImageLayout::eShaderReadOnlyOptimal);
-	attachments.emplace_back()
-		.setFormat(formats.materialProperties)
-		.setSamples(vk::SampleCountFlagBits::e1)
-		.setLoadOp(vk::AttachmentLoadOp::eClear)
-		.setStoreOp(vk::AttachmentStoreOp::eStore)
-		.setStencilLoadOp(vk::AttachmentLoadOp::eDontCare)
-		.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare)
-		.setInitialLayout(vk::ImageLayout::eUndefined)
-		.setFinalLayout(vk::ImageLayout::eShaderReadOnlyOptimal);
-	attachments.emplace_back()
-		.setFormat(formats.worldPosition)
-		.setSamples(vk::SampleCountFlagBits::e1)
-		.setLoadOp(vk::AttachmentLoadOp::eClear)
-		.setStoreOp(vk::AttachmentStoreOp::eStore)
-		.setStencilLoadOp(vk::AttachmentLoadOp::eDontCare)
-		.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare)
-		.setInitialLayout(vk::ImageLayout::eUndefined)
-		.setFinalLayout(vk::ImageLayout::eShaderReadOnlyOptimal);
-	attachments.emplace_back()
-		.setFormat(formats.depth)
-		.setSamples(vk::SampleCountFlagBits::e1)
-		.setLoadOp(vk::AttachmentLoadOp::eClear)
-		.setStoreOp(vk::AttachmentStoreOp::eStore)
-		.setStencilLoadOp(vk::AttachmentLoadOp::eDontCare)
-		.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare)
-		.setInitialLayout(vk::ImageLayout::eUndefined)
-		.setFinalLayout(vk::ImageLayout::eShaderReadOnlyOptimal);
-
-	std::array<vk::AttachmentReference, 4> colorAttachmentReferences{
-		vk::AttachmentReference(0, vk::ImageLayout::eColorAttachmentOptimal),
-		vk::AttachmentReference(1, vk::ImageLayout::eColorAttachmentOptimal),
-		vk::AttachmentReference(2, vk::ImageLayout::eColorAttachmentOptimal),
-		vk::AttachmentReference(3, vk::ImageLayout::eColorAttachmentOptimal)
-	};
-
-	vk::AttachmentReference depthAttachmentReference;
-	depthAttachmentReference
-		.setAttachment(4)
-		.setLayout(vk::ImageLayout::eDepthStencilAttachmentOptimal);
-
-	std::vector<vk::SubpassDescription> subpasses;
-	subpasses.emplace_back()
-		.setPipelineBindPoint(vk::PipelineBindPoint::eGraphics)
-		.setColorAttachments(colorAttachmentReferences)
-		.setPDepthStencilAttachment(&depthAttachmentReference);
-
-	std::vector<vk::SubpassDependency> dependencies;
-	dependencies.emplace_back()
-		.setSrcSubpass(VK_SUBPASS_EXTERNAL)
-		.setDstSubpass(0)
-		.setSrcStageMask(vk::PipelineStageFlagBits::eColorAttachmentOutput)
-		.setSrcAccessMask(vk::AccessFlags())
-		.setDstStageMask(vk::PipelineStageFlagBits::eColorAttachmentOutput)
-		.setDstAccessMask(vk::AccessFlagBits::eColorAttachmentWrite);
-
-	vk::RenderPassCreateInfo renderPassInfo;
-	renderPassInfo
-		.setAttachments(attachments)
-		.setSubpasses(subpasses)
-		.setDependencies(dependencies);
-
-	return device.createRenderPassUnique(renderPassInfo);
+	return {};
 }
 
 std::vector<Pass::PipelineCreationInfo> GBufferPass::_getPipelineCreationInfo() {
 	std::vector<PipelineCreationInfo> result;
-
-	GraphicsPipelineCreationInfo info;
-
-	info.vertexInputState
-		.setVertexBindingDescriptions(info.vertexInputBindingStorage)
-		.setVertexAttributeDescriptions(info.vertexInputAttributeStorage);
-
-	info.inputAssemblyState
-		.setTopology(vk::PrimitiveTopology::eTriangleStrip)
-		.setPrimitiveRestartEnable(false);
-
-	info.viewportStorage.emplace_back(
-		0.0f, 0.0f, static_cast<float>(_bufferExtent.width), static_cast<float>(_bufferExtent.height), 0.0f, 1.0f
-	);
-	info.scissorStorage.emplace_back(vk::Offset2D(0, 0), _bufferExtent);
-	info.viewportState
-		.setViewports(info.viewportStorage)
-		.setScissors(info.scissorStorage);
-
-	info.rasterizationState = GraphicsPipelineCreationInfo::getDefaultRasterizationState();
-	info.rasterizationState.setCullMode(vk::CullModeFlagBits::eNone);
-
-	info.depthStencilState = GraphicsPipelineCreationInfo::getDefaultDepthTestState();
-
-	info.multisampleState = GraphicsPipelineCreationInfo::getNoMultisampleState();
-
-	info.attachmentColorBlendStorage.emplace_back(GraphicsPipelineCreationInfo::getNoBlendAttachment());
-	info.attachmentColorBlendStorage.emplace_back(GraphicsPipelineCreationInfo::getNoBlendAttachment());
-	info.attachmentColorBlendStorage.emplace_back(GraphicsPipelineCreationInfo::getNoBlendAttachment());
-	info.attachmentColorBlendStorage.emplace_back(GraphicsPipelineCreationInfo::getNoBlendAttachment());
-	info.colorBlendState.setAttachments(info.attachmentColorBlendStorage);
-
-	info.shaderStages.emplace_back(_frag.getStageInfo());
-	info.shaderStages.emplace_back(_vert.getStageInfo());
-
-	info.pipelineLayout = _pipelineLayout.get();
-
-	result.emplace_back(std::move(info));
-
+	vk::ComputePipelineCreateInfo pipelineInfo;
+	pipelineInfo
+		.setStage(_compute.getStageInfo())
+		.setLayout(_pipelineLayout.get());
+	result.emplace_back(pipelineInfo);
 	return result;
 }
 
 void GBufferPass::_initialize(vk::Device dev) {
-	_vert = Shader::load(dev, "shaders/gBuffer.vert.spv", "main", vk::ShaderStageFlagBits::eVertex);
-	_frag = Shader::load(dev, "shaders/gBuffer.frag.spv", "main", vk::ShaderStageFlagBits::eFragment);
+	_compute = Shader::load(dev, "shaders/gBuffer.comp.spv", "main", vk::ShaderStageFlagBits::eCompute);
 
 	std::array<vk::DescriptorSetLayoutBinding, 1> uniformsDescriptorBindings{
-		vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eUniformBuffer, 1, vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment)
+		vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eUniformBuffer, 1, vk::ShaderStageFlagBits::eCompute)
 	};
 	vk::DescriptorSetLayoutCreateInfo uniformsDescriptorSetInfo;
 	uniformsDescriptorSetInfo.setBindings(uniformsDescriptorBindings);
 	_uniformsDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(uniformsDescriptorSetInfo);
 
-	std::array<vk::DescriptorSetLayout, 1> descriptorSetLayouts{
-		_uniformsDescriptorSetLayout.get()
+	std::array<vk::DescriptorSetLayoutBinding, 5> imageBindings{
+		vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eStorageImage, 1, vk::ShaderStageFlagBits::eCompute),
+		vk::DescriptorSetLayoutBinding(1, vk::DescriptorType::eStorageImage, 1, vk::ShaderStageFlagBits::eCompute),
+		vk::DescriptorSetLayoutBinding(2, vk::DescriptorType::eStorageImage, 1, vk::ShaderStageFlagBits::eCompute),
+		vk::DescriptorSetLayoutBinding(3, vk::DescriptorType::eStorageImage, 1, vk::ShaderStageFlagBits::eCompute),
+		vk::DescriptorSetLayoutBinding(4, vk::DescriptorType::eStorageImage, 1, vk::ShaderStageFlagBits::eCompute)
+	};
+	vk::DescriptorSetLayoutCreateInfo imageDescriptorInfo;
+	imageDescriptorInfo.setBindings(imageBindings);
+	_imagesDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(imageDescriptorInfo);
+
+	std::array<vk::DescriptorSetLayout, 2> descriptorSetLayouts{
+		_uniformsDescriptorSetLayout.get(),
+		_imagesDescriptorSetLayout.get()
 	};
 
 	vk::PipelineLayoutCreateInfo pipelineInfo;

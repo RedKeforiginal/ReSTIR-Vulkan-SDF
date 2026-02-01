@@ -115,14 +115,21 @@ public:
 		return _uniformsDescriptorSetLayout.get();
 	}
 
+	[[nodiscard]] vk::DescriptorSetLayout getImagesDescriptorSetLayout() const {
+		return _imagesDescriptorSetLayout.get();
+	}
+
 	const Resources *descriptorSets;
+	vk::DescriptorSet imageDescriptorSet = {};
+	const GBuffer *targetGBuffer = nullptr;
 protected:
 	explicit GBufferPass(vk::Extent2D extent) : _bufferExtent(extent) {
 	}
 
 	vk::Extent2D _bufferExtent;
-	Shader _vert, _frag;
+	Shader _compute;
 	vk::UniqueDescriptorSetLayout _uniformsDescriptorSetLayout;
+	vk::UniqueDescriptorSetLayout _imagesDescriptorSetLayout;
 	vk::UniquePipelineLayout _pipelineLayout;
 
 	vk::UniqueRenderPass _createPass(vk::Device) override;

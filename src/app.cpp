@@ -87,8 +87,7 @@ App::App(bool enableValidation, bool validateAssetsFlag)
 			"shaders/restirOmniSoftware.comp.spv",
 			"shaders/unbiasedReuseSoftware.comp.spv",
 			"shaders/emissiveSample.comp.spv",
-			"shaders/gBuffer.vert.spv",
-			"shaders/gBuffer.frag.spv",
+			"shaders/gBuffer.comp.spv",
 			"shaders/spatialReuse.comp.spv",
 			"shaders/quad.vert.spv",
 			"shaders/lighting.frag.spv"
@@ -367,6 +366,17 @@ App::App(bool enableValidation, bool validateAssetsFlag)
 	for (GBuffer& gbuf : _gBuffers) {
 		gbuf = GBuffer::create(_allocator, _device.get(), _swapchain.getImageExtent(), _gBufferPass);
 	}
+	{
+		std::array<vk::DescriptorSetLayout, numGBuffers> gBufferImageLayouts;
+		std::fill(gBufferImageLayouts.begin(), gBufferImageLayouts.end(), _gBufferPass.getImagesDescriptorSetLayout());
+		vk::DescriptorSetAllocateInfo gBufferImageAlloc;
+		gBufferImageAlloc
+			.setDescriptorPool(_staticDescriptorPool.get())
+			.setSetLayouts(gBufferImageLayouts);
+		auto descriptorSets = _device->allocateDescriptorSetsUnique(gBufferImageAlloc);
+		std::move(descriptorSets.begin(), descriptorSets.end(), _gBufferImageDescriptors.begin());
+	}
+	_initializeGBufferImageDescriptors();
 	_transitionGBufferLayouts();
 
 
@@ -677,6 +687,7 @@ void App::mainLoop() {
 			for (GBuffer& gbuf : _gBuffers) {
 				gbuf.resize(_allocator, _device.get(), _swapchain.getImageExtent(), _gBufferPass);
 			}
+			_initializeGBufferImageDescriptors();
 			_transitionGBufferLayouts();
 			_gBufferPass.onResized(_device.get(), _swapchain.getImageExtent());
 
