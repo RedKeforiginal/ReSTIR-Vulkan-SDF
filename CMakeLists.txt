@@ -77,7 +77,7 @@ target_sources(restir
 
 
 find_package(Vulkan REQUIRED)
-find_package(glfw3 CONFIG REQUIRED)
+add_subdirectory("thirdparty/glfw")
 find_package(imgui CONFIG REQUIRED)
 find_package(gflags CONFIG REQUIRED)
 add_subdirectory("thirdparty/MikkTSpace/")
