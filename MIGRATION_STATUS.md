@@ -16,6 +16,4 @@
 - Renamed visibility test terminology in code/UI to reference SDF shadow marching instead of legacy software RT naming.
 
 ## Remaining
-- Remove or quarantine unused GLTF/tinygltf third-party sources if they are no longer part of the build graph.
-- `thirdparty/gltf/` (plus `thirdparty/tinygltf/` headers) are still present on disk, but no sources reference them or add them to the build graph.
 - More work to be determined.
