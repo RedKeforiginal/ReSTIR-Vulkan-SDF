@@ -90,7 +90,7 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 		VULKAN_HPP_DEFAULT_DISPATCHER.init(_instance.get());
 	}
 
-	_dynamicDispatcher = vk::DispatchLoaderDynamic(_instance.get(), vkGetInstanceProcAddr);
+	_dynamicDispatcher = vk::detail::DispatchLoaderDynamic(_instance.get(), vkGetInstanceProcAddr);
 
 	{ // create debug messanger
 		vk::DebugUtilsMessengerCreateInfoEXT messangerInfo;
@@ -509,6 +509,7 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 	// finish initializing imgui
 	{
 		ImGui_ImplVulkan_InitInfo imguiInit{};
+		imguiInit.ApiVersion = VK_API_VERSION_1_2;
 		imguiInit.Instance = _instance.get();
 		imguiInit.PhysicalDevice = _physicalDevice;
 		imguiInit.Device = _device.get();
@@ -517,7 +518,9 @@ App::App(std::string scene, bool ignorePointLights) : _window({ { GLFW_CLIENT_AP
 		imguiInit.DescriptorPool = _imguiDescriptorPool.get();
 		imguiInit.MinImageCount = _swapchainInfo.minImageCount;
 		imguiInit.ImageCount = static_cast<uint32_t>(_swapchain.getImages().size());
-		imguiInit.RenderPass = _imguiPass.getPass();
+		imguiInit.PipelineInfoMain.RenderPass = _imguiPass.getPass();
+		imguiInit.PipelineInfoMain.Subpass = 0;
+		imguiInit.PipelineInfoMain.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
 		ImGui_ImplVulkan_Init(&imguiInit);
 	}
 

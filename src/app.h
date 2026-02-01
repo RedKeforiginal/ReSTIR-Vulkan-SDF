@@ -88,8 +88,8 @@ protected:
 	vk::Queue _presentQueue;
 
 	vk::UniqueInstance _instance;
-	vk::DispatchLoaderDynamic _dynamicDispatcher;
-	vk::UniqueHandle<vk::DebugUtilsMessengerEXT, vk::DispatchLoaderDynamic> _messanger;
+	vk::detail::DispatchLoaderDynamic _dynamicDispatcher;
+	vk::UniqueHandle<vk::DebugUtilsMessengerEXT, vk::detail::DispatchLoaderDynamic> _messanger;
 	vk::PhysicalDevice _physicalDevice;
 	vk::UniqueSurfaceKHR _surface;
 	vk::UniqueDevice _device;
