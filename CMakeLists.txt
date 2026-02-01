@@ -46,8 +46,6 @@ target_compile_definitions(restir
 
 target_sources(restir
 	PRIVATE
-		"src/vertex.h"
-		"src/passes/demoPass.h"
 		"src/passes/emissiveSamplePass.h"
 		"src/passes/imguiPass.h"
 		"src/passes/gBufferPass.cpp"
@@ -110,9 +108,6 @@ target_include_directories(restir
 		"${CMAKE_CURRENT_SOURCE_DIR}/src"
 		"thirdparty/nvmath/"
 		"thirdparty/VulkanMemoryAllocator/src/")
-
-add_shader(restir "src/shaders/simple.vert")
-add_shader(restir "src/shaders/simple.frag")
 
 add_shader(restir "src/shaders/gBuffer.comp")
 
