@@ -1,5 +1,7 @@
 # SDF Migration Status
 
+- NOTE: This list is incomplete
+
 ## Completed
 - SDF ray-marched G-Buffer is active via the compute GBuffer pass (`gBuffer.comp` uses `GetDistMat` + `GetMaterial`) and is wired into ReSTIR/lighting through existing G-Buffer bindings.
 - SDF visibility testing is implemented in `visibilityTest.glsl`, replacing trace-ray/BVH logic in the reuse paths.
@@ -15,7 +17,5 @@
 - Update `README.md` to describe the SDF scene pipeline instead of GLTF loading, including the removal of `-scene`/`-ignore_point_lights` references and tinygltf mentions.
 - Rename/clean up remaining GLTF-era terminology in code (e.g., `VisibilityTestMethod::software` naming) to reflect SDF shadow marching.
 - Validate/tune SDF parameters and expose runtime controls (max steps, epsilon, max distance, scene transform) via UI and/or config.
-
-## Notes/Findings
-- `README.md` still documents GLTF loading, RT pipelines, and tinygltf dependencies even though the SDF path is now primary.
 - The CMake target still compiles demo/simple shaders that are unused by the SDF rendering path.
+- More work to be determined.
