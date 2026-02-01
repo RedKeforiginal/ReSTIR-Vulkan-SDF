@@ -107,6 +107,7 @@ target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui MikkTSpace gltf g
 
 target_include_directories(restir
 	PRIVATE
+		"${CMAKE_CURRENT_SOURCE_DIR}/src"
 		"thirdparty/nvmath/"
 		"thirdparty/VulkanMemoryAllocator/src/"
 		"thirdparty/tinygltf/")
