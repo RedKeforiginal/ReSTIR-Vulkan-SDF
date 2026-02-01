@@ -92,12 +92,34 @@ target_include_directories(imgui
 		"${IMGUI_DIR}"
 		"${IMGUI_DIR}/backends")
 target_link_libraries(imgui PUBLIC glfw Vulkan::Vulkan)
-find_package(gflags CONFIG REQUIRED)
+set(GFLAGS_TARGET "")
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/gflags-2.3.0/CMakeLists.txt")
+	add_subdirectory("thirdparty/gflags-2.3.0" EXCLUDE_FROM_ALL)
+	if(TARGET gflags_shared)
+		set(GFLAGS_TARGET gflags_shared)
+	elseif(TARGET gflags::gflags)
+		set(GFLAGS_TARGET gflags::gflags)
+	elseif(TARGET gflags_static)
+		set(GFLAGS_TARGET gflags_static)
+	endif()
+else()
+	find_package(gflags CONFIG REQUIRED)
+	if(TARGET gflags::gflags)
+		set(GFLAGS_TARGET gflags::gflags)
+	elseif(TARGET gflags_shared)
+		set(GFLAGS_TARGET gflags_shared)
+	elseif(TARGET gflags_static)
+		set(GFLAGS_TARGET gflags_static)
+	endif()
+endif()
+if(NOT GFLAGS_TARGET)
+	message(FATAL_ERROR "gflags target not found; ensure thirdparty/gflags-2.3.0 exists or install gflags.")
+endif()
 add_subdirectory("thirdparty/MikkTSpace/")
 add_subdirectory("thirdparty/gltf/")
 
 
-target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui MikkTSpace gltf gflags_shared)
+target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui MikkTSpace gltf ${GFLAGS_TARGET})
 
 target_include_directories(restir
 	PRIVATE
