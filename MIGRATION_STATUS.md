@@ -16,4 +16,10 @@
 - Renamed visibility test terminology in code/UI to reference SDF shadow marching instead of legacy software RT naming.
 
 ## Remaining
-- More work to be determined.
+- Implement ReSTIR candidate generation directly from emissive SDF materials by sampling `GetDistMat`/`GetMaterial` in `SDF.glsl` and `SDF-Material.glsl`, then writing emissive surface samples into the candidate buffer (compute path should own emissive discovery rather than relying on legacy light buffers).
+- Add a dedicated emissive sampling strategy: define a bounded sampling volume, generate stochastic ray-marched hits against the SDF, and cache emissive hits in a GPU buffer refreshed every frame or every N frames to keep candidate distributions stable.
+- Integrate emissive material emission strength and area heuristics into candidate weights (convert emission color/intensity into the reservoir `w` term and add PDF estimates for emissive surface sampling).
+- Update ReSTIR shaders to treat emissive SDF materials as the sole light source, removing any remaining dependency on point/triangle light buffers or alias tables used for GLTF scenes.
+- Lighting still resolves via a graphics pipeline (full-screen quad) using raster state setup in `pass.h` and `lightingPass.h` (`quad.vert` + `lighting.frag`). If the goal is compute-only rendering, convert this resolve to a compute pass or an explicit compute-to-swapchain blit.
+- ImGui rendering still relies on a Vulkan graphics render pass. Decide whether UI remains raster-based as an intentional exception or replace it with a compute-driven overlay path.
+- Legacy GLTF/tinygltf third-party sources are still present in `thirdparty/` (and appear in historical build logs). If they are no longer referenced by the build, remove them to avoid accidental GLTF reintroduction.
