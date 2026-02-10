@@ -1,7 +1,3 @@
-#ifdef HARDWARE_RAY_TRACING
-#	extension GL_EXT_ray_tracing : enable
-#endif
-
 #include "include/structs/lightingPassStructs.glsl"
 #include "include/reservoir.glsl"
 #include "include/restirUtils.glsl"
@@ -35,35 +31,13 @@ layout (binding = 9, set = 1) buffer PrevFrameReservoirs {
 	Reservoir prevFrameReservoirs[];
 };
 
-#ifdef HARDWARE_RAY_TRACING
-layout (location = 0) rayPayloadEXT bool isShadowed;
-layout (binding = 0, set = 2) uniform accelerationStructureEXT acc;
-#else
-#	include "include/structs/aabbTree.glsl"
-layout (binding = 0, set = 2) buffer AabbTree {
-	AabbTreeNode nodes[];
-} aabbTree;
-layout (binding = 1, set = 2) buffer Triangles {
-	Triangle triangles[];
-};
-
 layout (local_size_x = OMNI_GROUP_SIZE_X, local_size_y = OMNI_GROUP_SIZE_Y, local_size_z = 1) in;
-
-#	define NODE_BUFFER aabbTree
-#	define TRIANGLE_BUFFER triangles
-#	include "include/softwareRaytracing.glsl"
-#endif
 
 #include "include/visibilityTest.glsl"
 
 
 void main() {
-	uvec2 pixelCoord =
-#ifdef HARDWARE_RAY_TRACING
-		gl_LaunchIDEXT.xy;
-#else
-		gl_GlobalInvocationID.xy;
-#endif
+	uvec2 pixelCoord = gl_GlobalInvocationID.xy;
 	if (any(greaterThanEqual(pixelCoord, uniforms.screenSize))) {
 		return;
 	}

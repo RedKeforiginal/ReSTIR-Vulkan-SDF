@@ -2,11 +2,9 @@
 
 #include <variant>
 
-#include <vulkan/vulkan.hpp>
+#include "../vulkanConfig.h"
 
 #include "../misc.h"
-
-class SceneBuffers;
 
 class Pass {
 public:

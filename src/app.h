@@ -5,7 +5,7 @@
 #include "glfwWindow.h"
 #include "swapchain.h"
 #include "transientCommandBuffer.h"
-#include "sceneBuffers.h"
+#include "sdfSceneBuffers.h"
 #include "camera.h"
 #include "fpsCounter.h"
 
@@ -19,8 +19,7 @@
 
 enum class VisibilityTestMethod {
 	disabled,
-	software,
-	hardware
+	sdfShadow
 };
 
 class App {
@@ -29,7 +28,7 @@ public:
 	constexpr static std::size_t maxFramesInFlight = 2;
 	constexpr static std::size_t numGBuffers = 2;
 
-	App(std::string scene, bool ignorePointLights);
+	App(bool enableValidation, bool validateAssets);
 	~App();
 
 	void mainLoop();
@@ -89,8 +88,8 @@ protected:
 	vk::Queue _presentQueue;
 
 	vk::UniqueInstance _instance;
-	vk::DispatchLoaderDynamic _dynamicDispatcher;
-	vk::UniqueHandle<vk::DebugUtilsMessengerEXT, vk::DispatchLoaderDynamic> _messanger;
+	vk::detail::DispatchLoaderDynamic _dynamicDispatcher;
+	vk::UniqueHandle<vk::DebugUtilsMessengerEXT, vk::detail::DispatchLoaderDynamic> _messanger;
 	vk::PhysicalDevice _physicalDevice;
 	vk::UniqueSurfaceKHR _surface;
 	vk::UniqueDevice _device;
@@ -98,9 +97,7 @@ protected:
 	vma::Allocator _allocator;
 	vk::UniqueCommandPool _commandPool;
 	vk::UniqueDescriptorPool _staticDescriptorPool;
-	vk::UniqueDescriptorPool _textureDescriptorPool;
 	vk::UniqueDescriptorPool _imguiDescriptorPool;
-	vk::UniqueDescriptorPool _rtDescriptorPool;
 	TransientCommandBufferPool _transientCommandBufferPool;
 
 	std::vector<uint32_t> _swapchainSharedQueues;
@@ -114,6 +111,7 @@ protected:
 	GBuffer _gBuffers[2];
 	GBufferPass _gBufferPass;
 	GBufferPass::Resources _gBufferResources;
+	std::array<vk::UniqueDescriptorSet, numGBuffers> _gBufferImageDescriptors;
 
 	EmissiveSamplePass _emissiveSamplePass;
 	vk::UniqueDescriptorSet _emissiveSampleDescriptor;
@@ -137,22 +135,13 @@ protected:
 	RestirPass _restirPass;
 	std::array<vk::UniqueDescriptorSet, numGBuffers> _restirFrameDescriptors;
 	vk::UniqueDescriptorSet _restirStaticDescriptor;
-	vk::UniqueDescriptorSet _restirHardwareRayTraceDescriptor;
-	vk::UniqueDescriptorSet _restirSoftwareRayTraceDescriptor;
 
 	UnbiasedReusePass _unbiasedReusePass;
 	std::array<vk::UniqueDescriptorSet, numGBuffers> _unbiasedReusePassFrameDescriptors;
-	vk::UniqueDescriptorSet _unbiasedReusePassSwRaytraceDescriptors;
-	vk::UniqueDescriptorSet _unbiasedReusePassHwRaytraceDescriptors;
 
 	ImGuiPass _imguiPass;
 
-	nvh::GltfScene _gltfScene;
-	SceneBuffers _sceneBuffers;
-	SceneRaytraceBuffers _sceneRtBuffers;
-
-	AabbTree _aabbTree;
-	AabbTreeBuffers _aabbTreeBuffers;
+	SdfSceneBuffers _sdfSceneBuffers;
 
 	float posThreshold = 0.1f;
 	float norThreshold = 25.0f;
@@ -171,7 +160,7 @@ protected:
 	int _debugMode = GBUFFER_DEBUG_NONE;
 	float _gamma = 1.0f;
 	int _log2InitialLightSamples = 5;
-	VisibilityTestMethod _visibilityTestMethod = VisibilityTestMethod::hardware;
+	VisibilityTestMethod _visibilityTestMethod = VisibilityTestMethod::sdfShadow;
 	bool _enableTemporalReuse = true;
 	int _temporalReuseSampleMultiplier = 20;
 	int _spatialReuseIterations = 1;
@@ -197,13 +186,17 @@ protected:
 
 	void _transitionGBufferLayouts() {
 		TransientCommandBuffer cmdBuf = _transientCommandBufferPool.begin(_graphicsComputeQueue);
-		for (std::size_t i = 1; i < numGBuffers; ++i) {
+		for (std::size_t i = 0; i < numGBuffers; ++i) {
 			transitionImageLayout(
 				cmdBuf.get(), _gBuffers[i].getAlbedoBuffer(), GBuffer::Formats::get().albedo,
 				vk::ImageLayout::eUndefined, vk::ImageLayout::eShaderReadOnlyOptimal
 			);
 			transitionImageLayout(
 				cmdBuf.get(), _gBuffers[i].getNormalBuffer(), GBuffer::Formats::get().normal,
+				vk::ImageLayout::eUndefined, vk::ImageLayout::eShaderReadOnlyOptimal
+			);
+			transitionImageLayout(
+				cmdBuf.get(), _gBuffers[i].getMaterialPropertiesBuffer(), GBuffer::Formats::get().materialProperties,
 				vk::ImageLayout::eUndefined, vk::ImageLayout::eShaderReadOnlyOptimal
 			);
 			transitionImageLayout(
@@ -217,11 +210,36 @@ protected:
 		}
 	}
 
+	void _initializeGBufferImageDescriptors() {
+		for (std::size_t i = 0; i < numGBuffers; ++i) {
+			std::array<vk::DescriptorImageInfo, 5> imageInfo{
+				vk::DescriptorImageInfo({}, _gBuffers[i].getAlbedoView(), vk::ImageLayout::eGeneral),
+				vk::DescriptorImageInfo({}, _gBuffers[i].getNormalView(), vk::ImageLayout::eGeneral),
+				vk::DescriptorImageInfo({}, _gBuffers[i].getMaterialPropertiesView(), vk::ImageLayout::eGeneral),
+				vk::DescriptorImageInfo({}, _gBuffers[i].getWorldPositionView(), vk::ImageLayout::eGeneral),
+				vk::DescriptorImageInfo({}, _gBuffers[i].getDepthView(), vk::ImageLayout::eGeneral)
+			};
+
+			std::array<vk::WriteDescriptorSet, 5> writes{};
+			for (std::size_t j = 0; j < writes.size(); ++j) {
+				writes[j]
+					.setDstSet(_gBufferImageDescriptors[i].get())
+					.setDstBinding(static_cast<uint32_t>(j))
+					.setDescriptorType(vk::DescriptorType::eStorageImage)
+					.setImageInfo(imageInfo[j]);
+			}
+
+			_device->updateDescriptorSets(writes, {});
+		}
+	}
+
 	void _recordMainCommandBuffers() {
 		for (std::size_t i = 0; i < numGBuffers; ++i) {
 			vk::CommandBufferBeginInfo beginInfo;
 			_mainCommandBuffers[i]->begin(beginInfo);
 
+			_gBufferPass.imageDescriptorSet = _gBufferImageDescriptors[i].get();
+			_gBufferPass.targetGBuffer = &_gBuffers[i];
 			_gBufferPass.issueCommands(_mainCommandBuffers[i].get(), _gBuffers[i].getFramebuffer());
 
 			_mainCommandBuffers[i]->fillBuffer(_emissiveSampleBuffer.get(), 0, sizeof(uint32_t), 0);
@@ -245,32 +263,14 @@ protected:
 
 			_restirPass.staticDescriptorSet = _restirStaticDescriptor.get();
 			_restirPass.frameDescriptorSet = _restirFrameDescriptors[i].get();
-#ifdef RENDERDOC_CAPTURE
-			_restirPass.useSoftwareRayTracing = true;
-#else
-			_restirPass.useSoftwareRayTracing = _visibilityTestMethod != VisibilityTestMethod::hardware;
-#endif
-			_restirPass.raytraceDescriptorSet =
-				_restirPass.useSoftwareRayTracing ?
-				_restirSoftwareRayTraceDescriptor.get() :
-				_restirHardwareRayTraceDescriptor.get();
 
 			_restirPass.bufferExtent = _swapchain.getImageExtent();
 			_restirPass.issueCommands(_mainCommandBuffers[i].get(), nullptr);
 
 			if (_unbiasedSpatialReuse) {
 				_unbiasedReusePass.frameDescriptorSet = _unbiasedReusePassFrameDescriptors[i].get();
-#ifdef RENDERDOC_CAPTURE
-				_unbiasedReusePass.useSoftwareRayTracing = true;
-#else
-				_unbiasedReusePass.useSoftwareRayTracing = _visibilityTestMethod != VisibilityTestMethod::hardware;
-#endif
-				_unbiasedReusePass.raytraceDescriptorSet =
-					_unbiasedReusePass.useSoftwareRayTracing ?
-					_unbiasedReusePassSwRaytraceDescriptors.get() :
-					_unbiasedReusePassHwRaytraceDescriptors.get();
 				_unbiasedReusePass.bufferExtent = _swapchain.getImageExtent();
-				_unbiasedReusePass.issueCommands(_mainCommandBuffers[i].get(), _dynamicDispatcher);
+				_unbiasedReusePass.issueCommands(_mainCommandBuffers[i].get());
 			} else {
 				for (int j = 0; j < _spatialReuseIterations; ++j) {
 					_spatialReusePass.descriptorSet = _spatialReuseDescriptors[i].get();
@@ -314,14 +314,6 @@ protected:
 			_emissiveSampleBuffer.get(), _emissiveSampleBufferSize,
 			_restirUniformBuffer.get(), _device.get(), _restirStaticDescriptor.get()
 		);
-#ifndef RENDERDOC_CAPTURE
-		_restirPass.initializeHardwareRayTracingDescriptorSet(
-			_sceneRtBuffers, _device.get(), _restirHardwareRayTraceDescriptor.get()
-		);
-#endif
-		_restirPass.initializeSoftwareRayTracingDescriptorSet(
-			_aabbTreeBuffers, _device.get(), _restirSoftwareRayTraceDescriptor.get()
-		);
 		for (std::size_t i = 0; i < numGBuffers; ++i) {
 			_restirPass.initializeFrameDescriptorSetFor(
 				_gBuffers[i], _gBuffers[(i + numGBuffers - 1) % numGBuffers],
@@ -340,14 +332,6 @@ protected:
 					_reservoirTemporaryBuffer.get(), _reservoirBuffers[i].get(), _reservoirBufferSize,
 					_unbiasedReusePassFrameDescriptors[i].get()
 				);
-				_unbiasedReusePass.initializeSoftwareRaytraceDescriptorSet(
-					_device.get(), _aabbTreeBuffers, _unbiasedReusePassSwRaytraceDescriptors.get()
-				);
-#ifndef RENDERDOC_CAPTURE
-				_unbiasedReusePass.initializeHardwareRaytraceDescriptorSet(
-					_device.get(), _sceneRtBuffers, _unbiasedReusePassHwRaytraceDescriptors.get()
-				);
-#endif
 			} else {
 				_spatialReusePass.initializeDescriptorSetFor(
 					_gBuffers[i], _restirUniformBuffer.get(), _reservoirBuffers[i].get(), _reservoirBufferSize,

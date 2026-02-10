@@ -111,9 +111,9 @@ void main() {
 
 	float pdf = 1.0 / max(1.0, float(params.sampleCount));
 
-	EmissiveSample sample;
-	sample.position_luminance = vec4(worldPos, emissionLum);
-	sample.normal_pdf = vec4(normal, pdf);
-	sample.emission = vec4(emission, 0.0);
-	emissiveSamples.samples[writeIndex] = sample;
+	EmissiveSample emissiveSample;
+	emissiveSample.position_luminance = vec4(worldPos, emissionLum);
+	emissiveSample.normal_pdf = vec4(normal, pdf);
+	emissiveSample.emission = vec4(emission, 0.0);
+	emissiveSamples.samples[writeIndex] = emissiveSample;
 }

@@ -1,12 +1,13 @@
 #pragma once
 
 #include <cassert>
+#include <functional>
 #include <initializer_list>
 #include <utility>
 #include <vector>
 
 // include vulkan first to enable certain glfw functions
-#include <vulkan/vulkan.hpp>
+#include "vulkanConfig.h"
 #include <GLFW/glfw3.h>
 #include <nvmath.h>
 

@@ -7,7 +7,8 @@ namespace glfw {
 		if (returnValue != GLFW_TRUE) {
 			const char *error = nullptr;
 			glfwGetError(&error);
-			std::cout << "GLFW error: " << error << "\n";
+			std::cerr << "GLFW error: " << error << "\n";
+			std::cerr.flush();
 			std::abort();
 		}
 	}
@@ -51,7 +52,8 @@ namespace glfw {
 	vk::UniqueSurfaceKHR Window::createSurface(vk::Instance instance) {
 		VkSurfaceKHR surface;
 		if (VkResult res = glfwCreateWindowSurface(instance, _window, nullptr, &surface); res != VK_SUCCESS) {
-			std::cout << "Failed to create GLFW window surface: " << vk::to_string(static_cast<vk::Result>(res)) << "\n";
+			std::cerr << "Failed to create GLFW window surface: " << vk::to_string(static_cast<vk::Result>(res)) << "\n";
+			std::cerr.flush();
 			std::abort();
 		}
 		return vk::UniqueSurfaceKHR(surface, instance);

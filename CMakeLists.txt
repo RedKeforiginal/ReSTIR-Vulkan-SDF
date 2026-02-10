@@ -40,13 +40,12 @@ endif()
 
 target_compile_definitions(restir
 	PRIVATE
+		VULKAN_HPP_DISPATCH_LOADER_DYNAMIC
 #		RENDERDOC_CAPTURE
 		)
 
 target_sources(restir
 	PRIVATE
-		"src/vertex.h"
-		"src/passes/demoPass.h"
 		"src/passes/emissiveSamplePass.h"
 		"src/passes/imguiPass.h"
 		"src/passes/gBufferPass.cpp"
@@ -55,8 +54,6 @@ target_sources(restir
 		"src/passes/pass.h"
 		"src/passes/restirPass.h"
 		"src/passes/spatialReusePass.h"
-		"src/aabbTreeBuilder.cpp"
-		"src/aabbTreeBuilder.h"
 		"src/app.cpp"
 		"src/app.h"
 		"src/camera.h"
@@ -66,37 +63,53 @@ target_sources(restir
 		"src/main.cpp"
 		"src/misc.cpp"
 		"src/misc.h"
-		"src/sceneBuffers.h"
 		"src/shaderIncludes.h"
+		"src/sdfSceneBuffers.h"
 		"src/swapchain.cpp"
 		"src/swapchain.h"
 		"src/transientCommandBuffer.h"
+		"src/vulkanDispatch.cpp"
+		"src/vulkanDispatchStorage.cpp"
 		"src/shader.h"
 		"src/vma.cpp"
 		"src/vma.h")
 
 
 find_package(Vulkan REQUIRED)
-find_package(glfw3 CONFIG REQUIRED)
-find_package(imgui CONFIG REQUIRED)
-find_package(gflags CONFIG REQUIRED)
+add_subdirectory("thirdparty/glfw-3.4")
+set(IMGUI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui-1.92.5")
+add_library(imgui
+	"${IMGUI_DIR}/imgui.cpp"
+	"${IMGUI_DIR}/imgui_draw.cpp"
+	"${IMGUI_DIR}/imgui_tables.cpp"
+	"${IMGUI_DIR}/imgui_widgets.cpp"
+	"${IMGUI_DIR}/imgui_demo.cpp"
+	"${IMGUI_DIR}/backends/imgui_impl_glfw.cpp"
+	"${IMGUI_DIR}/backends/imgui_impl_vulkan.cpp")
+target_include_directories(imgui
+	PUBLIC
+		"${IMGUI_DIR}"
+		"${IMGUI_DIR}/backends")
+target_link_libraries(imgui PUBLIC glfw Vulkan::Vulkan)
+option(RESTIR_USE_BUNDLED_GFLAGS "Use bundled gflags from thirdparty/gflags-2.3.0" ON)
+if(RESTIR_USE_BUNDLED_GFLAGS)
+	set(GFLAGS_IS_SUBPROJECT TRUE)
+	add_subdirectory("thirdparty/gflags-2.3.0")
+else()
+	find_package(gflags CONFIG REQUIRED)
+endif()
 add_subdirectory("thirdparty/MikkTSpace/")
-add_subdirectory("thirdparty/gltf/")
 
 
-target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui::imgui MikkTSpace gltf gflags_shared)
+target_link_libraries(restir PRIVATE Vulkan::Vulkan glfw imgui MikkTSpace gflags::gflags)
 
 target_include_directories(restir
 	PRIVATE
+		"${CMAKE_CURRENT_SOURCE_DIR}/src"
 		"thirdparty/nvmath/"
-		"thirdparty/VulkanMemoryAllocator/src/"
-		"thirdparty/tinygltf/")
+		"thirdparty/VulkanMemoryAllocator/src/")
 
-add_shader(restir "src/shaders/simple.vert")
-add_shader(restir "src/shaders/simple.frag")
-
-add_shader(restir "src/shaders/gBuffer.vert")
-add_shader(restir "src/shaders/gBuffer.frag")
+add_shader(restir "src/shaders/gBuffer.comp")
 
 add_shader(restir "src/shaders/spatialReuse.comp")
 add_shader(restir "src/shaders/emissiveSample.comp")
@@ -104,12 +117,6 @@ add_shader(restir "src/shaders/emissiveSample.comp")
 add_shader(restir "src/shaders/quad.vert")
 add_shader(restir "src/shaders/lighting.frag")
 
-add_shader(restir "src/shaders/hwVisibilityTest.rchit")
-add_shader(restir "src/shaders/hwVisibilityTest.rmiss")
-add_shader(restir "src/shaders/hwVisibilityTestShadow.rmiss")
-
-add_shader(restir "src/shaders/restirOmniHardware.rgen")
 add_shader(restir "src/shaders/restirOmniSoftware.comp")
 
-add_shader(restir "src/shaders/unbiasedReuseHardware.rgen")
 add_shader(restir "src/shaders/unbiasedReuseSoftware.comp")

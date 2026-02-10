@@ -1,10 +1,8 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
+#include "../vulkanConfig.h"
 
 #include "pass.h"
-#include "vma.h"
-
 class RestirPass : public Pass {
 	friend Pass;
 public:
@@ -17,12 +15,6 @@ public:
 	}
 	[[nodiscard]] vk::DescriptorSetLayout getFrameDescriptorSetLayout() const {
 		return _frameDescriptorSetLayout.get();
-	}
-	[[nodiscard]] vk::DescriptorSetLayout getHardwareRayTraceDescriptorSetLayout() const {
-		return _hwRayTraceDescriptorSetLayout.get();
-	}
-	[[nodiscard]] vk::DescriptorSetLayout getSoftwareRayTraceDescriptorSetLayout() const {
-		return _swRayTraceDescriptorSetLayout.get();
 	}
 
 	void freeDeviceMemory(vk::Device dev)
@@ -40,80 +32,16 @@ public:
 			{}, {}, {}, {}
 		);
 
-		if (useSoftwareRayTracing) {
-			commandBuffer.bindPipeline(vk::PipelineBindPoint::eCompute, getPipelines()[0].get());
-			commandBuffer.bindDescriptorSets(
-				vk::PipelineBindPoint::eCompute, _swPipelineLayout.get(), 0,
-				{ staticDescriptorSet, frameDescriptorSet, raytraceDescriptorSet }, {}
-			);
-			commandBuffer.dispatch(
-				ceilDiv<uint32_t>(bufferExtent.width, OMNI_GROUP_SIZE_X),
-				ceilDiv<uint32_t>(bufferExtent.height, OMNI_GROUP_SIZE_Y),
-				1
-			);
-		} else {
-			commandBuffer.bindPipeline(vk::PipelineBindPoint::eRayTracingKHR, _hwRayTracePipeline.get());
-			commandBuffer.bindDescriptorSets(
-				vk::PipelineBindPoint::eRayTracingKHR, _hwPipelineLayout.get(), 0,
-				{ staticDescriptorSet, frameDescriptorSet, raytraceDescriptorSet }, {}
-			);
-			commandBuffer.traceRaysKHR(rayGenSBT, rayMissSBT, rayHitSBT, rayCallSBT, bufferExtent.width, bufferExtent.height, 1, *dynamicLoader);
-		}
-	}
-
-
-	[[nodiscard]] inline static vk::RayTracingShaderGroupCreateInfoKHR
-		getRtGenShaderGroupCreate()
-	{
-		vk::RayTracingShaderGroupCreateInfoKHR info;
-		info.type = vk::RayTracingShaderGroupTypeKHR::eGeneral;
-		info.generalShader = 0;
-		info.closestHitShader = VK_SHADER_UNUSED_KHR;
-		info.anyHitShader = VK_SHADER_UNUSED_KHR;
-		info.intersectionShader = VK_SHADER_UNUSED_KHR;
-		info.pShaderGroupCaptureReplayHandle = nullptr;
-
-		return info;
-	}
-	[[nodiscard]] inline static vk::RayTracingShaderGroupCreateInfoKHR
-		getRtHitShaderGroupCreate()
-	{
-		vk::RayTracingShaderGroupCreateInfoKHR info;
-		info.type = vk::RayTracingShaderGroupTypeKHR::eTrianglesHitGroup;
-		info.generalShader = VK_SHADER_UNUSED_KHR;
-		info.closestHitShader = 1;
-		info.anyHitShader = VK_SHADER_UNUSED_KHR;
-		info.intersectionShader = VK_SHADER_UNUSED_KHR;
-		info.pShaderGroupCaptureReplayHandle = nullptr;
-
-		return info;
-	}
-	[[nodiscard]] inline static vk::RayTracingShaderGroupCreateInfoKHR
-		getRtMissShaderGroupCreate()
-	{
-		vk::RayTracingShaderGroupCreateInfoKHR info;
-		info.type = vk::RayTracingShaderGroupTypeKHR::eGeneral;
-		info.generalShader = 2;
-		info.closestHitShader = VK_SHADER_UNUSED_KHR;
-		info.anyHitShader = VK_SHADER_UNUSED_KHR;
-		info.intersectionShader = VK_SHADER_UNUSED_KHR;
-		info.pShaderGroupCaptureReplayHandle = nullptr;
-
-		return info;
-	}
-
-	[[nodiscard]] inline static vk::RayTracingShaderGroupCreateInfoKHR
-		getRtShadowMissShaderGroupCreate()
-	{
-		vk::RayTracingShaderGroupCreateInfoKHR info;
-		info.type = vk::RayTracingShaderGroupTypeKHR::eGeneral;
-		info.generalShader = 3;
-		info.closestHitShader = VK_SHADER_UNUSED_KHR;
-		info.anyHitShader = VK_SHADER_UNUSED_KHR;
-		info.intersectionShader = VK_SHADER_UNUSED_KHR;
-		info.pShaderGroupCaptureReplayHandle = nullptr;
-
-		return info;
+		commandBuffer.bindPipeline(vk::PipelineBindPoint::eCompute, getPipelines()[0].get());
+		commandBuffer.bindDescriptorSets(
+			vk::PipelineBindPoint::eCompute, _sdfPipelineLayout.get(), 0,
+			{ staticDescriptorSet, frameDescriptorSet }, {}
+		);
+		commandBuffer.dispatch(
+			ceilDiv<uint32_t>(bufferExtent.width, OMNI_GROUP_SIZE_X),
+			ceilDiv<uint32_t>(bufferExtent.height, OMNI_GROUP_SIZE_Y),
+			1
+		);
 	}
 
 
@@ -186,140 +114,17 @@ public:
 		device.updateDescriptorSets(writes, {});
 	}
 
-	void initializeHardwareRayTracingDescriptorSet(const SceneRaytraceBuffers &buffers, vk::Device dev, vk::DescriptorSet set) {
-		std::array<vk::WriteDescriptorSet, 1> descriptorWrite;
-
-		vk::AccelerationStructureKHR tlas = buffers.getTopLevelAccelerationStructure();
-		vk::WriteDescriptorSetAccelerationStructureKHR descriptorAccelerationStructureInfo;
-		descriptorAccelerationStructureInfo
-			.setAccelerationStructureCount(1)
-			.setAccelerationStructures(tlas);
-
-		descriptorWrite[0]
-			.setPNext(&descriptorAccelerationStructureInfo)
-			.setDstSet(set)
-			.setDstBinding(0)
-			.setDstArrayElement(0)
-			.setDescriptorType(vk::DescriptorType::eAccelerationStructureKHR)
-			.setDescriptorCount(1);
-
-		dev.updateDescriptorSets(descriptorWrite, {}, *dynamicLoader);
-	}
-
-	void initializeSoftwareRayTracingDescriptorSet(const AabbTreeBuffers &treeBuffers, vk::Device dev, vk::DescriptorSet set) {
-		std::array<vk::WriteDescriptorSet, 2> writes;
-		vk::DescriptorBufferInfo nodeInfo(treeBuffers.nodeBuffer.get(), 0, treeBuffers.nodeBufferSize);
-		vk::DescriptorBufferInfo triangleInfo(treeBuffers.triangleBuffer.get(), 0, treeBuffers.triangleBufferSize);
-
-		writes[0]
-			.setDstSet(set)
-			.setDstBinding(0)
-			.setDescriptorType(vk::DescriptorType::eStorageBuffer)
-			.setBufferInfo(nodeInfo);
-		writes[1]
-			.setDstSet(set)
-			.setDstBinding(1)
-			.setDescriptorType(vk::DescriptorType::eStorageBuffer)
-			.setBufferInfo(triangleInfo);
-
-		dev.updateDescriptorSets(writes, {});
-	}
-
-
-	void createShaderBindingTable(vk::Device& dev, vma::Allocator& allocator, vk::PhysicalDevice& physicalDev)
-	{
-		vk::PhysicalDeviceRayTracingPipelinePropertiesKHR rtProperties;
-		vk::PhysicalDeviceProperties2 devProperties2;
-		devProperties2.pNext = &rtProperties;
-
-		uint32_t shaderGroupSize = 3;
-
-		physicalDev.getProperties2(&devProperties2);
-		uint32_t shaderBindingTableSize = shaderGroupSize * rtProperties.shaderGroupBaseAlignment;
-
-		vk::BufferCreateInfo bufferInfo;
-		bufferInfo
-			.setSize(shaderBindingTableSize)
-			.setUsage(vk::BufferUsageFlagBits::eTransferSrc | vk::BufferUsageFlagBits::eShaderDeviceAddress)
-			.setSharingMode(vk::SharingMode::eExclusive);
-
-		VmaAllocationCreateInfo allocationInfo{};
-		allocationInfo.usage = VMA_MEMORY_USAGE_CPU_TO_GPU;
-
-		_shaderBindingTable = allocator.createBuffer(bufferInfo, allocationInfo);
-
-		VmaAllocationInfo sbtAllocationInfo;
-		_shaderBindingTable.getAllocInfo(&sbtAllocationInfo);
-
-		// Set shader info
-		uint8_t* dstData = _shaderBindingTable.mapAs<uint8_t>();
-		std::vector<uint8_t> shaderHandleStorage(shaderBindingTableSize);
-		vk::Result res = dev.getRayTracingShaderGroupHandlesKHR(
-			_hwRayTracePipeline.get(), 0, shaderGroupSize, shaderBindingTableSize, shaderHandleStorage.data(), *dynamicLoader
-		);
-		vkCheck(res);
-
-		for (uint32_t g = 0; g < shaderGroupSize; g++)
-		{
-			memcpy(dstData, shaderHandleStorage.data() + g * rtProperties.shaderGroupHandleSize,
-				rtProperties.shaderGroupHandleSize);
-			dstData += rtProperties.shaderGroupBaseAlignment;
-		}
-
-		_shaderBindingTable.unmap();
-
-		// Set buffer region handle
-		vk::DeviceAddress sbtAddr = dev.getBufferAddress(_shaderBindingTable.get());
-		rayGenSBT
-			.setDeviceAddress(sbtAddr)
-			.setStride(rtProperties.shaderGroupBaseAlignment)
-			.setSize(rtProperties.shaderGroupBaseAlignment);
-
-		rayMissSBT
-			.setDeviceAddress(sbtAddr + 2 * rtProperties.shaderGroupBaseAlignment)
-			.setStride(rtProperties.shaderGroupBaseAlignment)
-			.setSize(rtProperties.shaderGroupBaseAlignment);
-
-		rayHitSBT
-			.setDeviceAddress(sbtAddr + 1 * rtProperties.shaderGroupBaseAlignment)
-			.setStride(rtProperties.shaderGroupBaseAlignment)
-			.setSize(rtProperties.shaderGroupBaseAlignment);
-
-		rayCallSBT
-			.setDeviceAddress(sbtAddr)
-			.setStride(0)
-			.setSize(0);
-	}
-
-
-	//vk::DescriptorSet descriptorSet;
-	vma::UniqueBuffer _shaderBindingTable;
-	vk::StridedDeviceAddressRegionKHR rayGenSBT;
-	vk::StridedDeviceAddressRegionKHR rayMissSBT;
-	vk::StridedDeviceAddressRegionKHR rayHitSBT;
-	vk::StridedDeviceAddressRegionKHR rayCallSBT;
-
 	vk::DescriptorSet staticDescriptorSet;
 	vk::DescriptorSet frameDescriptorSet;
-	vk::DescriptorSet raytraceDescriptorSet;
 
 	vk::Extent2D bufferExtent;
-	const vk::DispatchLoaderDynamic *dynamicLoader = nullptr;
-	bool useSoftwareRayTracing = false;
 protected:
-	explicit RestirPass(const vk::DispatchLoaderDynamic &loader) : Pass(), dynamicLoader(&loader) {
-	}
-
-	Shader _rayGen, _rayChit, _rayMiss, _rayShadowMiss, _software;
+	Shader _sdfShader;
 
 	vk::UniqueSampler _sampler;
-	vk::UniquePipelineLayout _hwPipelineLayout;
-	vk::UniquePipelineLayout _swPipelineLayout;
+	vk::UniquePipelineLayout _sdfPipelineLayout;
 	vk::UniqueDescriptorSetLayout _staticDescriptorSetLayout;
 	vk::UniqueDescriptorSetLayout _frameDescriptorSetLayout;
-	vk::UniqueDescriptorSetLayout _hwRayTraceDescriptorSetLayout;
-	vk::UniqueDescriptorSetLayout _swRayTraceDescriptorSetLayout;
-	vk::UniqueHandle<vk::Pipeline, vk::DispatchLoaderDynamic> _hwRayTracePipeline;
 
 	[[nodiscard]] vk::UniqueRenderPass _createPass(vk::Device) override {
 		return {};
@@ -335,8 +140,8 @@ protected:
 		{ // compute pipeline
 			vk::ComputePipelineCreateInfo pipelineInfo;
 			pipelineInfo
-				.setStage(_software.getStageInfo())
-				.setLayout(_swPipelineLayout.get());
+				.setStage(_sdfShader.getStageInfo())
+				.setLayout(_sdfPipelineLayout.get());
 			auto [res, pipeline] = dev.createComputePipelineUnique(nullptr, pipelineInfo);
 			vkCheck(res);
 			pipelines.emplace_back(std::move(pipeline));
@@ -346,15 +151,11 @@ protected:
 	}
 
 	void _initialize(vk::Device dev) override {
-		constexpr vk::ShaderStageFlags stageFlags = vk::ShaderStageFlagBits::eRaygenKHR | vk::ShaderStageFlagBits::eCompute;
+		constexpr vk::ShaderStageFlags stageFlags = vk::ShaderStageFlagBits::eCompute;
 
 		_sampler = createSampler(dev, vk::Filter::eNearest, vk::Filter::eNearest, vk::SamplerMipmapMode::eNearest);
 
-		_rayGen = Shader::load(dev, "shaders/restirOmniHardware.rgen.spv", "main", vk::ShaderStageFlagBits::eRaygenKHR);
-		_rayChit = Shader::load(dev, "shaders/hwVisibilityTest.rchit.spv", "main", vk::ShaderStageFlagBits::eClosestHitKHR);
-		_rayMiss = Shader::load(dev, "shaders/hwVisibilityTest.rmiss.spv", "main", vk::ShaderStageFlagBits::eMissKHR);
-		_rayShadowMiss = Shader::load(dev, "shaders/hwVisibilityTestShadow.rmiss.spv", "main", vk::ShaderStageFlagBits::eMissKHR);
-		_software = Shader::load(dev, "shaders/restirOmniSoftware.comp.spv", "main", vk::ShaderStageFlagBits::eCompute);
+		_sdfShader = Shader::load(dev, "shaders/restirOmniSoftware.comp.spv", "main", vk::ShaderStageFlagBits::eCompute);
 
 
 		std::array<vk::DescriptorSetLayoutBinding, 2> staticBindings{
@@ -385,120 +186,17 @@ protected:
 		_frameDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(frameDescriptorInfo);
 
 
-		// Acceleration structure descriptor binding
-		vk::DescriptorSetLayoutBinding accelerationStructureLayoutBinding;
-		accelerationStructureLayoutBinding.binding = 0;
-		accelerationStructureLayoutBinding.descriptorType = vk::DescriptorType::eAccelerationStructureKHR;
-		accelerationStructureLayoutBinding.descriptorCount = 1;
-		accelerationStructureLayoutBinding.stageFlags = vk::ShaderStageFlagBits::eRaygenKHR;
-
-		std::array<vk::DescriptorSetLayoutBinding, 1> hwRayTraceBindings{
-			accelerationStructureLayoutBinding
+		std::array<vk::DescriptorSetLayout, 2> sdfDescriptorLayouts{
+			_staticDescriptorSetLayout.get(), _frameDescriptorSetLayout.get()
 		};
 
-		vk::DescriptorSetLayoutCreateInfo hwRayTraceLayoutInfo;
-		hwRayTraceLayoutInfo.setBindings(hwRayTraceBindings);
-		_hwRayTraceDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(hwRayTraceLayoutInfo);
-
-
-		std::array<vk::DescriptorSetLayoutBinding, 2> swRayTraceBindings{
-			vk::DescriptorSetLayoutBinding(0, vk::DescriptorType::eStorageBuffer, 1, vk::ShaderStageFlagBits::eCompute),
-			vk::DescriptorSetLayoutBinding(1, vk::DescriptorType::eStorageBuffer, 1, vk::ShaderStageFlagBits::eCompute)
-		};
-		vk::DescriptorSetLayoutCreateInfo swRayTraceLayoutInfo;
-		swRayTraceLayoutInfo.setBindings(swRayTraceBindings);
-		_swRayTraceDescriptorSetLayout = dev.createDescriptorSetLayoutUnique(swRayTraceLayoutInfo);
-
-
-		std::array<vk::DescriptorSetLayout, 3> hwDescriptorLayouts{
-			_staticDescriptorSetLayout.get(), _frameDescriptorSetLayout.get(), _hwRayTraceDescriptorSetLayout.get()
-		};
-
-		vk::PipelineLayoutCreateInfo hwPipelineLayoutInfo;
-		hwPipelineLayoutInfo.setSetLayouts(hwDescriptorLayouts);
-		_hwPipelineLayout = dev.createPipelineLayoutUnique(hwPipelineLayoutInfo);
-
-		std::array<vk::DescriptorSetLayout, 3> swDescriptorLayouts{
-			_staticDescriptorSetLayout.get(), _frameDescriptorSetLayout.get(), _swRayTraceDescriptorSetLayout.get()
-		};
-
-		vk::PipelineLayoutCreateInfo swPipelineLayoutInfo;
-		swPipelineLayoutInfo.setSetLayouts(swDescriptorLayouts);
-		_swPipelineLayout = dev.createPipelineLayoutUnique(swPipelineLayoutInfo);
-
-
-#ifndef RENDERDOC_CAPTURE
-		{ // create ray tracing pipeline
-			std::vector<vk::RayTracingShaderGroupCreateInfoKHR> shaderGroups;
-			shaderGroups.emplace_back(getRtGenShaderGroupCreate());
-			shaderGroups.emplace_back(getRtHitShaderGroupCreate());
-			shaderGroups.emplace_back(getRtMissShaderGroupCreate());
-			shaderGroups.emplace_back(getRtShadowMissShaderGroupCreate());
-
-			std::vector<vk::PipelineShaderStageCreateInfo> shaderStages;
-			shaderStages.emplace_back(_rayGen.getStageInfo());
-			shaderStages.emplace_back(_rayChit.getStageInfo());
-			shaderStages.emplace_back(_rayMiss.getStageInfo());
-			shaderStages.emplace_back(_rayShadowMiss.getStageInfo());
-
-			vk::RayTracingPipelineCreateInfoKHR rtPipelineInfo;
-			rtPipelineInfo
-				.setStages(shaderStages)
-				.setGroups(shaderGroups)
-				.setMaxPipelineRayRecursionDepth(1)
-				.setLayout(_hwPipelineLayout.get());
-			auto [res, pipeline] = dev.createRayTracingPipelineKHRUnique(nullptr, nullptr, rtPipelineInfo, nullptr, *dynamicLoader);
-			vkCheck(res);
-			_hwRayTracePipeline = std::move(pipeline);
-		}
-#endif
+		vk::PipelineLayoutCreateInfo sdfPipelineLayoutInfo;
+		sdfPipelineLayoutInfo.setSetLayouts(sdfDescriptorLayouts);
+		_sdfPipelineLayout = dev.createPipelineLayoutUnique(sdfPipelineLayoutInfo);
 
 
 		Pass::_initialize(dev);
 	}
 private:
 	std::vector<vk::DeviceMemory> memories;
-
-	uint64_t GetBufferAddress(vk::Device dev, vk::Buffer buffer)
-	{
-		vk::BufferDeviceAddressInfoKHR bufferAddressInfo;
-		bufferAddressInfo.setBuffer(buffer);
-
-		return dev.getBufferAddress(bufferAddressInfo, *dynamicLoader);
-	}
-
-	void InsertCommandImageBarrier(vk::CommandBuffer commandBuffer,
-		vk::Image image,
-		vk::AccessFlags srcAccessMask,
-		vk::AccessFlags dstAccessMask,
-		vk::ImageLayout oldLayout,
-		vk::ImageLayout newLayout,
-		const VkImageSubresourceRange& subresourceRange)
-	{
-		vk::ImageMemoryBarrier imageMmemoryBarrier;
-		imageMmemoryBarrier
-			.setSrcAccessMask(srcAccessMask)
-			.setDstAccessMask(dstAccessMask)
-			.setOldLayout(oldLayout)
-			.setNewLayout(newLayout)
-			.setSrcQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED)
-			.setDstQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED)
-			.setImage(image)
-			.setSubresourceRange(subresourceRange);
-		commandBuffer.pipelineBarrier(vk::PipelineStageFlagBits::eAllCommands,
-			vk::PipelineStageFlagBits::eAllCommands,
-			{}, {}, {}, { imageMmemoryBarrier });
-	}
-
-	uint32_t FindMemoryType(vk::PhysicalDevice physicalDevice, uint32_t typeFilter, vk::MemoryPropertyFlags properties) {
-		vk::PhysicalDeviceMemoryProperties memProperties = physicalDevice.getMemoryProperties();
-
-		for (uint32_t ii = 0; ii < memProperties.memoryTypeCount; ++ii) {
-			if ((typeFilter & (1 << ii)) &&
-				(memProperties.memoryTypes[ii].propertyFlags & properties) == properties) {
-				return ii;
-			}
-		};
-		throw std::runtime_error("failed to find suitable memory type!");
-	}
 };
